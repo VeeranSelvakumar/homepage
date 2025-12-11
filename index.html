@@ -10,6 +10,65 @@
         margin: 0;
         font-family: Arial, sans-serif;
         background: #f3f6fa;
+        position: relative;
+        z-index: 1;
+    }
+
+   /* LOGIN BOX */
+   #loginBox {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: #ffffffee;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    #loginBox div {
+        width: 320px;
+        padding: 25px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+
+    #loginBox input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    #loginBox button {
+        width: 100%;
+        padding: 12px;
+        background: #1a73e8;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    #err {
+        color: red;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    /* Fireworks canvas */
+    #fireworksCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
     }
 
     /* Header */
@@ -18,6 +77,8 @@
         color: white;
         text-align: center;
         padding: 25px;
+        position: relative;
+        z-index: 1;
     }
 
     header h1 {
@@ -39,10 +100,7 @@
         animation: blinker 1s linear infinite;
         color: #fff;
     }
-
-    @keyframes blinker {
-        50% { opacity: 0; }
-    }
+    @keyframes blinker { 50% { opacity: 0; } }
 
     /* Banner */
     .banner {
@@ -62,6 +120,8 @@
         justify-content: center;
         background: #0d47a1;
         flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
     }
 
     .navbar a {
@@ -87,6 +147,8 @@
         border-radius: 10px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         max-width: 900px;
+        position: relative;
+        z-index: 1;
     }
 
     .title {
@@ -124,6 +186,8 @@
         gap: 20px;
         padding: 20px;
         margin: 20px;
+        position: relative;
+        z-index: 1;
     }
 
     .cards .card a {
@@ -140,10 +204,34 @@
         text-align: center;
         padding: 15px;
         margin-top: 20px;
+        position: relative;
+        z-index: 1;
     }
 </style>
 </head>
 <body>
+
+
+<!-- 🔐 LOGIN BOX -->
+<div id="loginBox">
+  <div>
+    <h2>Veeran Tech Point — Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="doLogin()">Login</button>
+    <div id="err"></div>
+  </div>
+</div>
+
+
+
+<!-- MAIN SITE CONTENT -->
+<div id="mainContent" style="display:none;">
+
+
+<!-- Fireworks Canvas -->
+<canvas id="fireworksCanvas"></canvas>
+
 
 <!-- HEADER -->
 <header>
@@ -152,7 +240,6 @@
   <p>Government Schemes & Certificate Information Hub</p>
   <div class="attention">🔔 உங்களைத் தேடி உங்கள் இல்லங்களை நாடி — Veeran Tech Point 🔔</div>
 </header>
-
 
 
 <!-- NAVBAR -->
@@ -166,6 +253,7 @@
     <a href="exams.html">GOVERNMENT EXAMS</a>
     <a href="helpdesk.html">HELPDESK</a>
 </div>
+
 
 <!-- HOME SECTION -->
 <div class="card" id="home">
@@ -192,46 +280,169 @@
 
     <p>🎯 Veeran Tech Point-ன் முக்கிய நோக்கம்: <b>நீங்கள் நேரமும் பணமும் விரயம் செய்யாமல், வீட்டிலிருந்தே அனைத்து அரசு சேவைகளையும் நம்பகமாகப் பெற உதவுவது</b>. உங்களுக்கான government works அனைத்தையும் ஒரே இடத்தில், பாதுகாப்பாகவும், விரைவாகவும், துல்லியமாகவும் செய்து தருவதற்காகவே இந்த தளம் செயல்படுகிறது.</p>
 
-    <p style="margin-top:16px; font-weight:600;">🙏 நன்றி <span style="color:#2563eb"></span>  <span style="color:#2563eb"></span></p>
+    <p style="margin-top:16px; font-weight:600;">🙏 நன்றி</p>
 
   </div>
 </div>
 
+
 <!-- CARDS -->
 <div class="cards">
-    <div class="card">
-        <a href="tn-schemes.html">TN Government Schemes</a>
-    </div>
-
-    <div class="card">
-        <a href="tn-certificates.html">TN Certificates</a>
-    </div>
-
-    <div class="card">
-        <a href="indian-schemes.html">Indian Government Schemes</a>
-    </div>
-
-    <div class="card">
-        <a href="indian-certificates.html">Indian Certificates</a>
-    </div>
-
-    <div class="card">
-        <a href="identity.html">Identity Card Services</a>
-    </div>
-
-    <div class="card">
-        <a href="exams.html">Government Exams</a>
-    </div>
-
-    <div class="card">
-        <a href="helpdesk.html">Helpdesk Support</a>
-    </div>
+    <div class="card"><a href="tn-schemes.html">TN Government Schemes</a></div>
+    <div class="card"><a href="tn-certificates.html">TN Certificates</a></div>
+    <div class="card"><a href="indian-schemes.html">Indian Government Schemes</a></div>
+    <div class="card"><a href="indian-certificates.html">Indian Certificates</a></div>
+    <div class="card"><a href="identity.html">Identity Card Services</a></div>
+    <div class="card"><a href="exams.html">Government Exams</a></div>
+    <div class="card"><a href="helpdesk.html">Helpdesk Support</a></div>
 </div>
+
 
 <!-- FOOTER -->
 <div class="footer">
     © 2026 Veeran Tech Point — All Rights Reserved
 </div>
+
+</div> <!-- END main content -->
+
+
+
+<!-- LOGIN SCRIPT -->
+<script>
+function doLogin() {
+  var u = document.getElementById("username").value.trim();
+  var p = document.getElementById("password").value.trim();
+  document.getElementById("err").innerText = "";
+
+  if (!u || !p) {
+    document.getElementById("err").innerText = "Enter both username & password";
+    return;
+  }
+
+  fetch("https://script.google.com/macros/s/AKfycbwU1eBIbgu8IGCufl_s-Mk04BcJKXjqNsU6k7WXuiAE2dpLmlpSd0RnJ9kjCC79IPMz/exec", {
+    method: "POST",
+    body: JSON.stringify({ username: u, password: p })
+  })
+  .then(res => res.text())
+  .then(txt => {
+    if (txt === "success") {
+      document.getElementById("loginBox").style.display = "none";
+      document.getElementById("mainContent").style.display = "block";
+    } else {
+      document.getElementById("err").innerText = "Invalid Username or Password";
+    }
+  })
+  .catch(err => {
+    document.getElementById("err").innerText = "Server error. Try again.";
+  });
+}
+</script>
+
+
+
+<!-- Fireworks Script -->
+<script>
+const canvas = document.getElementById("fireworksCanvas");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.onresize = resizeCanvas;
+
+class Firework {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height;
+        this.targetY = Math.random() * (canvas.height / 2);
+        this.speed = 3 + Math.random() * 3;
+        this.particles = [];
+        this.exploded = false;
+        this.color = `hsl(${Math.random() * 360},100%,60%)`;
+    }
+
+    update() {
+        if (!this.exploded) {
+            this.y -= this.speed;
+            if (this.y <= this.targetY) {
+                this.exploded = true;
+                this.createParticles();
+            }
+        }
+
+        this.particles.forEach(p => p.update());
+        this.particles = this.particles.filter(p => p.alpha > 0);
+    }
+
+    draw() {
+        if (!this.exploded) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+
+        this.particles.forEach(p => p.draw());
+    }
+
+    createParticles() {
+        for (let i = 0; i < 40; i++) {
+            this.particles.push(new Particle(this.x, this.y, this.color));
+        }
+    }
+}
+
+class Particle {
+    constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.speed = Math.random() * 3 + 1;
+        this.angle = Math.random() * Math.PI * 2;
+        this.alpha = 1;
+        this.color = color;
+        this.gravity = 0.03;
+    }
+
+    update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed + this.gravity;
+        this.alpha -= 0.015;
+    }
+
+    draw() {
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+    }
+}
+
+let fireworks = [];
+
+function loop() {
+    ctx.fillStyle = "rgba(0,0,0,0.15)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    if (Math.random() < 0.05) {
+        fireworks.push(new Firework());
+    }
+
+    fireworks.forEach(f => f.update());
+    fireworks.forEach(f => f.draw());
+
+    fireworks = fireworks.filter(f => !f.exploded || f.particles.length > 0);
+
+    requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+
+
 
 </body>
 </html>
