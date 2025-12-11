@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Veeran Tech Point</title>
+
+<style>
+body { 
+  font-family: Arial; 
+  background-color: #f9fafb; 
+  background-image: 
+    linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+    linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+  background-size: 20px 20px;
+  padding:20px; 
+}
+
+#welcomePage, #formPage {
+  max-width:600px; 
+  margin:auto; 
+  text-align:center;
+  animation: fadeIn .6s ease;
+}
+
+#formPage { display:none; }
+
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(10px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+button, .main-btn {
+  background:#1a73e8; 
+  color:white; 
+  padding:14px 18px;
+  width:100%; 
+  border:0; 
+  border-radius:8px;
+  font-size:18px; 
+  cursor:pointer;
+  margin-top:10px;
+  transition:0.2s;
+}
+
+button:hover, .main-btn:hover {
+  background:#0b5ed7;
+}
+
+input, textarea, select {
+  width:100%; 
+  padding:12px; 
+  margin:8px 0;
+  border:1px solid #ccc; 
+  border-radius:6px; 
+  font-size:16px;
+  text-align:left;
+}
+
+#formPage form { text-align:left; }
+
+#formPage label {
+  display:block;
+  margin-bottom:4px;
+  font-weight:bold;
+}
+
+.errorField {
+  border:2px solid red !important;
+  animation: blink 0.4s ease-in-out 3;
+}
+
+@keyframes blink {
+  0% { border-color: red; }
+  50% { border-color: transparent; }
+  100% { border-color: red; }
+}
+
+#loading {
+  display:none; position:fixed;
+  top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.4);
+  z-index:9999; backdrop-filter:blur(2px);
+  justify-content:center; align-items:center;
+  flex-direction:column;
+}
+
+.loading-box {
+  background:white; padding:25px 40px;
+  border-radius:12px; text-align:center;
+  box-shadow:0 0 15px #00000055;
+}
+
+.loader {
+  border:6px solid #ddd; border-top:6px solid #1a73e8;
+  border-radius:50%; width:45px; height:45px;
+  animation: spin 1s linear infinite; margin:auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#successPopup {
+  display:none;
+  position:fixed;
+  top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.5);
+  z-index:99999;
+  justify-content:center;
+  align-items:center;
+}
+
+#successPopup .popup-content {
+  background:white;
+  padding:30px;
+  width:300px;
+  border-radius:12px;
+  text-align:center;
+  box-shadow:0 0 15px rgba(0,0,0,0.4);
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div id="welcomePage">
+  <h1 style="color:#1a73e8;">Veeran Tech Point</h1>
+  <p>Fast & Trusted Digital Service Center</p>
+  
+  <button class="main-btn" onclick="showForm()">🚀 Apply Now for Income Certificate</button>
+</div>
+
+<!-- PAGE 2 -->
+<div id="formPage">
+  <h1 style="color:#1a73e8;">Income Certificate Application</h1>
+
+  <form id="rationForm">
+    <label>Full Name</label>
+    <input type="text" id="name" name="name" placeholder="Your Full Name" required>
+
+    <label>Mobile Number (10 digits)</label>
+    <input type="number" id="mobile" maxlength="10" placeholder="Enter Mobile Number"
+           oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10);" required>
+
+    <label>Number of Family Members</label>
+    <input type="number" id="family" name="family" placeholder="Example: 4" required>
+
+    <label>Applicant Photo</label>
+    <input type="file" id="photo" accept="image/*,application/pdf" required>
+
+    <label>Aadhaar Card - Front Page</label>
+    <input type="file" id="aadhaarfront" accept="image/*,application/pdf" required>
+
+    <label>Aadhaar Card - Back Page</label>
+    <input type="file" id="aadhaarback" accept="image/*,application/pdf" required>
+
+    <label>Ration Card - Front Page</label>
+    <input type="file" id="rationfront" accept="image/*,application/pdf" required>
+
+    <label>Ration Card - Back Page</label>
+    <input type="file" id="rationback" accept="image/*,application/pdf" required>
+
+    <button type="submit">Submit Application</button>
+  </form>
+</div>
+
+<!-- POPUPS -->
+<div id="loading">
+  <div class="loading-box">
+    <div class="loader"></div>
+    <h3>Please wait...</h3>
+    <p>Submitting your application</p>
+  </div>
+</div>
+
+<div id="successPopup">
+  <div class="popup-content">
+    <h2 style="color:green;">✔ Success!</h2>
+    <p>Your Application Submitted Successfully</p>
+    <button onclick="closePopup()">OK</button>
+  </div>
+</div>
+
+<script>
+function showForm(){
+  document.getElementById("welcomePage").style.display = "none";
+  document.getElementById("formPage").style.display = "block";
+}
+
+function closePopup(){
+  document.getElementById("successPopup").style.display = "none";
+}
+
+document.getElementById("rationForm").addEventListener("submit", async function(e){
+  e.preventDefault();
+
+  let isValid = true;
+
+  const nameField = document.getElementById("name");
+  const mobileField = document.getElementById("mobile");
+  const familyField = document.getElementById("family");
+
+  const photoField = document.getElementById("photo");
+  const aadhaarfront = document.getElementById("aadhaarfront");
+  const aadhaarback  = document.getElementById("aadhaarback");
+  const rationFront = document.getElementById("rationfront");
+  const rationBack  = document.getElementById("rationback");
+
+  const fields = [nameField, mobileField, familyField, photoField, aadhaarfront, aadhaarback, rationFront, rationBack];
+
+  fields.forEach(f => f.classList.remove("errorField"));
+
+  fields.forEach(f => {
+    if (f.type === "file") {
+      if (f.files.length === 0) { f.classList.add("errorField"); isValid=false; }
+    } else if (f.value.trim()==="") { f.classList.add("errorField"); isValid=false; }
+  });
+
+  if(mobileField.value.length!==10){ 
+    mobileField.classList.add("errorField"); 
+    isValid=false; 
+  }
+
+  if(!isValid) return;
+
+  document.getElementById("loading").style.display = "flex";
+
+  async function toBase64(file){
+    return new Promise((resolve)=>{ 
+      const reader = new FileReader();
+      reader.onload=()=>resolve(reader.result);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  const formData = new FormData();
+  formData.append("name", nameField.value);
+  formData.append("mobile", mobileField.value);
+  formData.append("family", familyField.value);
+
+  formData.append("photoBase64", await toBase64(photoField.files[0]));
+
+  formData.append("aadhaarFrontBase64", await toBase64(aadhaarfront.files[0]));
+  formData.append("aadhaarBackBase64",  await toBase64(aadhaarback.files[0]));
+
+  formData.append("rationFrontBase64", await toBase64(rationFront.files[0]));
+  formData.append("rationBackBase64",  await toBase64(rationBack.files[0]));
+
+  fetch("https://script.google.com/macros/s/AKfycbwHMlIF4Mr1aS8BCaNGneWkibI9dTpOgA_cVFPOUlhvRL9PI28IeC2qvkaS7OsNNLp_Sw/exec", {
+    method: "POST",
+    body: formData
+  })
+  .then(r => r.json())
+  .then(res=>{
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("successPopup").style.display = "flex";
+    document.getElementById("rationForm").reset();
+  })
+  .catch(err=>{
+    document.getElementById("loading").style.display = "none";
+    alert("Submitting Failed!");
+  });
+
+});
+</script>
+
+</body>
+</html>
