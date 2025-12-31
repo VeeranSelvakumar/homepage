@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Veeran Tech Point</title>
+
+<style>
+body { 
+  font-family: Arial; 
+  background-color: #f9fafb; 
+  background-image: 
+    linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+    linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+  background-size: 20px 20px;
+  padding:20px; 
+}
+.container{
+  max-width:600px;
+  margin:auto;
+  background:transparent;
+  padding:20px;
+}
+h1{ color:#1a73e8; text-align:center; }
+p{ text-align:center; color:#555; }
+label{ font-weight:bold; display:block; margin-top:12px; }
+input, select{
+  width:100%;
+  padding:12px;
+  margin-top:6px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:15px;
+}
+button{
+  margin-top:20px;
+  width:100%;
+  padding:14px;
+  font-size:18px;
+  background:#1a73e8;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+button:hover{ background:#0b5ed7; }
+#error{ color:red; display:none; margin-top:10px; text-align:center; }
+#loading{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  justify-content:center;
+  align-items:center;
+  color:white;
+  font-size:22px;
+}
+.reset-btn{
+  margin-top:15px;
+  width:100%;
+  padding:14px;
+  font-size:16px;
+  background:#dc3545;   /* Bootstrap red */
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.reset-btn:hover{
+  background:#b02a37;   /* Dark red on hover */
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- PAYMENT PAGE -->
+  <div id="paymentPage" style="display:none;text-align:center;">
+    <h2>Payment Required</h2>
+    <p>Please scan QR or click Pay Now</p>
+
+    <img src="GooglePay_QR.png" width="260" style="margin:20px 0;">
+    <p style="font-size:13px;color:#666;">Desktop users: Please scan QR using your mobile UPI app</p>
+
+    <a id="upiBtn" href="#"><button style="background:green;">Pay</button></a>
+    <br><br>
+    <button onclick="showPaidPage()">I have paid</button>
+    <button class="reset-btn" onclick="confirmReset()">
+      Reset Application
+    </button>
+  </div>
+
+  <!-- PAID CONFIRM PAGE -->
+  <div id="paidPage" style="display:none;text-align:center;">
+    <p>
+      Payment Status :
+      <span id="paidBadge" style="padding:6px 10px;border-radius:6px;background:#dc3545;color:#fff;">
+        NOT PAID
+      </span>
+    </p>
+
+    <h2>Payment Confirmation</h2>
+    <p>Please enter UPI Reference Number</p>
+    <input   type="text"
+  id="upiRef"
+  name="upiRef"
+  placeholder="Enter 12 digit UPI Ref"
+  maxlength="12"
+  inputmode="numeric"
+  pattern="[0-9]{12}"
+  required
+  oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+    <br><br>
+    <button onclick="if(validateUpiRef()) finalConfirm(event)">
+  Confirm Payment
+</button>
+
+  </div>
+
+  <h1 id="pageTitle"></h1>
+  <p id="pageDesc"></p>
+  <form id="dynamicForm"></form>
+  <div id="error">Please fill all required fields</div>
+
+</div>
+
+<div id="loading">Submitting… Please wait</div>
+
+<script>
+const PAYMENT_AMOUNT = 60;
+let APPLICATION_ID = localStorage.getItem("APPLICATION_ID");
+</script>
+
+<!-- ===================== ONLY CHANGE BELOW ===================== -->
+<script>
+/*
+=========================================================
+🟢 ONLY EDIT THIS BLOCK FOR EACH CERTIFICATE
+=========================================================
+*/
+
+const SERVICE_CONFIG = {
+  serviceKey : "Unemployment Certificate",
+
+  title : "Unemployment Certificate Application",
+  description : "Apply for Unemployment Certificate easily",
+
+  fields : [
+    { id:"name", label:"Full Name", type:"text", required:true },
+    { id:"mobile", label:"Mobile Number", type:"tel", required:true, max:10 },
+
+    { id:"degreecompleted", label:"நீங்கள் பட்டப்படிப்பை வெற்றிகரமாக முடித்துள்ளீர்களா?", type:"select", required:true,
+      options:["ஆம்","இல்லை"]
+    },
+    { id:"universityname", label:"University Name", type:"text", required:true },
+    { id:"durationofunemployed", label:"எத்தனை நாட்களாக வேலையில்லாமல் இருக்கிறீர்கள்?", type:"text", placeholder:"ex: 01-01-2021 to 12-12-2025", required:true }
+
+  ],
+
+  files : [
+    { id:"photoBase64", label:"Applicant Photo", required:true },
+    { id:"aadhaarFrontBase64", label:"Aadhaar Front", required:true },
+    { id:"aadhaarBackBase64", label:"Aadhaar Back", required:true },
+    { id:"degreeBase64", label:"Degree Certificate / Provisional Certificate", required:true },
+    { id:"tcBase64", label:"Transfer Certificate", required:true },
+    { id:"incomeBase64", label:"Income Certificate", required:true },
+    { id:"employmentBase64", label:"Employment Card", required:false },
+    { id:"rationFrontBase64", label:"Ration Card Front Page", required:false },
+    { id:"rationBackBase64", label:"Ration Card Back Page", required:false },    
+    { id:"signatureBase64", label:"Signature", required:true }
+  ]
+};
+</script>
+<!-- ===================== STOP EDIT ===================== -->
+
+<script>
+document.getElementById("pageTitle").innerText = SERVICE_CONFIG.title;
+document.getElementById("pageDesc").innerText  = SERVICE_CONFIG.description;
+
+const form = document.getElementById("dynamicForm");
+
+/* Fields */
+SERVICE_CONFIG.fields.forEach(f=>{
+  let html = `<label>${f.label}${f.required?" *":""}</label>`;
+  if(f.type==="select"){
+    html+=`<select name="${f.id}" ${f.required?"required":""}>
+      <option value="">-- Select --</option>
+      ${f.options.map(o=>`<option>${o}</option>`).join("")}
+    </select>`;
+  }else{
+    html+=`<input type="${f.type}" name="${f.id}" ${f.required?"required":""}
+      ${f.max?`maxlength="${f.max}"`:``}
+      ${f.placeholder?`placeholder="${f.placeholder}"`:``}
+      ${f.type==="tel"?"pattern='\\d{10}' oninput=\"this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)\"":""}
+    >`;
+  }
+  form.insertAdjacentHTML("beforeend", html);
+});
+
+/* Files */
+SERVICE_CONFIG.files.forEach(f=>{
+  form.insertAdjacentHTML("beforeend",
+    `<label>${f.label}${f.required?" *":""}</label>
+     <input type="file" data-id="${f.id}" ${f.required?"required":""}>`
+  );
+});
+
+form.insertAdjacentHTML("beforeend", `<button type="submit">Submit Application</button>`);
+
+/* UPI */
+document.getElementById("upiBtn").href =
+`upi://pay?pa=rselvakumar906@okaxis&pn=Selvakumar&am=${PAYMENT_AMOUNT}&cu=INR`;
+document.querySelector("#upiBtn button").innerText = `Pay ₹${PAYMENT_AMOUNT} Now`;
+
+/* Payment page restore */
+if(APPLICATION_ID) showPaymentPage();
+
+function showPaymentPage(){
+  form.style.display="none";
+  pageTitle.style.display="none";
+  pageDesc.style.display="none";
+  paymentPage.style.display="block";
+}
+function showPaidPage(){
+  paymentPage.style.display="none";
+  paidPage.style.display="block";
+}
+
+/* Submit */
+form.addEventListener("submit", async e=>{
+  e.preventDefault();
+  loading.style.display="flex";
+
+  const fd = new FormData();
+  fd.append("service", SERVICE_CONFIG.serviceKey);
+  fd.append("config", JSON.stringify(SERVICE_CONFIG));
+
+  for(const f of SERVICE_CONFIG.fields){
+    fd.append(f.id, form.querySelector(`[name="${f.id}"]`).value);
+  }
+
+  const toBase64 = f => new Promise(r=>{
+    const fr=new FileReader();
+    fr.onload=()=>r(fr.result);
+    fr.readAsDataURL(f);
+  });
+
+  for (const f of SERVICE_CONFIG.files) {
+    const input = form.querySelector(`input[data-id="${f.id}"]`);
+    const file  = input.files[0];
+
+    // required true but file missing → stop submit
+    if (f.required && !file) {
+      alert(f.label + " upload pannunga");
+      loading.style.display = "none";
+      return;
+    }
+
+    // file irundha mattum base64 convert
+    if (file) {
+      fd.append(f.id, await toBase64(file));
+    } else {
+      // file illa na empty string send
+      fd.append(f.id, "");
+    }
+  }
+
+
+  fetch("https://script.google.com/macros/s/AKfycbxTB-uYmJedcd3MVHsLyYJ6wC6p6M_v66V8owddPEQvRF8n7a5XhWHDlID8vCkG753MKA/exec", { method:"POST", body:fd })
+    .then(r=>r.json())
+    .then(res=>{
+      APPLICATION_ID = res.appId;
+      localStorage.setItem("APPLICATION_ID", APPLICATION_ID);
+      alert("Application submitted. Please complete payment.");
+      showPaymentPage();
+    })
+    .finally(()=> loading.style.display="none");
+});
+
+/* FINAL CONFIRM */
+function finalConfirm(e){
+  const btn = e.target;
+  btn.disabled = true;
+
+  const ref = upiRef.value.trim();
+  if(!/^[0-9A-Za-z]{8,14}$/.test(ref)){
+    alert("Invalid UPI reference");
+    btn.disabled = false;
+    return;
+  }
+
+  const fd = new FormData();
+  fd.append("action", "confirmPayment");
+  fd.append("appId", APPLICATION_ID);
+  fd.append("upiRef", ref);
+  fd.append("amount", PAYMENT_AMOUNT);
+
+  fetch("https://script.google.com/macros/s/AKfycbxTB-uYmJedcd3MVHsLyYJ6wC6p6M_v66V8owddPEQvRF8n7a5XhWHDlID8vCkG753MKA/exec", { method:"POST", body:fd })
+    .then(r => r.json())
+    .then(res => {
+      if(res.status === "SUCCESS"){
+        paidBadge.innerText = "PAID";
+        paidBadge.style.background = "#28a745";
+        localStorage.removeItem("APPLICATION_ID");
+        
+
+        // Open WhatsApp links
+        if (res.whatsappAdmin) {
+          window.open(res.whatsappAdmin, "_blank");
+        }
+                // Redirect to certificates page
+        location.href = "tn-certificates.html";
+      } else {
+        alert(res.message);
+        btn.disabled = false;
+      }
+    })
+    .catch(err=>{
+      alert("Error confirming payment: " + err.message);
+      btn.disabled = false;
+    });
+}
+function validateUpiRef() {
+  const upi = document.getElementById("upiRef").value;
+
+  if (!/^\d{12}$/.test(upi)) {
+    alert("Please enter valid 12 digit UPI Reference Number");
+    return false;
+  }
+  return true;
+}
+function confirmReset(){
+  const ok = confirm(
+    "⚠️ This will clear your saved data.\n\nDo you want to start a new application?"
+  );
+
+  if(ok){
+    localStorage.clear();   // browser saved data delete
+    location.reload();     // fresh start
+  }
+}
+
+function resetApplication(){
+  localStorage.removeItem("APPLICATION_ID");
+  location.reload();
+}
+</script>
+
+</body>
+</html>
