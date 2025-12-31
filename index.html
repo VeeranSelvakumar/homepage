@@ -164,9 +164,69 @@
         position: relative;
         z-index: 1;
     }
+
+    /* New Year Splash Screen */
+    #newYearSplash{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(135deg,#1a73e8,#0d47a1);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    color:white;
+    animation:fadeOut 1s ease forwards;
+    animation-delay:5s; /* last 1 sec fade */
+    }
+
+    .splash-box{
+    text-align:center;
+    animation:zoomIn 1.2s ease;
+    }
+
+    .splash-box h1{
+    font-size:30px;
+    margin:0;
+    }
+
+    .splash-box h2{
+    font-size:28px;
+    margin:10px 0;
+    }
+
+    .splash-box p{
+    font-size:18px;
+    margin:6px 0;
+    }
+
+    .sub{
+    opacity:0.9;
+    font-size:16px;
+    }
+
+    @keyframes zoomIn{
+    from{ transform:scale(0.7); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
+    }
+
+    @keyframes fadeOut{
+    to{ opacity:0; visibility:hidden; }
+    }
+
 </style>
 </head>
 <body>
+
+<!-- NEW YEAR SPLASH SCREEN -->
+<div id="newYearSplash">
+  <div class="splash-box">
+    <h1>🎆 Happy New Year 2026 🎆</h1>
+    <h2>Veeran Tech Point</h2>
+    <p>New Digital Service Center</p>
+    <p class="sub">உங்களைத் தேடி உங்கள் இல்லங்களை நாடி</p>
+  </div>
+</div>
+
 
 <!-- Fireworks Canvas -->
 <canvas id="fireworksCanvas"></canvas>
@@ -355,6 +415,14 @@ function loop() {
 
     requestAnimationFrame(loop);
 }
+
+
+setTimeout(()=>{
+  const splash = document.getElementById("newYearSplash");
+  if(splash) splash.style.display = "none";
+},6000); // 6 seconds
+
+
 
 loop();
 </script>
