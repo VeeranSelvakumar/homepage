@@ -247,19 +247,93 @@
 </div>
 
 <!-- ===== FLOATING HELP DESK ===== -->
+<style>
+.helpdesk-float {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* BUTTONS */
+.helpdesk-float a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.2s ease;
+}
+
+.helpdesk-float a:hover {
+    transform: scale(1.08);
+}
+
+/* SPECIFIC COLORS */
+.helpdesk-float a.whatsapp { background: #25D366; }
+.helpdesk-float a.telegram { background: #0088cc; }
+.helpdesk-float a.call { background: linear-gradient(135deg,#1e90ff,#00d4ff); }
+.helpdesk-float a.gmail { background: whi; }
+
+/* ICON SIZE */
+.helpdesk-float a img { width: 30px; height: 30px; }
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 600px) {
+    .helpdesk-float {
+        bottom: 12px;
+        right: 12px;
+        gap: 8px;
+    }
+    .helpdesk-float a { width: 50px; height: 50px; font-size: 20px; }
+    .helpdesk-float a img { width: 24px; height: 24px; }
+}
+</style>
+
 <div class="helpdesk-float">
+
     <!-- WhatsApp -->
-    <a href="https://wa.me/message/62WSIYFK2GMQM1" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+    <a href="https://wa.me/message/62WSIYFK2GMQM1" target="_blank" class="whatsapp">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
     </a>
 
     <!-- Telegram -->
-    <a href="https://t.me/veerantechpoint" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg">
+    <a href="https://t.me/veerantechpoint" target="_blank" class="telegram">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
     </a>
+
+    <!-- Call Button -->
+    <a href="tel:04326273586" class="call">
+        📞
+    </a>
+
+        <!-- Gmail -->
+    <a href="mailto:veerantechpoint@gmail.com" class="gmail">
+        <!-- Inline Gmail SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 92.12" style="width:30px; height:30px;">
+            <g>
+                <path fill="#4285F4" d="M8.36,92.12h19.54V44.67L0,23.76v60.08C0,88.42,3.78,92.12,8.36,92.12L8.36,92.12z"/>
+                <path fill="#34A853" d="M94.97,92.12h19.54c4.67,0,8.36-3.78,8.36-8.36v-60L94.97,44.67V92.12L94.97,92.12z"/>
+                <path fill="#FBBC04" d="M94.97,8.4v36.27l27.91-20.91V12.58c0-10.37-11.82-16.25-20.11-10.05L94.97,8.4L94.97,8.4z"/>
+                <polygon fill="#EA4335" points="27.9,44.67 27.9,8.4 61.44,33.57 94.97,8.4 94.97,44.67 61.44,69.76 27.9,44.67"/>
+                <path fill="#C5221F" d="M0,12.58v11.18l27.91,20.91V8.4l-7.8-5.87C11.82-3.66,0,2.29,0,12.58L0,12.58z"/>
+            </g>
+        </svg>
+    </a>
+
 </div>
 <!-- ===== END ===== -->
 
 </body>
 </html>
+
 
