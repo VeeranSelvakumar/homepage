@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Veeran Tech Point</title>
+
+<style>
+body { 
+  font-family: Arial; 
+  background-color: #f9fafb; 
+  background-image: 
+    linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+    linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+  background-size: 20px 20px;
+  padding:20px; 
+}
+.container{
+  max-width:600px;
+  margin:auto;
+  background:transparent;
+  padding:20px;
+}
+h1{ color:#1a73e8; text-align:center; }
+p{ text-align:center; color:#555; }
+label{ font-weight:bold; display:block; margin-top:12px; }
+input, select{
+  width:100%;
+  padding:12px;
+  margin-top:6px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:15px;
+}
+button{
+  margin-top:20px;
+  width:100%;
+  padding:14px;
+  font-size:18px;
+  background:#1a73e8;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+button:hover{ background:#0b5ed7; }
+#error{ color:red; display:none; margin-top:10px; text-align:center; }
+#loading{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  justify-content:center;
+  align-items:center;
+  color:white;
+  font-size:22px;
+}
+.reset-btn{
+  margin-top:15px;
+  width:100%;
+  padding:14px;
+  font-size:16px;
+  background:#dc3545;   /* Bootstrap red */
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.reset-btn:hover{
+  background:#b02a37;   /* Dark red on hover */
+}
+
+body { 
+  font-family: Arial; 
+  background-color: #f9fafb; 
+  background-image: 
+    linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+    linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+  background-size: 20px 20px;
+  padding:20px; 
+}
+.container{
+  max-width:600px;
+  margin:auto;
+  padding:20px;
+}
+h1{ color:#1a73e8; text-align:center; }
+label{ font-weight:bold; margin-top:12px; display:block; }
+
+input, select{
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+button{
+  margin-top:20px;
+  width:100%;
+  padding:14px;
+  font-size:18px;
+  background:#1a73e8;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.sub-box{
+  margin-left:20px;
+  margin-top:10px;
+  display:none;
+}
+.corr-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:15px;
+}
+
+.corr-row input[type="checkbox"]{
+  transform: scale(1.4);   /* 🔥 size control */
+  cursor: pointer;
+  width:auto;
+  margin:0;
+}
+
+.corr-row label{
+  display:inline;
+  margin:0;
+  font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- PAYMENT PAGE -->
+  <div id="paymentPage" style="display:none;text-align:center;">
+    <h2>Payment Required</h2>
+    <p>Please scan QR or click Pay Now</p>
+
+    <img src="voteridnew - 200.png" width="260" style="margin:20px 0;">
+    <p style="font-size:13px;color:#666;">Desktop users: Please scan QR using your mobile UPI app</p>
+
+    <a id="upiBtn" href="#"><button style="background:green;">Pay</button></a>
+    <br><br>
+    <button onclick="showPaidPage()">I have paid</button>
+    <button class="reset-btn" onclick="confirmReset()">
+      Reset Application
+    </button>
+  </div>
+
+  <!-- PAID CONFIRM PAGE -->
+  <div id="paidPage" style="display:none;text-align:center;">
+    <p>
+      Payment Status :
+      <span id="paidBadge" style="padding:6px 10px;border-radius:6px;background:#dc3545;color:#fff;">
+        NOT PAID
+      </span>
+    </p>
+
+    <h2>Payment Confirmation</h2>
+    <p>Please enter UPI Reference Number</p>
+    <input   type="text"
+  id="upiRef"
+  name="upiRef"
+  placeholder="Enter 12 digit UPI Ref"
+  maxlength="12"
+  inputmode="numeric"
+  pattern="[0-9]{12}"
+  required
+  oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+    <br><br>
+    <button onclick="if(validateUpiRef()) finalConfirm(event)">
+  Confirm Payment
+</button>
+
+  </div>
+
+  <h1 id="pageTitle"></h1>
+  <p id="pageDesc"></p>
+  <form id="dynamicForm"></form>
+  <div id="error">Please fill all required fields</div>
+
+</div>
+
+<div id="loading">Submitting… Please wait</div>
+
+<script>
+const PAYMENT_AMOUNT = 200;
+let APPLICATION_ID = localStorage.getItem("APPLICATION_ID");
+</script>
+
+
+<script>
+
+
+const SERVICE_CONFIG = {
+  serviceKey : "Voter ID Card Correction",
+
+  title : "Voter ID Card Correction Application",
+  description : "Apply for Voter ID Correction easily",
+
+  fields : [
+  { id:"name", label:"Full Name", type:"text", required:true },
+  { id:"mobile", label:"Mobile Number", type:"tel", required:true, max:10 },
+  ],
+
+  files : [
+
+  ]
+};
+const CORRECTION_FIELDS = [
+  { id:"nameCorr", label:"Name", type:"select", options:[
+    "Aadhaar Card","PAN Card","10th or 12th Marksheet","Birth Certificate",
+    "Driving License","Passport","Bank Passbook with Photo or Post office Passbook"
+  ]},
+
+  { id:"genderCorr", label:"Gender", type:"select", options:[
+    "Aadhaar Card","PAN Card","10th or 12th Marksheet","Birth Certificate",
+    "Driving License","Passport","Bank Passbook with Photo or Post office Passbook"
+  ]},
+
+  { id:"dobCorr", label:"Date of Birth / Age", type:"select", options:[
+    "Aadhaar Card","PAN Card","10th or 12th Marksheet","Birth Certificate",
+    "Driving License","Passport","Bank Passbook with Photo or Post office Passbook"
+  ]},
+
+  { id:"relationCorr", label:"Relation type", type:"select", options:[
+    "Aadhaar Card","PAN Card","10th or 12th Marksheet","Birth Certificate",
+    "Driving License","Passport","Bank Passbook with Photo or Post office Passbook"
+  ]},
+
+  { id:"relativeCorr", label:"Relative's Name", type:"select", options:[
+    "Aadhaar Card","PAN Card","10th or 12th Marksheet","Birth Certificate",
+    "Driving License","Passport","Bank Passbook with Photo or Post office Passbook"
+  ]},
+
+  { id:"addressCorr", label:"Address", type:"select", options:[
+    "Aadhaar Card","PAN Card","10th or 12th Marksheet","Birth Certificate",
+    "Driving License","Passport","Bank Passbook with Photo or Post office Passbook"
+  ]},
+
+  { id:"mobileCorr", label:"Mobile Number", type:"mobile" }, // 🔥 NO DROPDOWN
+  { id:"photoCorr",  label:"Photo", type:"file" }            // 🔥 FILE ONLY
+];
+
+</script>
+
+<script>
+document.getElementById("pageTitle").innerText = SERVICE_CONFIG.title;
+document.getElementById("pageDesc").innerText  = SERVICE_CONFIG.description;
+
+const form = document.getElementById("dynamicForm");
+
+/* Fields */
+SERVICE_CONFIG.fields.forEach(f=>{
+  let html = `<label>${f.label}${f.required?" *":""}</label>`;
+  if(f.type==="select"){
+    html+=`<select name="${f.id}" ${f.required?"required":""}>
+      <option value="">-- Select --</option>
+      ${f.options.map(o=>`<option>${o}</option>`).join("")}
+    </select>`;
+  }else{
+    let extra = "";
+
+  // Aadhaar number – 12 digit only
+  if(f.id === "aadhaarnumber"){
+    extra = `
+      inputmode="numeric"
+      maxlength="12"
+      onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+      oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,12)"
+      placeholder="12 digit Aadhaar"
+    `;
+  }
+
+  // Mobile – existing logic
+  if(f.type === "tel"){
+    extra = `
+      inputmode="numeric"
+      maxlength="10"
+      oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"
+    `;
+  }
+
+  html+=`<input 
+    type="${f.type}" 
+    name="${f.id}" 
+    ${f.required?"required":""}
+    ${extra}
+  >`;
+  }
+  form.insertAdjacentHTML("beforeend", html);
+});
+
+/* Files */
+SERVICE_CONFIG.files.forEach(f=>{
+  form.insertAdjacentHTML("beforeend",
+    `<label>${f.label}${f.required?" *":""}</label>
+     <input type="file" data-id="${f.id}" ${f.required?"required":""}>`
+  );
+});
+
+/* 🔹 Correction checkbox section */
+CORRECTION_FIELDS.forEach(f=>{
+  let inner = "";
+
+  if(f.type === "select"){
+    inner = `
+      <select id="${f.id}Select">
+        <option value="">-- Select Proof --</option>
+        ${f.options.map(o=>`<option>${o}</option>`).join("")}
+      </select>
+      <input type="file" id="${f.id}File" style="display:none;">
+    `;
+  }
+
+  if(f.type === "mobile"){
+    inner = `
+      <input
+        type="tel"
+        id="${f.id}Input"
+        placeholder="Enter new mobile number"
+        inputmode="numeric"
+        maxlength="10"
+        oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"
+      >
+    `;
+  }
+
+  if(f.type === "file"){
+    inner = `<input type="file" id="${f.id}File">`;
+  }
+
+  const html = `
+    <div class="corr-row">
+      <input type="checkbox" id="${f.id}Check">
+      <label for="${f.id}Check">${f.label}</label>
+    </div>
+    <div class="sub-box" id="${f.id}Box">${inner}</div>
+  `;
+
+  form.insertAdjacentHTML("beforeend", html);
+});
+
+
+
+
+form.insertAdjacentHTML("beforeend", `<button type="submit">Submit Application</button>`);
+
+/* UPI */
+document.getElementById("upiBtn").href =
+`upi://pay?pa=rselvakumar906@okaxis&pn=Selvakumar&am=${PAYMENT_AMOUNT}&cu=INR`;
+document.querySelector("#upiBtn button").innerText = `Pay ₹${PAYMENT_AMOUNT} Now`;
+
+/* Payment page restore */
+if(APPLICATION_ID) showPaymentPage();
+
+function showPaymentPage(){
+  form.style.display="none";
+  pageTitle.style.display="none";
+  pageDesc.style.display="none";
+  paymentPage.style.display="block";
+}
+function showPaidPage(){
+  paymentPage.style.display="none";
+  paidPage.style.display="block";
+}
+
+/* Submit */
+form.addEventListener("submit", async e=>{
+  e.preventDefault();
+  loading.style.display="flex";
+
+  const fd = new FormData();
+  fd.append("service", SERVICE_CONFIG.serviceKey);
+  fd.append("config", JSON.stringify(SERVICE_CONFIG));
+
+  for(const f of SERVICE_CONFIG.fields){
+    fd.append(f.id, form.querySelector(`[name="${f.id}"]`).value);
+  }
+
+  const toBase64 = f => new Promise(r=>{
+    const fr=new FileReader();
+    fr.onload=()=>r(fr.result);
+    fr.readAsDataURL(f);
+  });
+
+  for(const f of SERVICE_CONFIG.files){
+    const input = form.querySelector(`input[data-id="${f.id}"]`);
+    const file = input.files[0];
+
+    if(file){
+      fd.append(f.id, await toBase64(file));
+    } else {
+      // if file not selected
+      if(f.required){
+        alert("Please upload: " + f.label);
+        loading.style.display="none";
+        return;
+      }
+      // if not required, just skip
+      fd.append(f.id, "");
+    }
+  }
+
+  /* 🔹 SEND CORRECTION DATA TO BACKEND */
+  for(const c of CORRECTION_FIELDS){
+
+    const check = document.getElementById(c.id + "Check");
+    if(!check || !check.checked) continue;
+
+    // 🔸 MOBILE CORRECTION
+    if(c.type === "mobile"){
+      const input = document.getElementById(c.id + "Input");
+      fd.append(c.id, input ? input.value : "");
+      fd.append(c.id + "Type", "mobile"); // backend identify panna
+    }
+
+    // 🔸 FILE ONLY (Photo)
+    if(c.type === "file"){
+      const fileInput = document.getElementById(c.id + "File");
+      if(fileInput && fileInput.files[0]){
+        fd.append(c.id + "Base64", await toBase64(fileInput.files[0]));
+      }
+    }
+
+    // 🔸 SELECT + FILE
+    if(c.type === "select"){
+      const select = document.getElementById(c.id + "Select");
+      const file   = document.getElementById(c.id + "File");
+
+      fd.append(c.id + "Proof", select ? select.value : "");
+
+      if(file && file.files[0]){
+        fd.append(c.id + "Base64", await toBase64(file.files[0]));
+      }
+    }
+  }
+
+  fetch("https://script.google.com/macros/s/AKfycbxTB-uYmJedcd3MVHsLyYJ6wC6p6M_v66V8owddPEQvRF8n7a5XhWHDlID8vCkG753MKA/exec", { method:"POST", body:fd })
+    .then(r=>r.json())
+    .then(res=>{
+      APPLICATION_ID = res.appId;
+      localStorage.setItem("APPLICATION_ID", APPLICATION_ID);
+      alert("Application submitted. Please complete payment.");
+      showPaymentPage();
+    })
+    .finally(()=> loading.style.display="none");
+});
+
+/* FINAL CONFIRM */
+function finalConfirm(e){
+  const btn = e.target;
+  btn.disabled = true;
+
+  const ref = upiRef.value.trim();
+  if(!/^[0-9A-Za-z]{8,14}$/.test(ref)){
+    alert("Invalid UPI reference");
+    btn.disabled = false;
+    return;
+  }
+
+  const fd = new FormData();
+  fd.append("action", "confirmPayment");
+  fd.append("appId", APPLICATION_ID);
+  fd.append("upiRef", ref);
+  fd.append("amount", PAYMENT_AMOUNT);
+
+  fetch("https://script.google.com/macros/s/AKfycbxTB-uYmJedcd3MVHsLyYJ6wC6p6M_v66V8owddPEQvRF8n7a5XhWHDlID8vCkG753MKA/exec", { method:"POST", body:fd })
+    .then(r => r.json())
+    .then(res => {
+      if(res.status === "SUCCESS"){
+        paidBadge.innerText = "PAID";
+        paidBadge.style.background = "#28a745";
+        localStorage.removeItem("APPLICATION_ID");
+        
+
+        // Open WhatsApp links
+        if (res.whatsappAdmin) {
+          window.open(res.whatsappAdmin, "_blank");
+        }
+                // Redirect to certificates page
+        location.href = "identity.html";
+      } else {
+        alert(res.message);
+        btn.disabled = false;
+      }
+    })
+    .catch(err=>{
+      alert("Error confirming payment: " + err.message);
+      btn.disabled = false;
+    });
+}
+function validateUpiRef() {
+  const upi = document.getElementById("upiRef").value;
+
+  if (!/^\d{12}$/.test(upi)) {
+    alert("Please enter valid 12 digit UPI Reference Number");
+    return false;
+  }
+  return true;
+}
+function confirmReset(){
+  const ok = confirm(
+    "⚠️ This will clear your saved data.\n\nDo you want to start a new application?"
+  );
+
+  if(ok){
+    localStorage.clear();   // browser saved data delete
+    location.reload();     // fresh start
+  }
+}
+
+function resetApplication(){
+  localStorage.removeItem("APPLICATION_ID");
+  location.reload();
+}
+
+/* 🔹 Checkbox → dropdown → file behaviour */
+const MAX_CORRECTIONS = 4;
+
+CORRECTION_FIELDS.forEach(f=>{
+  const check  = document.getElementById(f.id+"Check");
+  const box    = document.getElementById(f.id+"Box");
+  const select = document.getElementById(f.id+"Select");
+  const file   = document.getElementById(f.id+"File");
+
+  check.addEventListener("change",()=>{
+
+    const checkedCount =
+      document.querySelectorAll('.corr-row input[type="checkbox"]:checked').length;
+
+    if(checkedCount > MAX_CORRECTIONS){
+      alert("Maximum 4 corrections only allowed");
+      check.checked = false;
+      return;
+    }
+
+    box.style.display = check.checked ? "block" : "none";
+
+    if(select){
+      select.value = "";
+      if(file) file.style.display = "none";
+
+      select.addEventListener("change",()=>{
+        if(file) file.style.display = select.value ? "block" : "none";
+      });
+    }
+    if(!check.checked){
+      if(file) file.value = "";
+      if(select) select.value = "";
+    }
+
+  });
+});
+
+
+
+
+</script>
+
+</body>
+</html>
