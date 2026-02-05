@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Voter ID - Veeran Tech Point</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f3f6fa;
+    }
+
+    /* Header */
+    header {
+        background: #1a73e8;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 32px;
+    }
+
+    header p {
+        margin: 4px 0 0;
+        font-size: 16px;
+        color: #dbeafe;
+    }
+
+    /* Attention Blink */
+    .attention {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+        animation: blinker 1s linear infinite;
+        color: #fff;
+    }
+
+    @keyframes blinker {
+        50% { opacity: 0; }
+    }
+
+    /* Navbar */
+    .navbar {
+        display: flex;
+        justify-content: center;
+        background: #0d47a1;
+        flex-wrap: wrap;
+    }
+
+    .navbar a {
+        color: white;
+        padding: 14px 20px;
+        text-decoration: none;
+        display: block;
+        font-size: 15px;
+    }
+
+    .navbar a:hover {
+        background: #1a73e8;
+    }
+
+    /* Title Box */
+    .title-box {
+        text-align: center;
+        padding: 40px 20px;
+        background: white;
+        margin: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .title-box h2 {
+        color: #0d47a1;
+        font-size: 30px;
+    }
+
+    .title-box p {
+        font-size: 18px;
+        color: #444;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: auto;
+    }
+
+    /* Document List Box */
+    .doc-box {
+        background: white;
+        margin: 20px;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        font-size: 17px;
+        line-height: 1.8;
+        color: #333;
+    }
+
+    .doc-box h3 {
+        color: #0d47a1;
+        font-size: 24px;
+        margin-top: 0;
+        text-align: center;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+
+    /* File Upload Procedure Box */
+    .procedure-box {
+        background: white;
+        margin: 20px;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        font-size: 17px;
+        line-height: 1.8;
+        color: #333;
+    }
+
+    .procedure-box h3 {
+        color: #0d47a1;
+        font-size: 24px;
+        margin-top: 0;
+        text-align: center;
+    }
+
+    /* Footer */
+    .footer {
+        background: #0d47a1;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    /* Post Office GDS ------------------------------------------------------------------------ Start*/ 
+    :root{
+  --primary:#0f4c81;
+  --secondary:#2563eb;
+  --bg:#f4f6f9;
+  --card:#ffffff;
+  --danger:#dc2626;
+  --success:#065f46;
+}
+
+*{box-sizing:border-box;}
+
+
+
+
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:25px 15px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:10px;
+  padding:30px;
+  margin-bottom:25px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+}
+
+.card p{
+  margin:10px 0 14px;
+  line-height:1.7;
+}
+
+.card h2{
+  margin-top:0;
+  margin-bottom:18px;
+  color:var(--primary);
+  border-bottom:2px solid #e5e7eb;
+  padding-bottom:10px;
+  line-height:1.3;
+}
+
+/* Procedure / section headings */
+.procedure-box h3{
+  color:#0d47a1;
+  font-size:24px;
+  margin:10px 0 20px;   /* 👈 more air */
+  text-align:center;
+  line-height:1.3;
+}
+
+ul{
+  padding-left:22px;
+  margin:10px 0 15px;
+}
+
+li{
+  margin-bottom:10px;  /* 6 → 10 */
+  line-height:1.65;
+}
+
+.highlight,
+.alert,
+.success{
+  padding:18px;
+  margin:20px 0;
+  line-height:1.6;
+}
+
+.badge{
+  display:inline-block;
+  background:#e0f2fe;
+  color:#075985;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:600;
+}
+
+.highlight{
+  background:#fff7ed;
+  border-left:5px solid #fb923c;
+  padding:15px;
+  margin:15px 0;
+  font-weight:600;
+}
+
+.alert{
+  background:#fee2e2;
+  border-left:5px solid var(--danger);
+  padding:15px;
+  font-weight:600;
+}
+
+.success{
+  background:#ecfdf5;
+  border-left:5px solid var(--success);
+  padding:15px;
+  font-weight:600;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  line-height:1.65;
+}
+
+a.button{
+  display:inline-block;
+  background:var(--secondary);
+  color:#fff;
+  padding:12px 20px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:600;
+}
+
+a.button:hover{
+  background:#1d4ed8;
+}
+
+footer{
+  background:#0b1220;
+  color:#e5e7eb;
+  text-align:center;
+  padding:25px 15px;
+  margin-top:40px;
+}
+
+footer strong{
+  color:#67e8f9;
+}
+/* Post Office GDS ------------------------------------------------------------------------ End*/ 
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+  <h1>Veeran Tech Point</h1>
+  <p>Digital Services Made Easy!</p>
+  <p>Government Schemes & Certificate Information Hub</p>
+  <div class="attention">🔔 உங்களைத் தேடி உங்கள் இல்லங்களை நாடி — Veeran Tech Point 🔔</div>
+</header>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <a href="index.html">HOME</a>
+    <a href="tn-schemes.html">TN SCHEMES</a>
+    <a href="tn-certificates.html">TN CERTIFICATES</a>
+    <a href="indian-schemes.html">INDIAN SCHEMES</a>
+    <a href="indian-certificates.html">INDIAN CERTIFICATES</a>
+    <a href="identity.html">IDENTITY CARDS</a>
+    <a href="exams.html">GOVERNMENT EXAMS</a>
+    <a href="helpdesk.html">HELPDESK</a>
+</div>
+
+<div class="container">
+
+<div class="card">
+  <span class="badge">No Exam</span>
+  <span class="badge">10th Marks Based</span>
+  <span class="badge">Rural Jobs</span>
+
+  <div class="highlight">
+    📌 No Exam ❌ | 10th mark merit list | Part-time Govt Job
+  </div>
+</div>
+
+<div class="card">
+  <h2>📅 Important Dates</h2>
+  <ul>
+    <li><strong>One Time Registration:</strong> 31-01-2026 to 14-02-2026 (5 PM)</li>
+    <li><strong>Application + Fee Payment:</strong> 01-02-2026 to 16-02-2026 (5 PM)</li>
+    <li><strong>Edit Window:</strong> 17-02-2026 & 18-02-2026</li>
+  </ul>
+  <div class="alert">
+    ⚠️ One person = ONE registration only. Duplicate apply panninaa cancel.
+  </div>
+</div>
+<div class="card">
+  <h2>🧑‍💼 Posts & Work Details</h2>
+  <div class="grid">
+    <div>
+      <h3>BPM – Branch Postmaster</h3>
+      <ul>
+        <li>Branch Post Office management</li>
+        <li>IPPB & postal services</li>
+        <li>Own building arrange panna vendum</li>
+        <li>Same village residence mandatory</li>
+      </ul>
+    </div>
+    <div>
+      <h3>ABPM – Assistant BPM</h3>
+      <ul>
+        <li>Mail delivery & counter work</li>
+        <li>BPM-ku support</li>
+        <li>Delivery area-kulla stay</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Dak Sevak</h3>
+      <ul>
+        <li>Mail delivery & sorting</li>
+        <li>Office assistance</li>
+        <li>HO / SO delivery jurisdiction</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>💰 Salary (TRCA)</h2>
+  <ul>
+    <li><strong>BPM:</strong> ₹12,000 – ₹29,380</li>
+    <li><strong>ABPM / Dak Sevak:</strong> ₹10,000 – ₹24,470</li>
+    <li>DA + 3% yearly increment</li>
+    <li>Gratuity & Service Discharge Benefit</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>🎓 Eligibility</h2>
+  <h3>Age Limit</h3>
+  <ul>
+    <li>18 – 40 years</li>
+    <li>SC/ST: +5 yrs | OBC: +3 yrs | PwBD: upto +15 yrs</li>
+  </ul>
+
+  <h3>Education</h3>
+  <ul>
+    <li>10th Pass (Maths + English mandatory)</li>
+    <li>Local language studied in 10th</li>
+    <li>Computer knowledge & Cycling required</li>
+  </ul>
+
+  <div class="success">
+    ℹ️ Tamil Nadu 2020–21 pass candidates – system considers 66.67% marks automatically.
+  </div>
+</div>
+
+<div class="card">
+  <h2>📝 Selection & Documents</h2>
+  <ul>
+    <li>No Exam – Merit list based on 10th marks</li>
+    <li>Apply time-la documents upload theva illa</li>
+    <li>Photo & Signature mattum</li>
+    <li>Shortlist aana apram originals verification</li>
+    <li><strong>Medical Certificate (Govt Hospital) compulsory</strong></li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>🖥️ How to Apply</h2>
+  <ol>
+    <li>One Time Registration (Mobile + Email + OTP)</li>
+    <li>Login & fill personal + 10th details</li>
+    <li>Post preference select</li>
+    <li>Photo & Signature upload</li>
+    <li>Fee payment (if applicable)</li>
+  </ol>
+
+  <p>
+    👉 Official Notification: <br>
+    <a class="button" href="https://indiapost.gov.in/gdsonlineengagement/pdf/descriptive-notification.pdf" target="_blank">
+      Notification
+    </a>
+  </p>
+  
+  <p>
+    👉 Apply Here: <br>
+    <a class="button" href="gds.html" target="_blank">
+      Apply Now
+    </a>
+  </p>
+
+  <p>
+    👉 Official Website: <br>
+    <a class="button" href="https://indiapost.gov.in/gdsonlineengagement" target="_blank">
+      Apply Online
+    </a>
+  </p>
+</div>
+
+    <div style="text-align:center; margin:20px;">
+
+    </div>
+</div>
+
+
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2026 Veeran Tech Point — All Rights Reserved
+</div>
+
+</body>
+</html>

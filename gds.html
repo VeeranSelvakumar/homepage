@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Veeran Tech Point</title>
+
+<style>
+body { 
+  font-family: Arial; 
+  background-color: #f9fafb; 
+  background-image: 
+    linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+    linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+  background-size: 20px 20px;
+  padding:20px; 
+}
+.container{
+  max-width:600px;
+  margin:auto;
+  background:transparent;
+  padding:20px;
+}
+h1{ color:#1a73e8; text-align:center; }
+p{ text-align:center; color:#555; }
+label{ font-weight:bold; display:block; margin-top:12px; }
+input, select{
+  width:100%;
+  padding:12px;
+  margin-top:6px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:15px;
+}
+button{
+  margin-top:20px;
+  width:100%;
+  padding:14px;
+  font-size:18px;
+  background:#1a73e8;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+button:hover{ background:#0b5ed7; }
+#error{ color:red; display:none; margin-top:10px; text-align:center; }
+#loading{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  justify-content:center;
+  align-items:center;
+  color:white;
+  font-size:22px;
+}
+.reset-btn{
+  margin-top:15px;
+  width:100%;
+  padding:14px;
+  font-size:16px;
+  background:#dc3545;   /* Bootstrap red */
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.reset-btn:hover{
+  background:#b02a37;   /* Dark red on hover */
+}
+
+.step{
+  display:none;
+}
+
+.step.active{
+  display:block;
+}
+
+/* progress bar */
+.progress{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.progress div{
+  flex:1;
+  padding:8px;
+  margin:0 4px;
+  text-align:center;
+  border-radius:20px;
+  background:#e5e7eb;
+  font-size:14px;
+  font-weight:bold;
+  color:#555;
+}
+
+.progress div.active{
+  background:#dc3545; /* red */
+  color:white;
+}
+
+.progress div.done{
+  background:#28a745; /* green */
+  color:white;
+}
+#progressWrapper{
+  margin-top:20px;
+}
+.qr-box{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:25px 0;
+}
+
+#qrImage{
+  width:260px;
+  height:260px;
+  display:none;
+  margin:20px auto;   /* ⭐ MAIN FIX */
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  background:white;
+  padding:8px;
+}
+#paymentPage{
+  display:none;
+  flex-direction:column;
+  align-items:stretch;
+
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+  <div id="previewPage" style="display:none">
+    <h2 style="text-align:center">Preview Your Application</h2>
+
+    <div id="previewContent"
+         style="background:#fff;padding:15px;border-radius:10px;font-size:14px">
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:20px">
+      <button type="button" onclick="editForm()">Edit</button>
+      <button type="button" onclick="finalSubmit()">Confirm & Submit</button>
+    </div>
+  </div>
+
+  <!-- EXISTING PAYMENT / FORM / PROGRESS -->
+
+
+<div class="container">
+
+  <!-- PAYMENT PAGE -->
+  <div id="paymentPage" style="display:none;text-align:center;">
+    <h2>Payment Required</h2>
+    <p>Please scan QR or click Pay Now</p>
+
+    <div class="qr-box">
+      <img id="qrImage">
+    </div>
+    <p style="font-size:13px;color:#666;">Desktop users: Please scan QR using your mobile UPI app</p>
+
+    <a id="upiBtn" href="#"><button style="background:green;">Pay</button></a>
+    <br><br>
+    <button onclick="showPaidPage()">I have paid</button>
+    <button class="reset-btn" onclick="confirmReset()">
+      Reset Application
+    </button>
+  </div>
+
+  <!-- PAID CONFIRM PAGE -->
+  <div id="paidPage" style="display:none;text-align:center;">
+    <p>
+      Payment Status :
+      <span id="paidBadge" style="padding:6px 10px;border-radius:6px;background:#dc3545;color:#fff;">
+        NOT PAID
+      </span>
+    </p>
+
+    <h2>Payment Confirmation</h2>
+    <p>Please enter UPI Reference Number</p>
+    <input   type="text"
+  id="upiRef"
+  name="upiRef"
+  placeholder="Enter 12 digit UPI Ref"
+  maxlength="12"
+  inputmode="numeric"
+  pattern="[0-9]{12}"
+  required
+  oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+    <br><br>
+    <button onclick="if(validateUpiRef()) finalConfirm(event)">
+  Confirm Payment
+</button>
+
+  </div>
+
+  <h1 id="pageTitle"></h1>
+  <p id="pageDesc"></p>
+  <div id="progressWrapper">
+  <div id="feeBox" style="display:none;margin:15px 0;font-weight:bold;color:#0a7;text-align:center">
+    Application Fee : ₹<span id="feeAmount">0</span>
+  </div>
+  <div class="progress" id="progressBar">
+    <div class="active">1 / 3</div>
+    <div>2 / 3</div>
+    <div>3 / 3</div>
+  </div>
+</div>
+
+
+  <form id="dynamicForm"></form>
+  <div id="error">Please fill all required fields</div>
+
+</div>
+
+<div id="loading">Submitting… Please wait</div>
+
+<script>
+const PAYMENT_AMOUNT = 60;
+let APPLICATION_ID = localStorage.getItem("APPLICATION_ID");
+</script>
+
+<script>
+const SERVICE_CONFIG = {
+  serviceKey : "GDS Application 2026",
+
+  title : "GDS Online Application – 2026",
+  description : "Veeran Tech Point – GDS Application Assistance",
+
+  fields : [
+    { id:"name", label:"Applicant Full Name", type:"text", required:true },
+
+    { id:"mobile", label:"Mobile Number", type:"tel", required:true, max:10 },
+
+    { id:"email", label:"Email Address", type:"email", required:true },
+
+    {
+      id:"gender",
+      label:"Gender",
+      type:"select",
+      required:true,
+      options:["Male","Female","Other"]
+    },
+
+    {
+      id:"dob",
+      label:"Date of Birth",
+      type:"date",
+      required:true
+    },
+
+    {
+      id:"category",
+      label:"Community / Category",
+      type:"select",
+      required:true,
+      options:["General","OBC","SC","ST"]
+    },
+
+    {
+      id:"tenthPassed",
+      label:"10th Passed?",
+      type:"select",
+      required:true,
+      options:["Yes","No"]
+    },
+
+    {
+      id:"tenthBoard",
+      label:"10th Board Name",
+      type:"text",
+      required:true
+    },
+
+    {
+      id:"marks",
+      label:"10th Percentage / Marks",
+      type:"text",
+      required:true
+    },
+
+    {
+      id:"district",
+      label:"District (Tamil Nadu)",
+      type:"select",
+      required:true,
+      options:[
+        "Ariyalur","Chengalpattu","Chennai","Coimbatore","Cuddalore",
+        "Dharmapuri","Dindigul","Erode","Kallakurichi","Kancheepuram",
+        "Karur","Krishnagiri","Madurai","Mayiladuthurai","Nagapattinam",
+        "Kanyakumari","Namakkal","Perambalur","Pudukkottai",
+        "Ramanathapuram","Ranipet","Salem","Sivaganga","Tenkasi",
+        "Thanjavur","Theni","Thoothukudi","Tiruchirappalli",
+        "Tirunelveli","Tirupathur","Tiruppur","Tiruvallur",
+        "Tiruvannamalai","Tiruvarur","Vellore","Viluppuram",
+        "Virudhunagar"
+      ]
+    }
+  ],
+
+  files : [
+    { id:"photoBase64", label:"Applicant Photo", required:true },
+    { id:"signatureBase64", label:"Signature", required:true },
+    { id:"marksheetBase64", label:"10th Marksheet", required:true }
+  ]
+};
+</script>
+
+<script>
+const loading = document.getElementById("loading");
+const previewPage = document.getElementById("previewPage");
+const paymentPage = document.getElementById("paymentPage");
+const paidPage = document.getElementById("paidPage");
+document.getElementById("pageTitle").innerText = SERVICE_CONFIG.title;
+document.getElementById("pageDesc").innerText  = SERVICE_CONFIG.description;
+
+
+const form = document.getElementById("dynamicForm");
+
+/* STEP CONTAINERS */
+form.innerHTML = `
+  <div class="step active" data-step="0"></div>
+  <div class="step" data-step="1"></div>
+  <div class="step" data-step="2"></div>
+`;
+
+const step0 = form.querySelector('[data-step="0"]'); // Contact
+const step1 = form.querySelector('[data-step="1"]'); // Personal
+const step2 = form.querySelector('[data-step="2"]'); // Education + Post
+
+/* SPLIT FIELDS BY STEP */
+SERVICE_CONFIG.fields.forEach(f=>{
+  let html = `<label>${f.label}${f.required?" *":""}</label>`;
+
+  if(f.type==="select"){
+  html += `
+    <select name="${f.id}" ${f.required?"required":""}
+    ${f.id==="gender" ? `onchange="updateFee(this.value)"` : ``}>
+        <option value="">-- Select --</option>
+        ${f.options.map(o=>`<option>${o}</option>`).join("")}
+      </select>`;
+  } else {
+    html += `
+      <input type="${f.type}" name="${f.id}" ${f.required?"required":""}
+      ${f.max?`maxlength="${f.max}"`:``}
+      ${f.placeholder?`placeholder="${f.placeholder}"`:``}
+      ${f.type==="tel"
+        ?`inputmode="numeric"
+           oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"`
+        :``}
+      ${f.id==="dob" ? `onchange="calculateAge(this.value)" onblur="calculateAge(this.value)" onkeydown="return false" onpaste="return false"` : ``}
+      >`;
+  }
+
+  /* STEP MAPPING */
+  if(["name","mobile","email"].includes(f.id)){
+    step0.insertAdjacentHTML("beforeend", html);
+  } 
+  else if(["gender","dob","category"].includes(f.id)){
+    step1.insertAdjacentHTML("beforeend", html);
+  }
+  else{
+    step2.insertAdjacentHTML("beforeend", html);
+  }
+});
+
+/* FILES – last step */
+SERVICE_CONFIG.files.forEach(f=>{
+  const required = (f.id==="marksheetBase64")
+    ? 'data-conditional="tenthPassed:Yes"'
+    : 'required';
+
+  step2.insertAdjacentHTML("beforeend",
+    `<label>${f.label}${f.required?" *":""}</label>
+     <input type="file" data-id="${f.id}" ${required}>`
+  );
+});
+
+
+/* STEP BUTTONS */
+step0.insertAdjacentHTML("beforeend",
+  `<button type="button" onclick="nextStep()">Next</button>`
+);
+
+step1.insertAdjacentHTML("beforeend",
+  `<div style="display:flex;gap:10px">
+     <button type="button" onclick="prevStep()">Back</button>
+     <button type="button" onclick="nextStep()">Next</button>
+   </div>`
+);
+
+step2.insertAdjacentHTML("beforeend",
+  `<div style="display:flex;gap:10px">
+     <button type="button" onclick="prevStep()">Back</button>
+     <button type="button" onclick="showPreview()">Preview</button>
+   </div>`
+);
+
+/* Files */
+
+
+/* UPI */
+document.getElementById("upiBtn").href =
+`upi://pay?pa=rselvakumar906@okaxis&pn=Selvakumar&am=${PAYMENT_AMOUNT}&cu=INR`;
+document.querySelector("#upiBtn button").innerText = `Pay ₹${PAYMENT_AMOUNT} Now`;
+
+/* Payment page restore */
+if(APPLICATION_ID) showPaymentPage();
+
+function showPaymentPage(){
+  hideProgress();   // 🔴 ADD THIS
+  previewPage.style.display = "none"; // 🔴 ADD
+  form.style.display="none";
+  pageTitle.style.display="none";
+  pageDesc.style.display="none";
+  paymentPage.style.display="flex";
+
+  setPaymentAmount(); // ⭐ IMPORTANT
+  generateQR();
+}
+
+function showPaidPage(){
+  paymentPage.style.display="none";
+  paidPage.style.display="block";
+}
+
+/* FINAL CONFIRM */
+function finalConfirm(e){
+  const btn = e.target;
+  btn.disabled = true;
+
+  const ref = upiRef.value.trim();
+  if(!/^[0-9A-Za-z]{8,14}$/.test(ref)){
+    alert("Invalid UPI reference");
+    btn.disabled = false;
+    return;
+  }
+
+  const fd = new FormData();
+  fd.append("action", "confirmPayment");
+  fd.append("appId", APPLICATION_ID);
+  fd.append("upiRef", ref);
+  fd.append("amount", PAYMENT_AMOUNT);
+
+  fetch("https://script.google.com/macros/s/AKfycbxTB-uYmJedcd3MVHsLyYJ6wC6p6M_v66V8owddPEQvRF8n7a5XhWHDlID8vCkG753MKA/exec", { method:"POST", body:fd })
+    .then(r => r.json())
+    .then(res => {
+      if(res.status === "SUCCESS"){
+        paidBadge.innerText = "PAID";
+        paidBadge.style.background = "#28a745";
+        localStorage.removeItem("APPLICATION_ID");
+        
+
+        // Open WhatsApp links
+        if (res.whatsappAdmin) {
+          window.open(res.whatsappAdmin, "_blank");
+        }
+
+        // Redirect to certificates page
+        location.href = "tn-certificates.html";
+      } else {
+        alert(res.message);
+        btn.disabled = false;
+      }
+    })
+    .catch(err=>{
+      alert("Error confirming payment: " + err.message);
+      btn.disabled = false;
+    });
+}
+function validateUpiRef() {
+  const upi = document.getElementById("upiRef").value;
+
+  if (!/^\d{12}$/.test(upi)) {
+    alert("Please enter valid 12 digit UPI Reference Number");
+    return false;
+  }
+  return true;
+}
+function confirmReset(){
+  const ok = confirm(
+    "⚠️ This will clear your saved data.\n\nDo you want to start a new application?"
+  );
+
+  if(ok){
+    localStorage.clear();   // browser saved data delete
+    location.reload();     // fresh start
+  }
+}
+
+function resetApplication(){
+  localStorage.removeItem("APPLICATION_ID");
+  location.reload();
+}
+</script>
+
+<script>
+let CURRENT_STEP = 0;
+const STEPS = document.querySelectorAll(".step");
+const PROGRESS = document.querySelectorAll("#progressBar div");
+
+function showStep(n){
+  STEPS.forEach((s,i)=>{
+    s.classList.toggle("active", i===n);
+  });
+
+  PROGRESS.forEach((p,i)=>{
+    p.classList.remove("active","done");
+    if(i < n) p.classList.add("done");
+    if(i === n) p.classList.add("active");
+  });
+}
+
+function validateCurrentStep(){
+  const current = STEPS[CURRENT_STEP];
+  const inputs = current.querySelectorAll("input, select");
+
+  for(let i=0;i<inputs.length;i++){
+    const el = inputs[i];
+
+    if(el.hasAttribute("required") && !el.value){
+      alert("Please fill all required fields before continuing");
+      el.focus();
+      return false;
+    }
+
+    // mobile validation
+    if(el.name==="mobile" && el.value.length !== 10){
+      alert("Enter valid 10 digit mobile number");
+      el.focus();
+      return false;
+    }
+  }
+  return true;
+}
+
+function nextStep(){
+  if(!validateCurrentStep()) return;
+
+  if(CURRENT_STEP < STEPS.length-1){
+    CURRENT_STEP++;
+    showStep(CURRENT_STEP);
+  }
+}
+
+function prevStep(){
+  if(CURRENT_STEP > 0){
+    CURRENT_STEP--;
+    showStep(CURRENT_STEP);
+  }
+}
+
+/* initial */
+showStep(0);
+</script>
+
+<script>
+function showPreview(){
+  hideProgress();
+
+  form.style.display = "none";
+  pageTitle.style.display = "none";
+  pageDesc.style.display = "none";
+
+  const box = document.getElementById("previewContent");
+  box.innerHTML = "";
+
+  SERVICE_CONFIG.fields.forEach(f=>{
+    const val = document.querySelector(`[name="${f.id}"]`)?.value || "-";
+    box.innerHTML += `<p><b>${f.label}:</b> ${val}</p>`;
+  });
+
+  SERVICE_CONFIG.files.forEach(f=>{
+    box.innerHTML += `<p><b>${f.label}:</b> Uploaded ✔️</p>`;
+  });
+
+  previewPage.style.display = "block";   // ⭐ missing line
+}
+
+
+
+async function finalSubmit(){
+  hideProgress();   // 🔴 ADD THIS
+  document.getElementById("previewPage").style.display = "none";
+  loading.style.display="flex";
+
+  const fd = new FormData();
+  fd.append("service", SERVICE_CONFIG.serviceKey);
+  fd.append("config", JSON.stringify(SERVICE_CONFIG));
+
+  for(const f of SERVICE_CONFIG.fields){
+    fd.append(f.id, document.querySelector(`[name="${f.id}"]`).value);
+  }
+
+  const toBase64 = f => new Promise(r=>{
+    const fr=new FileReader();
+    fr.onload=()=>r(fr.result);
+    fr.readAsDataURL(f);
+  });
+
+  for(const f of SERVICE_CONFIG.files){
+    const file = document.querySelector(`input[data-id="${f.id}"]`).files[0];
+    fd.append(f.id, await toBase64(file));
+  }
+
+  fetch("https://script.google.com/macros/s/AKfycbxTB-uYmJedcd3MVHsLyYJ6wC6p6M_v66V8owddPEQvRF8n7a5XhWHDlID8vCkG753MKA/exec", {
+    method:"POST",
+    body:fd
+  })
+  .then(r=>r.json())
+  .then(res=>{
+    APPLICATION_ID = res.appId;
+    localStorage.setItem("APPLICATION_ID", APPLICATION_ID);
+    alert("Application submitted successfully");
+    showPaymentPage();   // ✅ payment ONLY here
+  })
+  .finally(()=> loading.style.display="none");
+}
+
+function hideProgress(){
+  document.getElementById("progressWrapper").style.display = "none";
+}
+
+function showProgress(){
+  document.getElementById("progressWrapper").style.display = "block";
+}
+function backToForm(){
+  previewPage.style.display = "none";
+  form.style.display = "block";
+  showProgress();   // ✅ thirumba show
+}
+</script>
+<script>
+function editForm(){
+  previewPage.style.display = "none";
+  form.style.display = "block";
+  pageTitle.style.display = "block";
+  pageDesc.style.display = "block";
+
+  showProgress();   // ✅ ADD THIS
+}
+function calculateAge(dob){
+
+  // empty check
+  if(!dob) return;
+
+  // strict format check (yyyy-mm-dd only)
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(dob)){
+    alert("Please select date from calendar only");
+    document.querySelector('[name="dob"]').value="";
+    return;
+  }
+
+  const today = new Date();
+  const birth = new Date(dob);
+
+  if(isNaN(birth.getTime())){
+    alert("Invalid date");
+    document.querySelector('[name="dob"]').value="";
+    return;
+  }
+
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+
+  if(age < 18 || age > 40){
+    alert("GDS age must be between 18 and 40 years");
+    document.querySelector('[name="dob"]').value="";
+  }
+}
+function updateFee(gender){
+
+  let fee = 0;
+
+  if(gender === "Male"){
+    fee = 350;
+  }
+  else if(gender === "Female"){
+    fee = 250;
+  }
+
+  document.getElementById("feeAmount").innerText = fee;
+  document.getElementById("feeBox").style.display = "block";
+
+  // store globally (payment page use)
+  window.applicationFee = fee;
+}
+function setPaymentAmount(){
+  const amt = window.applicationFee || 0;
+
+  document.getElementById("upiBtn").href =
+  `upi://pay?pa=rselvakumar906@okaxis&pn=Selvakumar&am=${amt}&cu=INR`;
+
+  document.querySelector("#upiBtn button").innerText = `Pay ₹${amt} Now`;
+}
+function generateQR(){
+
+  const amt = window.applicationFee || 0;
+
+  // UPI payment string
+  const upi =
+  `upi://pay?pa=rselvakumar906@okaxis&pn=Selvakumar&am=${amt}&cu=INR`;
+
+  // QR API (free)
+  const qrURL =
+  `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upi)}`;
+
+  const img = document.getElementById("qrImage");
+  img.src = qrURL;
+  img.style.display = "block";
+}
+
+
+</script>
+
+
+</body>
+</html>
