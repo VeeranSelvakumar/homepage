@@ -443,7 +443,8 @@ function showPaymentPage(){
   generateQR();
   localStorage.setItem("LOCK_FEE", window.applicationFee);
   window.applicationFee = parseInt(localStorage.getItem("LOCK_FEE"));
-  document.querySelectorAll("input,select").forEach(el=>el.disabled=true);
+  document.querySelectorAll("#dynamicForm input, #dynamicForm select")
+  .forEach(el=>el.disabled=true);;
   alert("After payment, DO NOT refresh or go back.\nEnter UPI reference to complete.");
 
 }
@@ -789,5 +790,6 @@ function generateQR(){
 
 </body>
 </html>
+
 
 
