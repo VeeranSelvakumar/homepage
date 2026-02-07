@@ -444,7 +444,7 @@ function showPaymentPage(){
   localStorage.setItem("LOCK_FEE", window.applicationFee);
   window.applicationFee = parseInt(localStorage.getItem("LOCK_FEE"));
   document.querySelectorAll("#dynamicForm input, #dynamicForm select")
-  .forEach(el=>el.disabled=true);;
+  .forEach(el=>el.disabled=true);
   alert("After payment, DO NOT refresh or go back.\nEnter UPI reference to complete.");
 
 }
@@ -464,13 +464,9 @@ function finalConfirm(e){
   btn.disabled = true;
 
   let ref = document.getElementById("upiRef").value;
-ref = ref.replace(/[^0-9]/g,'');
+  ref = ref.replace(/[^0-9]/g,'');
 
-if(ref.length !== 12){
-  alert("Invalid UPI reference");
-  btn.disabled = false;
-  return;
-}
+  if(ref.length !== 12){
     alert("Invalid UPI reference");
     btn.disabled = false;
     return;
@@ -489,15 +485,11 @@ if(ref.length !== 12){
         paidBadge.innerText = "PAID";
         paidBadge.style.background = "#28a745";
         localStorage.removeItem("APPLICATION_ID");
-        
-        
 
-        // Open WhatsApp links
         if (res.whatsappAdmin) {
           window.open(res.whatsappAdmin, "_blank");
         }
 
-        // Redirect to certificates page
         location.href = "tn-certificates.html";
       } else {
         alert(res.message);
@@ -505,7 +497,7 @@ if(ref.length !== 12){
       }
     })
     .catch(err=>{
-      alert("Network error. Don't worry — if amount debited, contact support with UPI ref.");
+      alert("Network error. If amount debited, contact support with UPI ref.");
       btn.disabled = false;
     });
 }
@@ -790,6 +782,7 @@ function generateQR(){
 
 </body>
 </html>
+
 
 
 
