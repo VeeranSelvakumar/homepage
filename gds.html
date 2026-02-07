@@ -505,13 +505,18 @@ function finalConfirm(e){
       btn.disabled = false;
     });
 }
-function validateUpiRef() {
-  const upi = document.getElementById("upiRef").value;
+function validateUpiRef(){
+  let ref = document.getElementById("upiRef").value;
+  
+  // remove spaces & hyphen automatically
+  ref = ref.replace(/[^0-9]/g,'');
 
-  if (!/^\d{12}$/.test(upi)) {
-    alert("Please enter valid 12 digit UPI Reference Number");
+  if(ref.length !== 12){
+    alert("Enter valid 12 digit UPI reference number");
     return false;
   }
+
+  document.getElementById("upiRef").value = ref;
   return true;
 }
 function confirmReset(){
@@ -781,3 +786,4 @@ function generateQR(){
 
 </body>
 </html>
+
