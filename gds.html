@@ -186,18 +186,18 @@ button:hover{ background:#0b5ed7; }
     <h2>Payment Confirmation</h2>
     <p>Please enter UPI Reference Number</p>
     <input   type="text"
-  id="upiRef"
-  name="upiRef"
-  placeholder="Enter 12 digit UPI Ref"
-  maxlength="12"
-  inputmode="numeric"
-  pattern="[0-9]{12}"
-  required
-  oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-    <br><br>
-    <button onclick="if(validateUpiRef()) finalConfirm(event)">
-  Confirm Payment
-</button>
+      id="upiRef"
+      name="upiRef"
+      placeholder="Enter 12 digit UPI Ref"
+      maxlength="12"
+      inputmode="numeric"
+      pattern="[0-9]{12}"
+      required
+      oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+        <br><br>
+        <button onclick="if(validateUpiRef()) finalConfirm(event)">
+        Confirm Payment
+        </button>
 
   </div>
 
@@ -223,8 +223,14 @@ button:hover{ background:#0b5ed7; }
 <div id="loading">Submitting… Please wait</div>
 
 <script>
-const PAYMENT_AMOUNT = 60;
 let APPLICATION_ID = localStorage.getItem("APPLICATION_ID");
+window.applicationFee = 0;
+
+const locked = parseInt(localStorage.getItem("LOCK_FEE"));
+const temp   = parseInt(localStorage.getItem("applicationFee"));
+
+if(!isNaN(locked)) window.applicationFee = locked;
+else if(!isNaN(temp)) window.applicationFee = temp;
 </script>
 
 <script>
@@ -314,6 +320,16 @@ const SERVICE_CONFIG = {
 </script>
 
 <script>
+  if(APPLICATION_ID){
+    history.pushState(null,null,location.href);
+    window.onpopstate=function(){
+      history.go(1);
+    };
+  }
+  const PAID_APP_ID = localStorage.getItem("PAID_APP_ID");
+  if(PAID_APP_ID){
+    location.replace("tn-certificates.html");
+  }
 const loading = document.getElementById("loading");
 const previewPage = document.getElementById("previewPage");
 const paymentPage = document.getElementById("paymentPage");
@@ -407,14 +423,18 @@ step2.insertAdjacentHTML("beforeend",
 
 
 /* UPI */
-document.getElementById("upiBtn").href =
-`upi://pay?pa=rselvakumar906@okaxis&pn=Selvakumar&am=${PAYMENT_AMOUNT}&cu=INR`;
-document.querySelector("#upiBtn button").innerText = `Pay ₹${PAYMENT_AMOUNT} Now`;
+setPaymentAmount(); // ⭐ initial setup
+
 
 /* Payment page restore */
 if(APPLICATION_ID) showPaymentPage();
 
 function showPaymentPage(){
+  if(!APPLICATION_ID){
+  alert("Please submit application first");
+  location.reload();
+  return;
+  }
   hideProgress();   // 🔴 ADD THIS
   previewPage.style.display = "none"; // 🔴 ADD
   form.style.display="none";
@@ -424,12 +444,21 @@ function showPaymentPage(){
 
   setPaymentAmount(); // ⭐ IMPORTANT
   generateQR();
+  localStorage.setItem("LOCK_FEE", window.applicationFee);
+  window.applicationFee = parseInt(localStorage.getItem("LOCK_FEE"));
+  document.querySelectorAll("input,select").forEach(el=>el.disabled=true);
+  alert("After payment, DO NOT refresh or go back.\nEnter UPI reference to complete.");
+
 }
 
 function showPaidPage(){
   paymentPage.style.display="none";
   paidPage.style.display="block";
+
+  document.getElementById("upiRef").value = "";
+  document.getElementById("upiRef").focus();
 }
+
 
 /* FINAL CONFIRM */
 function finalConfirm(e){
@@ -447,7 +476,7 @@ function finalConfirm(e){
   fd.append("action", "confirmPayment");
   fd.append("appId", APPLICATION_ID);
   fd.append("upiRef", ref);
-  fd.append("amount", PAYMENT_AMOUNT);
+  fd.append("amount", Number(window.applicationFee));
 
   fetch("https://script.google.com/macros/s/AKfycbxTB-uYmJedcd3MVHsLyYJ6wC6p6M_v66V8owddPEQvRF8n7a5XhWHDlID8vCkG753MKA/exec", { method:"POST", body:fd })
     .then(r => r.json())
@@ -456,6 +485,7 @@ function finalConfirm(e){
         paidBadge.innerText = "PAID";
         paidBadge.style.background = "#28a745";
         localStorage.removeItem("APPLICATION_ID");
+        
         
 
         // Open WhatsApp links
@@ -471,7 +501,7 @@ function finalConfirm(e){
       }
     })
     .catch(err=>{
-      alert("Error confirming payment: " + err.message);
+      alert("Network error. Don't worry — if amount debited, contact support with UPI ref.");
       btn.disabled = false;
     });
 }
@@ -587,6 +617,12 @@ function showPreview(){
 
 
 async function finalSubmit(){
+  if(window.submitting) return;
+  window.submitting = true;
+  if(!window.applicationFee || window.applicationFee === 0){
+  alert("Please select gender to calculate application fee");
+  return;
+  }
   hideProgress();   // 🔴 ADD THIS
   document.getElementById("previewPage").style.display = "none";
   loading.style.display="flex";
@@ -606,7 +642,21 @@ async function finalSubmit(){
   });
 
   for(const f of SERVICE_CONFIG.files){
-    const file = document.querySelector(`input[data-id="${f.id}"]`).files[0];
+    const fileInput = document.querySelector(`input[data-id="${f.id}"]`);
+    const file = fileInput.files[0];
+
+    const tenthPassed = document.querySelector('[name="tenthPassed"]').value;
+
+    if(f.id === "marksheetBase64" && tenthPassed !== "Yes"){
+      continue; // skip marksheet
+    }
+
+    if(!file){
+      alert("Please upload " + f.label);
+      loading.style.display="none";
+      window.submitting = false;
+      return;
+    }
     fd.append(f.id, await toBase64(file));
   }
 
@@ -621,7 +671,10 @@ async function finalSubmit(){
     alert("Application submitted successfully");
     showPaymentPage();   // ✅ payment ONLY here
   })
-  .finally(()=> loading.style.display="none");
+  .finally(()=>{
+  loading.style.display="none";
+  window.submitting = false;
+  });
 }
 
 function hideProgress(){
@@ -695,6 +748,7 @@ function updateFee(gender){
 
   // store globally (payment page use)
   window.applicationFee = fee;
+  localStorage.setItem("applicationFee", fee);
 }
 function setPaymentAmount(){
   const amt = window.applicationFee || 0;
