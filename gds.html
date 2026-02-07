@@ -185,15 +185,12 @@ button:hover{ background:#0b5ed7; }
 
     <h2>Payment Confirmation</h2>
     <p>Please enter UPI Reference Number</p>
-    <input   type="text"
-      id="upiRef"
-      name="upiRef"
-      placeholder="Enter 12 digit UPI Ref"
-      maxlength="12"
-      inputmode="numeric"
-      pattern="[0-9]{12}"
-      required
-      oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+    <input type="tel"
+  id="upiRef"
+  name="upiRef"
+  placeholder="Enter UPI Reference Number"
+  inputmode="numeric"
+  autocomplete="off">
         <br><br>
         <button onclick="if(validateUpiRef()) finalConfirm(event)">
         Confirm Payment
@@ -465,8 +462,14 @@ function finalConfirm(e){
   const btn = e.target;
   btn.disabled = true;
 
-  const ref = upiRef.value.trim();
-  if(!/^[0-9A-Za-z]{8,14}$/.test(ref)){
+  let ref = document.getElementById("upiRef").value;
+ref = ref.replace(/[^0-9]/g,'');
+
+if(ref.length !== 12){
+  alert("Invalid UPI reference");
+  btn.disabled = false;
+  return;
+}
     alert("Invalid UPI reference");
     btn.disabled = false;
     return;
@@ -507,12 +510,12 @@ function finalConfirm(e){
 }
 function validateUpiRef(){
   let ref = document.getElementById("upiRef").value;
-  
-  // remove spaces & hyphen automatically
+
+  // remove spaces / dash automatically
   ref = ref.replace(/[^0-9]/g,'');
 
   if(ref.length !== 12){
-    alert("Enter valid 12 digit UPI reference number");
+    alert("Enter correct 12 digit UPI reference number");
     return false;
   }
 
@@ -786,4 +789,5 @@ function generateQR(){
 
 </body>
 </html>
+
 
