@@ -240,9 +240,15 @@ const SERVICE_CONFIG = {
   fields : [
     { id:"name", label:"Applicant Full Name", type:"text", required:true },
 
+    { id:"fathername", label:"Father Name", type:"text", required:true },
+
+    { id:"mothername", label:"Mother Name", type:"text", required:true },
+
     { id:"mobile", label:"Mobile Number", type:"tel", required:true, max:10 },
 
     { id:"email", label:"Email Address", type:"email", required:true },
+
+    { id:"address", label:"Full Address", type:"text", required:true },
 
     {
       id:"gender",
@@ -264,7 +270,7 @@ const SERVICE_CONFIG = {
       label:"Community / Category",
       type:"select",
       required:true,
-      options:["General","OBC","SC","ST"]
+      options:["UnReserved (UR)","OBC","SC","ST","EWS"]
     },
 
     {
@@ -311,7 +317,8 @@ const SERVICE_CONFIG = {
   files : [
     { id:"photoBase64", label:"Applicant Photo", required:true },
     { id:"signatureBase64", label:"Signature", required:true },
-    { id:"marksheetBase64", label:"10th Marksheet", required:true }
+    { id:"marksheetBase64", label:"10th Marksheet", required:true },
+    { id:"aadhaarBase64", label:"Aadhaar Card", required:true },
   ]
 };
 </script>
@@ -373,10 +380,10 @@ SERVICE_CONFIG.fields.forEach(f=>{
   }
 
   /* STEP MAPPING */
-  if(["name","mobile","email"].includes(f.id)){
+  if(["name","fathername","mothername","mobile","email"].includes(f.id)){
     step0.insertAdjacentHTML("beforeend", html);
   } 
-  else if(["gender","dob","category"].includes(f.id)){
+  else if(["address","gender","dob","category"].includes(f.id)){
     step1.insertAdjacentHTML("beforeend", html);
   }
   else{
@@ -782,7 +789,3 @@ function generateQR(){
 
 </body>
 </html>
-
-
-
-
