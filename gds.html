@@ -223,11 +223,10 @@ button:hover{ background:#0b5ed7; }
 let APPLICATION_ID = localStorage.getItem("APPLICATION_ID");
 window.applicationFee = 0;
 
-const locked = parseInt(localStorage.getItem("LOCK_FEE"));
-const temp   = parseInt(localStorage.getItem("applicationFee"));
-
-if(!isNaN(locked)) window.applicationFee = locked;
-else if(!isNaN(temp)) window.applicationFee = temp;
+window.applicationFee =
+  Number(localStorage.getItem("LOCK_FEE")) ||
+  Number(localStorage.getItem("applicationFee")) ||
+  0;
 </script>
 
 <script>
@@ -334,13 +333,12 @@ const SERVICE_CONFIG = {
   if(PAID_APP_ID){
     location.replace("tn-certificates.html");
   }
+document.getElementById("pageTitle").innerText = SERVICE_CONFIG.title;
+document.getElementById("pageDesc").innerText  = SERVICE_CONFIG.description;
 const loading = document.getElementById("loading");
 const previewPage = document.getElementById("previewPage");
 const paymentPage = document.getElementById("paymentPage");
 const paidPage = document.getElementById("paidPage");
-document.getElementById("pageTitle").innerText = SERVICE_CONFIG.title;
-document.getElementById("pageDesc").innerText  = SERVICE_CONFIG.description;
-
 
 const form = document.getElementById("dynamicForm");
 
@@ -434,27 +432,45 @@ setPaymentAmount(); // ⭐ initial setup
 if(APPLICATION_ID) showPaymentPage();
 
 function showPaymentPage(){
+
+  // Must have application
   if(!APPLICATION_ID){
-  alert("Please submit application first");
-  location.reload();
-  return;
+    alert("Please submit application first");
+    location.reload();
+    return;
   }
-  hideProgress();   // 🔴 ADD THIS
-  previewPage.style.display = "none"; // 🔴 ADD
+
+  // If first time → lock fee
+  if(!localStorage.getItem("LOCK_FEE")){
+    localStorage.setItem("LOCK_FEE", window.applicationFee);
+  }
+
+  // If refresh but fee missing → invalid session
+  if(!Number(localStorage.getItem("LOCK_FEE"))){
+    alert("Session expired. Please apply again.");
+    localStorage.clear();
+    location.reload();
+    return;
+  }
+
+  hideProgress();
+  previewPage.style.display = "none";
   form.style.display="none";
   pageTitle.style.display="none";
   pageDesc.style.display="none";
   paymentPage.style.display="flex";
 
-  setPaymentAmount(); // ⭐ IMPORTANT
+  // restore locked fee
+  window.applicationFee = Number(localStorage.getItem("LOCK_FEE"));
+
+  setPaymentAmount();
   generateQR();
-  localStorage.setItem("LOCK_FEE", window.applicationFee);
-  window.applicationFee = parseInt(localStorage.getItem("LOCK_FEE"));
+
   document.querySelectorAll("#dynamicForm input, #dynamicForm select")
-  .forEach(el=>el.disabled=true);
-  alert("After payment, DO NOT refresh or go back.\nEnter UPI reference to complete.");
+    .forEach(el=>el.disabled=true);
 
 }
+
 
 function showPaidPage(){
   paymentPage.style.display="none";
@@ -469,6 +485,7 @@ function showPaidPage(){
 function finalConfirm(e){
   const btn = e.target;
   btn.disabled = true;
+  const paidBadge = document.getElementById("paidBadge");
 
   let ref = document.getElementById("upiRef").value;
   ref = ref.replace(/[^0-9]/g,'');
@@ -483,7 +500,7 @@ function finalConfirm(e){
   fd.append("action", "confirmPayment");
   fd.append("appId", APPLICATION_ID);
   fd.append("upiRef", ref);
-  fd.append("amount", Number(window.applicationFee));
+  fd.append("amount", Number(localStorage.getItem("LOCK_FEE")));
 
   fetch("https://script.google.com/macros/s/AKfycbxTB-uYmJedcd3MVHsLyYJ6wC6p6M_v66V8owddPEQvRF8n7a5XhWHDlID8vCkG753MKA/exec", { method:"POST", body:fd })
     .then(r => r.json())
@@ -492,12 +509,12 @@ function finalConfirm(e){
         paidBadge.innerText = "PAID";
         paidBadge.style.background = "#28a745";
         localStorage.removeItem("APPLICATION_ID");
+        localStorage.setItem("PAID_APP_ID","1");
 
-        if (res.whatsappAdmin) {
-          window.open(res.whatsappAdmin, "_blank");
+        if(res.whatsappAdmin){
+          location.href = res.whatsappAdmin;
         }
-
-        location.href = "tn-certificates.html";
+        setTimeout(()=>location.href="exams.html",1500);
       } else {
         alert(res.message);
         btn.disabled = false;
@@ -563,6 +580,13 @@ function validateCurrentStep(){
   for(let i=0;i<inputs.length;i++){
     const el = inputs[i];
 
+    if(el.dataset.conditional){
+      const [field,val]=el.dataset.conditional.split(":");
+      if(document.querySelector(`[name="${field}"]`).value!==val){
+        continue;
+      }
+    }
+
     if(el.hasAttribute("required") && !el.value){
       alert("Please fill all required fields before continuing");
       el.focus();
@@ -603,6 +627,7 @@ showStep(0);
 function showPreview(){
   hideProgress();
 
+  if(!validateCurrentStep()) return;
   form.style.display = "none";
   pageTitle.style.display = "none";
   pageDesc.style.display = "none";
@@ -625,6 +650,10 @@ function showPreview(){
 
 
 async function finalSubmit(){
+  if(localStorage.getItem("FORM_LOCKED")){
+    document.querySelectorAll("#dynamicForm input, #dynamicForm select")
+    .forEach(el=>el.disabled=true);
+  }
   if(window.submitting) return;
   window.submitting = true;
   if(!window.applicationFee || window.applicationFee === 0){
@@ -633,6 +662,7 @@ async function finalSubmit(){
   }
   hideProgress();   // 🔴 ADD THIS
   document.getElementById("previewPage").style.display = "none";
+  document.querySelectorAll("button").forEach(b=>b.disabled=true);
   loading.style.display="flex";
 
   const fd = new FormData();
@@ -676,6 +706,7 @@ async function finalSubmit(){
   .then(res=>{
     APPLICATION_ID = res.appId;
     localStorage.setItem("APPLICATION_ID", APPLICATION_ID);
+    localStorage.setItem("FORM_LOCKED","1");
     alert("Application submitted successfully");
     showPaymentPage();   // ✅ payment ONLY here
   })
@@ -699,14 +730,6 @@ function backToForm(){
 }
 </script>
 <script>
-function editForm(){
-  previewPage.style.display = "none";
-  form.style.display = "block";
-  pageTitle.style.display = "block";
-  pageDesc.style.display = "block";
-
-  showProgress();   // ✅ ADD THIS
-}
 function calculateAge(dob){
 
   // empty check
@@ -782,10 +805,63 @@ function generateQR(){
   img.src = qrURL;
   img.style.display = "block";
 }
+window.addEventListener("beforeunload", function (e) {
+  if(localStorage.getItem("APPLICATION_ID")){
+    e.preventDefault();
+    e.returnValue="";
+  }
+});
+function editForm(){
+  previewPage.style.display = "none";
+  form.style.display = "block";
+  pageTitle.style.display = "block";
+  pageDesc.style.display = "block";
 
-
+  showProgress();
+  showStep(CURRENT_STEP);
+}
 </script>
+<script>
+/* ===== AUTO RESUME SYSTEM ===== */
+window.addEventListener("load", function(){
 
+  const appId = localStorage.getItem("APPLICATION_ID");
+  const paid   = localStorage.getItem("PAID_APP_ID");
 
+  // Already paid → go next page
+  if(paid){
+    location.replace("exams.html");
+    return;
+  }
+
+  // Application submitted but payment not finished
+  if(appId){
+
+    // hide form
+    form.style.display="none";
+    previewPage.style.display="none";
+    pageTitle.style.display="none";
+    pageDesc.style.display="none";
+
+    // lock fee restore
+    window.applicationFee =
+      Number(localStorage.getItem("LOCK_FEE")) ||
+      Number(localStorage.getItem("applicationFee")) ||
+      0;
+
+    // open payment page again
+    paymentPage.style.display="flex";
+    hideProgress();
+    setPaymentAmount();
+    generateQR();
+
+    // prevent editing
+    document.querySelectorAll("#dynamicForm input, #dynamicForm select")
+      .forEach(el=>el.disabled=true);
+
+  }
+
+});
+</script>
 </body>
 </html>
