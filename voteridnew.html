@@ -54,6 +54,23 @@ button:hover{ background:#0b5ed7; }
   color:white;
   font-size:22px;
 }
+.qr-box{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:25px 0;
+}
+
+#qrImage{
+  width:260px;
+  height:260px;
+  display:none;
+  margin:20px auto;   /* ⭐ MAIN FIX */
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  background:white;
+  padding:8px;
+}
 .reset-btn{
   margin-top:15px;
   width:100%;
@@ -81,7 +98,9 @@ button:hover{ background:#0b5ed7; }
     <h2>Payment Required</h2>
     <p>Please scan QR or click Pay Now</p>
 
-    <img id="qrImage" width="260" style="margin:20px 0; display:none;">
+    <div class="qr-box">
+      <img id="qrImage">
+    </div>
     <p style="font-size:13px;color:#666;">Desktop users: Please scan QR using your mobile UPI app</p>
 
     <a id="upiBtn" href="#"><button style="background:green;">Pay</button></a>
@@ -235,13 +254,15 @@ document.getElementById("upiBtn").href =
 document.querySelector("#upiBtn button").innerText = `Pay ₹${PAYMENT_AMOUNT} Now`;
 
 /* Payment page restore */
-if(APPLICATION_ID) showPaymentPage();
+
 
 function showPaymentPage(){
   form.style.display="none";
   pageTitle.style.display="none";
   pageDesc.style.display="none";
   paymentPage.style.display="block";
+
+  generateQR();   // 🔥 Auto generate
 }
 function showPaidPage(){
   paymentPage.style.display="none";
@@ -412,7 +433,18 @@ function attachGenderListener(){
 
 // Call after dynamic form is generated
 attachGenderListener();
+
+window.addEventListener("load", function(){
+
+  const appId = localStorage.getItem("APPLICATION_ID");
+
+  if(appId){
+    showPaymentPage();
+  }
+
+});
 </script>
 
 </body>
 </html>
+
