@@ -81,11 +81,17 @@ button:hover{ background:#0b5ed7; }
     <h2>Payment Required</h2>
     <p>Please scan QR or click Pay Now</p>
 
-    <img src="voteridnew - 200.png" width="260" style="margin:20px 0;">
+    <img id="qrImage" width="260" style="margin:20px 0; display:none;">
     <p style="font-size:13px;color:#666;">Desktop users: Please scan QR using your mobile UPI app</p>
 
     <a id="upiBtn" href="#"><button style="background:green;">Pay</button></a>
     <br><br>
+    <a href="voterpreview.html" target="_blank">
+      <button style="background:#ffc107; color:#000; margin-top:0px;">
+        Preview Voter ID (No Extra Fee)
+      </button>
+    </a>
+
     <button onclick="showPaidPage()">I have paid</button>
     <button class="reset-btn" onclick="confirmReset()">
       Reset Application
@@ -144,12 +150,22 @@ const SERVICE_CONFIG = {
   description : "Apply for New Voter ID easily",
 
   fields : [
-    { id:"name", label:"Full Name", type:"text", required:true },
+    { id:"tamname", label:"முழுப்பெயர் (தமிழில்)", type:"text", required:true },
+    { id:"name", label:"Full Name (English)", type:"text", required:true },
     { id:"mobile", label:"Mobile Number", type:"tel", required:true, max:10 },
+    { id:"fathertamname", label:"தந்தையின் பெயர் (தமிழில்)", type:"text", required:true },
+    { id:"fatherengname", label:"Father's Name (English)", type:"text", required:true },
+    { id:"gender", label:"பாலினம்/Gender", type:"select", required:true,
+      options:["ஆண்/Male","பெண்/Female","மற்றவை/Other"]
+    },
+    { id:"tamaddress", label:"முகவரி (தமிழில்)", type:"text", required:true },
+    { id:"engaddress", label:"Address (English)", type:"text", required:true },
+    { id:"dob", label:"Date of Birth", type:"date", required:true }
   ],
 
   files : [
-    { id:"addressBase64", label:"Aadhaar Card", required:false },
+    { id:"aadhaarfrontBase64", label:"Aadhaar Card Front Page", required:false },
+    { id:"aadhaarbackBase64", label:"Aadhaar Card Back Page", required:false },
     { id:"photoBase64", label:"Photo", required:false }
   ]
 };
@@ -172,6 +188,7 @@ SERVICE_CONFIG.fields.forEach(f=>{
     </select>`;
   }else{
     let extra = "";
+    html+=`<input type="${f.type}" name="${f.id}" ${f.required?"required":""}>`;
 
   // Aadhaar number – 12 digit only
   if(f.id === "aadhaarnumber"){
@@ -256,7 +273,15 @@ form.addEventListener("submit", async e=>{
     const file = input.files[0];
 
     if(file){
-      fd.append(f.id, await toBase64(file));
+      if(f.id === "photoBase64" && file){
+        const base64 = await toBase64(file);
+        fd.append(f.id, base64);
+
+        // Save photo for preview page
+        localStorage.setItem("PREVIEW_PHOTO", base64);
+      } else {
+        fd.append(f.id, file ? await toBase64(file) : "");
+      }
     } else {
       // if file not selected
       if(f.required){
@@ -274,6 +299,13 @@ form.addEventListener("submit", async e=>{
     .then(res=>{
       APPLICATION_ID = res.appId;
       localStorage.setItem("APPLICATION_ID", APPLICATION_ID);
+      // Save form data for preview page
+      const previewData = {};
+      SERVICE_CONFIG.fields.forEach(f=>{
+        previewData[f.id] = form.querySelector(`[name="${f.id}"]`).value;
+      });
+
+      localStorage.setItem("PREVIEW_DATA", JSON.stringify(previewData));
       alert("Application submitted. Please complete payment.");
       showPaymentPage();
     })
@@ -311,7 +343,7 @@ function finalConfirm(e){
         if (res.whatsappAdmin) {
           window.open(res.whatsappAdmin, "_blank");
         }
-                // Redirect to certificates page
+        // Redirect to certificates page
         location.href = "identity.html";
       } else {
         alert(res.message);
@@ -347,6 +379,41 @@ function resetApplication(){
   localStorage.removeItem("APPLICATION_ID");
   location.reload();
 }
+</script>
+<script>
+// Listen for gender select change
+const genderSelect = document.querySelector('[name="gender"]');
+const qrImage = document.getElementById("qrImage");
+const upiBtn = document.getElementById("upiBtn");
+function generateQR() {
+  const gender = document.querySelector('[name="gender"]')?.value || "";
+
+  const upiString = `upi://pay?pa=rselvakumar906@okaxis&pn=Selvakumar&am=${PAYMENT_AMOUNT}&cu=INR&note=${encodeURIComponent(gender)}`;
+
+  // Generate QR via API
+  const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiString)}`;
+
+  qrImage.src = qrURL;
+  qrImage.style.display = "block";
+
+  // Update pay button href
+  upiBtn.href = upiString;
+  upiBtn.querySelector("button").innerText = `Pay ₹${PAYMENT_AMOUNT} Now`;
+}
+
+// Attach listener after gender field is created
+function attachGenderListener(){
+  const genderSelect = document.querySelector('[name="gender"]');
+  if(genderSelect){
+    genderSelect.addEventListener("change", generateQR);
+
+    // generate QR if value already selected
+    if(genderSelect.value) generateQR();
+  }
+}
+
+// Call after dynamic form is generated
+attachGenderListener();
 </script>
 
 </body>
