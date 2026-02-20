@@ -188,7 +188,6 @@ SERVICE_CONFIG.fields.forEach(f=>{
     </select>`;
   }else{
     let extra = "";
-    html+=`<input type="${f.type}" name="${f.id}" ${f.required?"required":""}>`;
 
   // Aadhaar number – 12 digit only
   if(f.id === "aadhaarnumber"){
@@ -381,10 +380,9 @@ function resetApplication(){
 }
 </script>
 <script>
-// Listen for gender select change
-const genderSelect = document.querySelector('[name="gender"]');
 const qrImage = document.getElementById("qrImage");
 const upiBtn = document.getElementById("upiBtn");
+
 function generateQR() {
   const gender = document.querySelector('[name="gender"]')?.value || "";
 
