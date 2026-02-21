@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Voter ID Preview</title>
+
+<style>
+body{
+  font-family: Arial;
+  background:#f1f5f9;
+  text-align:center;
+}
+
+.card{
+  width:500px;
+  height:300px;
+  margin:20px auto;
+  position:relative;
+  background-size:cover;
+  border-radius:10px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  font-size:14px;
+}
+
+/* PHOTO */
+.photo{
+  position:absolute;
+  top:118px;
+  left:18.5px;
+  width:123px;
+  height:165px;
+  object-fit:cover;
+}
+
+/* FRONT TEXT */
+.front .name-tam{ position:absolute; top:115px; left:155px; font-weight:bold;}
+.front .name-eng{ position:absolute; top:135px; left:155px; font-weight:bold;}
+
+.front .father-tam{ position:absolute; top:157px; left:155px; font-weight:bold;}
+.front .father-eng{ position:absolute; top:177px; left:155px; font-weight:bold;}
+
+.front .gender{ position:absolute; top:195px; left:155px; font-weight:bold;}
+.front .dob{ position:absolute; top:217px; left:155px;font-weight:bold; text-align:left; width:250px;   /* important */}
+
+/* BACK */
+.back .address{
+  position:absolute;
+  top:20px;
+  left:40px;
+  width:400px;
+  text-align:left;
+  font-size:13px;
+  line-height:18px;
+}
+
+
+
+/* HEADER TITLES */
+.eci-title-tamil{
+  position:absolute;
+  top:17px;
+  left:-20px;
+  width:100%;
+  text-align:center;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.eci-title-english{
+  position:absolute;
+  top:40px;
+  left:-20px;
+  width:100%;
+  text-align:center;
+  font-size:17px;
+  font-weight:bold;
+}
+
+.eci-title-small{
+  position:absolute;
+  top:58px;
+  left:-18px;
+  width:100%;
+  text-align:center;
+  font-size:7px;
+  font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>Voter ID Digital Preview</h2>
+
+<div class="card front" style="background-image:url('front.jpg');">
+
+  <div class="eci-title-tamil">
+    இந்திய தேர்தல் ஆணையம் 
+  </div>
+
+  <div class="eci-title-english">
+    ELECTION COMMISSION OF INDIA
+  </div>
+
+  <div class="eci-title-small">
+    வாக்காளர் புகைப்பட அடையாள அட்டை - ELECTOR PHOTO IDENTITY CARD
+  </div>
+
+  <img id="p_photo" class="photo">
+
+  <div class="name-tam" id="p_tamname"></div>
+  <div class="name-eng" id="p_name"></div>
+
+  <div class="father-tam" id="p_fathertam"></div>
+  <div class="father-eng" id="p_fathereng"></div>
+
+  <div class="gender" id="p_gender"></div>
+  <div class="dob" id="p_dob"></div>
+
+</div>
+
+<div class="card back" style="background-image:url('back.jpg');">
+    <div class="address" id="p_address"></div>
+</div>
+
+<script>
+const data = JSON.parse(localStorage.getItem("PREVIEW_DATA") || "{}");
+const photo = localStorage.getItem("PREVIEW_PHOTO");
+
+/* FRONT */
+document.getElementById("p_tamname").innerText =
+  "பெயர்: " + (data.tamname || "");
+
+document.getElementById("p_name").innerText =
+  "Name: " + (data.name || "");
+
+document.getElementById("p_fathertam").innerText =
+  "தந்தையின் பெயர்: " + (data.fathertamname || "");
+
+document.getElementById("p_fathereng").innerText =
+  "Father's Name: " + (data.fatherengname || "");
+
+document.getElementById("p_gender").innerText =
+  "பாலினம்/Gender: " + (data.gender || "");
+
+document.getElementById("p_dob").innerHTML =
+  "பிறந்த தேதி / வயது:<br>Date of Birth / Age: " + (data.dob || "");
+
+/* BACK */
+document.getElementById("p_address").innerHTML =
+  "<b>முகவரி:</b><br>" + (data.tamaddress || "") +
+  "<br><br><b>Address:</b><br>" + (data.engaddress || "");
+
+/* PHOTO */
+if(photo){
+  document.getElementById("p_photo").src = photo;
+}
+</script>
+
+</body>
+</html>
