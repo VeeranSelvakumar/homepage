@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Identity Card Services - Veeran Tech Point</title>
+
+<style>
+body {
+    user-select: none;
+    -webkit-user-select: none;
+}
+img {
+    pointer-events: none;
+}
+</style>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f6fa;
+}
+
+/* Header */
+header {
+    background: #1a73e8;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin: 4px 0 0;
+    font-size: 16px;
+    color: #dbeafe;
+}
+
+/* Attention Blink */
+.attention {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    animation: blinker 1s linear infinite;
+    color: #fff;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: center;
+    background: #0d47a1;
+    flex-wrap: wrap;
+}
+
+.navbar a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: block;
+    font-size: 15px;
+}
+
+.navbar a:hover {
+    background: #1a73e8;
+}
+
+/* Title Box */
+.title-box {
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.title-box h2 {
+    color: #0d47a1;
+    font-size: 30px;
+}
+
+.title-box p {
+    font-size: 18px;
+    color: #444;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Cards Section */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    margin: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.card h3 {
+    color: #0d47a1;
+    font-size: 20px;
+}
+
+.card p {
+    color: #333;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.card a {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #1a73e8;
+    font-weight: bold;
+}
+
+/* Footer */
+.footer {
+    background: #0d47a1;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 20px;
+}
+.new-badge1{
+background:green;
+color:white;
+font-size:10px;   /* font-size:10px; */
+padding:2px 6px;    /* padding:2px 6px; */
+border-radius:4px;
+margin-left:5px;
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.2);}
+100%{transform:scale(1);}
+}
+</style>
+</head>
+
+<body>
+
+<!--Right Click Disabled-->
+<script>
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+document.onkeydown = function(e) {
+    if (e.keyCode == 123) return false; // F12
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
+    if (e.ctrlKey && e.keyCode == 85) return false;
+    if (e.ctrlKey && e.keyCode == 83) return false;
+};
+</script>
+<!--End Right Click Disabled-->
+
+<!-- HEADER -->
+<header>
+  <h1>Veeran Tech Point</h1>
+  <p>Digital Services Made Easy!</p>
+  <p>Government Schemes & Certificate Information Hub</p>
+  <div class="attention">🔔 உங்களைத் தேடி உங்கள் இல்லங்களை நாடி — Veeran Tech Point 🔔</div>
+</header>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+    <a href="whatsnew.html" class="new-link">
+    WHAT'S NEW <span class=""></span>
+    </a>
+
+    <a href="index.html">HOME</a>
+    <a href="tn-schemes.html">TN SCHEMES</a>
+    <a href="tn-certificates.html">TN CERTIFICATES SERVICES</a>
+    <a href="indian-schemes.html">INDIAN SCHEMES</a>
+    <a href="indian-certificates.html">INDIAN CERTIFICATES SERVICES</a>
+    <a href="identity.html">IDENTITY CARDS</a>
+    <a href="exams.html">GOVERNMENT EXAMS</a>
+    <a href="other.html">OTHER SERVICES</a>
+    <a href="helpdesk.html">HELPDESK</a>
+</div>
+
+<!-- PAGE TITLE -->
+<div class="title-box">
+    <h2>🆔 Identity Card Services</h2>
+    <p>இந்தியா முழுவதும் பொதுமக்களுக்கு வழங்கப்படும் முக்கிய Identity Cards மற்றும் அவற்றை பெறுவதற்கான தகவல்கள் இங்கே காணலாம். பயனாளர்கள் இந்த சேவைகளை ஆன்லைனில் எளிதாக விண்ணப்பித்து பெறலாம்.</p>
+</div>
+
+<!-- IDENTITY CARDS -->
+<div class="cards">
+
+    <div class="card">
+        <h3>Aadhaar Card <span class="new-badge1">live</span></h3>
+        <p>அனைத்து இந்திய குடிமக்களுக்கும் முகவரி மற்றும் அடையாளத்தை உறுதி செய்யும் அரசின் ஆன்லைன் அடையாள அட்டை.</p>
+        <a href="aadhaaraddress-req.html">View More</a>
+    </div>
+
+    <div class="card">
+        <h3>PAN Card</h3>
+        <p>வருமான வரி கணக்கில் முக்கிய அடையாள அட்டை. இந்தியாவில் எல்லா adults-க்கும் தேவையானது.</p>
+        <a href="panservices-req.html">View More</a>
+    </div>
+
+    <div class="card">
+        <h3>Voter ID / EPIC</h3>
+        <p>மொத்த இந்திய வாக்காளர் பதிவுக்கு ஆதார அட்டை. தேர்தல் விழாக்களில் வாக்களிக்க பயன்படும்.</p>
+        <a href="voterid-req.html">View More</a>
+    </div>
+
+    <div class="card">
+        <h3>Ration Card</h3>
+        <p>அரசு வழங்கும் பொருட்கள் மற்றும் subsidy பெற உதவும் அடையாள அட்டை.</p>
+        <a href="#">View More</a>
+    </div>
+
+    <div class="card">
+        <h3>Passport</h3>
+        <p>வெளிநாட்டு பயணத்திற்கு தேவையான அரசாங்க வெளியீட்டு அடையாள ஆவணம்.</p>
+        <a href="#">View More</a>
+    </div>
+
+    <div class="card">
+        <h3>Driving License Service</h3>
+        <p>வாகனம் ஓட்டுவதற்கான சட்டபூர்வமான ஓட்டுநர் உரிமம் (Driving Licence) விண்ணப்பம், புதுப்பிப்பு மற்றும் திருத்தங்களுக்கு ஆன்லைன் உதவி.</p>
+        <a href="#">View More</a>
+    </div>
+
+    <div class="card">
+        <h3>e - Shram Card</h3>
+        <p>அமைப்புசாரா துறையினால் வழங்கப்படும் தொழிலாளர்களுக்கான அரசாங்க பதிவு செய்யப்பட்ட தொழிலாளர் அடையாள அட்டை.</p>
+        <a href="#">View More</a>
+    </div>
+    
+    <div class="card">
+        <h3>Ayushman Card</h3>
+        <p>பொருளாதார ரீதியாக பாதிக்கப்பட்ட குடும்பங்களுக்கு இந்திய அரசாங்கம் வழங்கும் இலவச மருத்துவ காப்பீட்டு திட்ட அடையாள அட்டை.</p>
+        <a href="#">View More</a>
+    </div>
+
+    <div class="card">
+        <h3>PM - Kisan Registration</h3>
+        <p>இந்திய அரசின் PM-Kisan திட்டத்தின் கீழ் விவசாயிகளுக்கு ஆண்டுதோறும் நிதி உதவி வழங்கப்படும் திட்டத்தில் பதிவு செய்யும் சேவை.</p>
+        <a href="#">View More</a>
+    </div>
+
+    <div class="card">
+        <h3>ABHA Card</h3>
+        <p>இந்திய அரசின் டிஜிட்டல் சுகாதார மிஷன் திட்டத்தின் கீழ் வழங்கப்படும் தனிப்பட்ட டிஜிட்டல் சுகாதார அடையாள அட்டை.</p>
+        <a href="#">View More</a>
+    </div>
+
+    <div class="card">
+        <h3>Senior Citizen Card</h3>
+        <p>மூத்த குடிமக்களுக்கு அரசு வழங்கும் சலுகைகள் மற்றும் நலத்திட்டங்களை பெற பயன்படும் அடையாள அட்டை.</p>
+        <a href="#">View More</a>
+    </div>
+
+    <div class="card">
+        <h3>Disability ID Card</h3>
+        <p>உடல் ஊனமுற்ற நபர்களுக்கு அரசு வழங்கும் நலத்திட்டங்கள் மற்றும் சலுகைகளை பெற பயன்படும் அதிகாரப்பூர்வ அடையாள அட்டை.</p>
+        <a href="#">View More</a>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2026 Veeran Tech Point — All Rights Reserved
+</div>
+
+</body>
+</html>
+
+
+
+
