@@ -40,5 +40,22 @@ We reserve the right to refuse service in case of misuse or fraudulent activity.
 தவறான பயன்பாடு அல்லது மோசடிச் செயல்பாடு ஏற்பட்டால் சேவையை மறுக்கும் உரிமை எங்களுக்கு உள்ளது.
 </p>
 </div>
+
+<script>
+
+fetch("maintenance.json")
+.then(res=>res.json())
+.then(data=>{
+
+if(data.site === "OFF"){
+
+window.location.href="maintenance.html";
+
+}
+
+});
+
+</script>
+  
 </body>
 </html>
