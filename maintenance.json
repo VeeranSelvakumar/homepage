@@ -1,16 +1,16 @@
 {
-"site":"ON",
+"site":                 "ON",
 
 "services":{
     "aadhaaraddres-req":"ON",
-    "aadhaaraddres":"ON",
-    "charges":"ON",
-    "disclaimer":"ON",
-    "identity":"ON",
-    "index":"ON",
-    "privacy":"ON",
-    "refund":"ON",
-    "terms":"ON",
-    "whatsnew":"ON"
+    "aadhaaraddres":    "ON",
+    "charges":          "ON",
+    "disclaimer":       "ON",
+    "identity":         "ON",
+    "index":            "ON",
+    "privacy":          "ON",
+    "refund":           "ON",
+    "terms":            "ON",
+    "whatsnew":         "ON"
 }
 }
