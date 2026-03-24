@@ -237,5 +237,21 @@ document.onkeydown = function(e) {
     © 2026 Veeran Tech Point — All Rights Reserved
 </div>
 
+<script>
+
+fetch("maintenance.json")
+.then(res=>res.json())
+.then(data=>{
+
+if(data.site === "OFF"){
+
+window.location.href="maintenance.html";
+
+}
+
+});
+
+</script>
+
 </body>
 </html>
