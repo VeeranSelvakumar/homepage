@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Identity Card Services - Veeran Tech Point</title>
+<script src="control.js"></script>
+
+<style>
+body {
+    user-select: none;
+    -webkit-user-select: none;
+}
+img {
+    pointer-events: none;
+}
+</style>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f6fa;
+}
+
+/* Header */
+header {
+    background: #1a73e8;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin: 4px 0 0;
+    font-size: 16px;
+    color: #dbeafe;
+}
+
+/* Attention Blink */
+.attention {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    animation: blinker 1s linear infinite;
+    color: #fff;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: center;
+    background: #0d47a1;
+    flex-wrap: wrap;
+}
+
+.navbar a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: block;
+    font-size: 15px;
+}
+
+.navbar a:hover {
+    background: #1a73e8;
+}
+
+/* Title Box */
+.title-box {
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.title-box h2 {
+    color: #0d47a1;
+    font-size: 30px;
+}
+
+.title-box p {
+    font-size: 18px;
+    color: #444;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Cards Section */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    margin: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.card h3 {
+    color: #0d47a1;
+    font-size: 20px;
+}
+
+.card p {
+    color: #333;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.card a {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #1a73e8;
+    font-weight: bold;
+}
+
+/* Footer */
+.footer {
+    background: #0d47a1;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 20px;
+}
+.new-badge1{
+background:green;
+color:white;
+font-size:10px;   /* font-size:10px; */
+padding:2px 6px;    /* padding:2px 6px; */
+border-radius:4px;
+margin-left:5px;
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.2);}
+100%{transform:scale(1);}
+}
+</style>
+</head>
+
+<body>
+
+<!--Right Click Disabled-->
+<script>
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+document.onkeydown = function(e) {
+    if (e.keyCode == 123) return false; // F12
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
+    if (e.ctrlKey && e.keyCode == 85) return false;
+    if (e.ctrlKey && e.keyCode == 83) return false;
+};
+</script>
+<!--End Right Click Disabled-->
+
+<!-- HEADER -->
+<header>
+  <h1>Veeran Tech Point</h1>
+  <p>Digital Services Made Easy!</p>
+  <p>Government Schemes & Certificate Information Hub</p>
+  <div class="attention">🔔 உங்களைத் தேடி உங்கள் இல்லங்களை நாடி — Veeran Tech Point 🔔</div>
+</header>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+    <a href="whatsnew.html" class="new-link">
+    WHAT'S NEW <span class=""></span>
+    </a>
+
+    <a href="index.html">HOME</a>
+    <a href="tn-schemes.html">TN SCHEMES</a>
+    <a href="tn-certificates.html">TN CERTIFICATES SERVICES</a>
+    <a href="indian-schemes.html">INDIAN SCHEMES</a>
+    <a href="indian-certificates.html">INDIAN CERTIFICATES SERVICES</a>
+    <a href="identity.html">IDENTITY CARDS</a>
+    <a href="exams.html">GOVERNMENT EXAMS</a>
+    <a href="other.html">OTHER SERVICES</a>
+    <a href="helpdesk.html">HELPDESK</a>
+</div>
+
+<!-- PAGE TITLE -->
+<div class="title-box">
+    <h2>🛠️ Other Services</h2>
+    <p>
+    உங்கள் தினசரி தேவைகளுக்கு உதவும் பல்வேறு ஆன்லைன் மற்றும் ஆஃப்லைன் சேவைகள் இங்கே வழங்கப்படுகின்றன. 
+    Resume உருவாக்கம், ஆன்லைன் விண்ணப்ப உதவி, document scan & PDF conversion, photo editing போன்ற சேவைகளை 
+    எளிதாகவும் விரைவாகவும் பெறலாம். 
+    
+    Veeran Tech Point மூலம் நம்பகமான மற்றும் தரமான சேவைகளை ஒரே இடத்தில் பெறுங்கள்.
+    </p>
+</div>
+
+<!-- OTHER SERVICES -->
+<div class="cards">
+<div class="card">
+    <h3>Resume Creation</h3>
+    <p>Professional Resume (Bio-Data) உருவாக்கம். வேலைக்கு apply செய்ய modern & ATS-friendly resume தயாரித்து தரப்படும்.</p>
+    <a href="resume1.html">View More</a>
+</div>
+
+<div class="card">
+    <h3>Email & Account Creation</h3>
+    <p>Gmail, DigiLocker, Government portal accounts create செய்து setup செய்து தரப்படும்.</p>
+    <a href="#">View More</a>
+</div>
+
+<div class="card">
+    <h3>Resume Correction</h3>
+    <p>Already இருக்கும் Resume-ஐ திருத்தி update செய்து தரப்படும். தவறுகள் சரி செய்து professional format-ல் மாற்றப்படும்.</p>
+    <a href="#">View More</a>
+</div>
+
+<div class="card">
+    <h3>Passport Size Photo Edit</h3>
+    <p>Passport size photo background change, resize மற்றும் அரசு விதிமுறைக்கு ஏற்ப edit செய்து தரப்படும்.</p>
+    <a href="#">View More</a>
+</div>
+
+<div class="card">
+    <h3>Certificate Download</h3>
+    <p>Aadhaar, PAN, Community, Income போன்ற certificates download செய்து print எடுத்து தரப்படும்.</p>
+    <a href="#">View More</a>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2026 Veeran Tech Point — All Rights Reserved
+</div>
+
+<script>
+
+fetch("maintenance.json")
+.then(res=>res.json())
+.then(data=>{
+
+if(data.site === "OFF"){
+
+window.location.href="maintenance.html";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
