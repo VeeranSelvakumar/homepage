@@ -1,442 +1,401 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Resume Generator</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-        <style>
-            body{
-                margin:0;
-                padding:0;
-                font-family:Times New Roman;
-                background:#f3f3f3;
-            }
+<head>
+<meta charset="UTF-8">
+<title>Resume Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-            .container{
-                width:1200px;
-                margin:auto;
-                background:white;
-                padding:20px;
-                border-radius:10px;
-                box-shadow:0 0 10px rgba(0,0,0,0.1);
-            }
 
-            input,textarea,select{
-                width:100%;
-                padding:8px;
-                margin:5px 0;
-            }
+<style>
+body{
+    margin:0;
+    padding:0;
+    font-family: 'Times New Roman', serif;
+    background:linear-gradient(135deg,#e3f2fd,#f5f5f5);
+}
 
-            button{
-                padding:10px;
-                background:#007bff;
-                color:white;
-                border:none;
-                width:100%;
-                margin-top:10px;
-            }
-            .resume{
-                width:794px;
-                min-height:1123px;
-                height:auto;
-                background:white;
-                margin:0 auto;
-                padding:40px;
-                box-sizing:border-box;
-                font-size:14px;
-                page-break-after:auto;
-            }
-            .template1 h1{
-                color:#333;
-            }
+/* Main Form Container */
+.container{
+    width:1100px;
+    margin:30px auto;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
 
-            .template2{
-                border-left:10px solid #007bff;
-            }
-            #resume h1{
-                text-align:center;
-                margin-top:0;
-            }
-            #resume{
-                width:794px;
-                min-height:1123px;
-                margin:20px auto;
-                background:white;
-                padding:40px;
-                box-sizing:border-box;
-            }
-                    .h2{
-                font-size:18px;
-                text-align:center;
-            }
-            table{
-                 page-break-inside:avoid;
-            }
-            tr{
-                page-break-inside:avoid;
-            }
-        </style>
-    </head>
+/* Inputs */
+input,textarea,select{
+    width:100%;
+    padding:10px;
+    margin:6px 0;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:14px;
+    transition:0.2s;
+}
 
-    <body>
-        <div class="container">
+input:focus,textarea:focus{
+    border-color:#007bff;
+    outline:none;
+    box-shadow:0 0 5px rgba(0,123,255,0.3);
+}
 
-            <h2 style="text-align:center">Instant Resume</h2>
+/* Buttons */
+button{
+    padding:10px;
+    background:linear-gradient(135deg,#007bff,#0056b3);
+    color:white;
+    border:none;
+    border-radius:6px;
+    width:100%;
+    margin-top:10px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
 
-            <input id="name" placeholder="Full Name">
-            <div id="addressContainer">
-                <input class="address" placeholder="Address Line">
-            </div>
-            <button type="button" onclick="addAddress()">Add Address Line</button>
-            <input id="phone" placeholder="Phone">
-            <input id="email" placeholder="Email">
-            <textarea id="objective" placeholder="Career Objective"></textarea>
-            <table id="education" border="1" style="width:100%;border-collapse:collapse;margin-top:10px">
-                <tr>
-                    <th>Qualification</th>
-                    <th style="text-align:left">University/Board</th>
-                    <th>Year of Passing</th>
-                    <th>Percentage</th>
-                </tr>
-                <tr>
-                    <td><input id="SSLC" placeholder="SSLC" style="text-align:center"></td>
-                    <td><input id="SSLC_board" placeholder="Board"></td>
-                    <td><input id="SSLC_year" placeholder="Year"></td>
-                    <td><input id="SSLC_percentage" placeholder="Percentage"></td>
+button:hover{
+    transform:scale(1.02);
+    background:linear-gradient(135deg,#0056b3,#004494);
+}
 
-                </tr>
-                <tr>
-                    <td><input id="HSC" placeholder="HSC" style="text-align:center"></td>
-                    <td><input id="HSC_board" placeholder="Board"></td>
-                    <td><input id="HSC_year" placeholder="Year"></td>
-                    <td><input id="HSC_percentage" placeholder="Percentage"></td>
-                </tr>
-                <tr>
-                    <td><input id="UG" placeholder="UG" style="text-align:center"></td>
-                    <td><input id="UG_board" placeholder="Board"></td>
-                    <td><input id="UG_year" placeholder="Year"></td>
-                    <td><input id="UG_percentage" placeholder="Percentage"></td>
-                </tr>
-                <tr>
-                    <td><input id="PG" placeholder="PG" style="text-align:center"></td>
-                    <td><input id="PG_board" placeholder="Board"></td>
-                    <td><input id="PG_year" placeholder="Year"></td>
-                    <td><input id="PG_percentage" placeholder="Percentage"></td>
-                </tr>
-                <tr>
-                    <td><input id="mphil" placeholder="M. Phil" style="text-align:center"></td>
-                    <td><input id="mphil_board" placeholder="Board"></td>
-                    <td><input id="mphil_year" placeholder="Year"></td>
-                    <td><input id="mphil_percentage" placeholder="Percentage"></td>
-                </tr>
-                <tr>
-                    <td><input id="phd" placeholder="Ph. D" style="text-align:center"></td>
-                    <td><input id="phd_board" placeholder="Board"></td>
-                    <td><input id="phd_year" placeholder="Year"></td>
-                    <td><input id="phd_percentage" placeholder="Percentage"></td>
-                </tr>            
-            </table>
-            <div id="skillContainer">
-                <input class="skill" placeholder="Skill">
-            </div>
-            <button onclick="addSkill()">Add Skill</button>
+/* Resume Preview */
+.resume{
+    width:794px;
+    min-height:1123px;
+    background:white;
+    margin:30px auto;
+    padding:40px;
+    box-sizing:border-box;
+    font-size:14px;
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
 
-            <input id="experience" placeholder="Experience">
+/* Headings */
+#resume h1{
+    text-align:center;
+    letter-spacing:1px;
+}
 
-            <table id="personal_details">
-                <tr>
-                    <td>Father's Name</td>
-                    <td>:</td>
-                    <td><input id="fathersname" placeholder= "Father's Name"></td>
-                </tr>
-                <tr>
-                    <td>Date of Birth</td>
-                    <td>:</td>
-                    <td><input id="dateofbirth" placeholder="Date of Birth"></td>
-                </tr>
-                <tr>
-                    <td>Gender</td>
-                    <td>:</td>
-                    <td><input id="gender" placeholder="Gender"></td>
-                </tr>
-                <tr>
-                    <td>Nationality</td>
-                    <td>:</td>
-                    <td><input id="nationality" placeholder="Nationality"></td>
-                </tr>
-                <tr>
-                    <td>Marital Status</td>
-                    <td>:</td>
-                    <td><input id="marital_status" placeholder="Marital Status"></td>
-                </tr>
-                <tr>
-                    <td>Language Known</td>
-                    <td>:</td>
-                    <td><input id="language_known" placeholder="Language Known"></td>
-                </tr>
-            </table>
-            <select id="template">
-                <option value="t1">Template 1</option>
-                <option value="t2">Template 2</option>
-                <option value="t3">Template 3</option>
-                <option value="t4">Template 4</option>
-                <option value="t5">Template 5</option>
-            </select>
-            <button onclick="generateResume()">Preview Resume</button>
-            <button onclick="printResume()">Print</button>
-        </div>
+#resume h2{
+    margin-bottom:5px;
+}
 
-        <div id="resume" class="resume"></div>
+#resume h3{
+    border-bottom:2px solid #007bff;
+    padding-bottom:3px;
+    margin-top:20px;
+    color:#333;
+}
 
-        <script>
-            function generateResume(){
+/* Tables */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
 
-            let name = document.getElementById("name").value
-            let addressInputs = document.querySelectorAll(".address")
-            let addressHTML = ""
-            addressInputs.forEach(a=>{
-                if(a.value){
-                addressHTML += `<p>${a.value}</p>`
-                }
-            })
-            let phone = document.getElementById("phone").value
-            let email = document.getElementById("email").value
-            let objective = document.getElementById("objective").value
- 
-            let sslc = document.getElementById("SSLC").value
-            let sslc_board = document.getElementById("SSLC_board").value
-            let sslc_year = document.getElementById("SSLC_year").value
-            let sslc_percentage = document.getElementById("SSLC_percentage").value
-            let hsc = document.getElementById("HSC").value
-            let hsc_board = document.getElementById("HSC_board").value
-            let hsc_year = document.getElementById("HSC_year").value
-            let hsc_percentage = document.getElementById("HSC_percentage").value
-            let ug = document.getElementById("UG").value
-            let ug_board = document.getElementById("UG_board").value
-            let ug_year = document.getElementById("UG_year").value
-            let ug_percentage = document.getElementById("UG_percentage").value
-            let mphil = document.getElementById("mphil").value
-            let mphil_board = document.getElementById("mphil_board").value
-            let mphil_year = document.getElementById("mphil_year").value
-            let mphil_percentage = document.getElementById("mphil_percentage").value
-            let phd = document.getElementById("phd").value
-            let phd_board = document.getElementById("phd_board").value
-            let phd_year = document.getElementById("phd_year").value
-            let phd_percentage = document.getElementById("phd_percentage").value
-            let skills = document.querySelectorAll(".skill")
-            let skillHTML = "<ul>"
+table,th,td{
+    border:1px solid #ccc;
+}
 
-            skills.forEach(s=>{
-                if(s.value){
-                    skillHTML += `<li>${s.value}</li>`
-                }
-            })
-            skillHTML += "</ul>"
-            let experience = document.getElementById("experience").value
-            let fathersname = document.getElementById("fathersname").value
-            let dateofbirth = document.getElementById("dateofbirth").value
-            let gender = document.getElementById("gender").value
-            let nationality = document.getElementById("nationality").value
-            let marital_status = document.getElementById("marital_status").value
-            let language_known = document.getElementById("language_known").value
-            let template = document.getElementById("template").value
+th{
+    background:#f0f8ff;
+}
 
-            let html = ""
+th,td{
+    padding:8px;
+    text-align:left;
+}
 
-            if(template=="t1"){
+/* Skills */
+ul{
+    padding-left:20px;
+}
 
-            html = `
-            <h1 style="text-align:center;">Resume</h1>
-            <h2>${name}</h2>
-            ${addressHTML}
-            <p>Mobile:${phone}</p>
-            <p>Mail ID:${email}</p>
-            <hr>
+/* Personal Details spacing */
+#resume div[style*="display:flex"]{
+    margin-bottom:4px;
+}
 
-            <h3>Objective</h3>
-            <p>${objective}</p>
+/* Declaration spacing */
+#resume p{
+    line-height:1.6;
+}
 
-            <h3>Education</h3>
+</style>
+</head>
 
-            <table border="1" style="width:100%;border-collapse:collapse;margin-top:10px">
-                <tr>
-                    <th>Qualification</th>
-                    <th>University/Board</th>
-                    <th>Year</th>
-                    <th>Percentage</th>
-                </tr>
-                ${educationRows}
-                    <tr>
-                        <td style="text-align:center">${sslc}</td>
-                        <td>${sslc_board}</td>
-                        <td>${sslc_year}</td>
-                        <td>${sslc_percentage}</td>
+<body>
+
+<div class="container">
+
+<h2 style="text-align:center">Instant Resume</h2>
+
+<input id="name" placeholder="Full Name">
+
+<div id="addressContainer">
+<input class="address" placeholder="Address Line">
+</div>
+<button type="button" onclick="addAddress()">Add Address Line</button>
+
+<input id="phone" placeholder="Phone">
+<input id="email" placeholder="Email">
+<textarea id="objective" placeholder="Career Objective"></textarea>
+
+<table border="1" style="width:100%;border-collapse:collapse">
+<tr>
+<th>Qualification</th>
+<th>University/Board</th>
+<th>Year</th>
+<th>Percentage</th>
+</tr>
+<tr>
+<td><input id="SSLC"></td>
+<td><input id="SSLC_board"></td>
+<td><input id="SSLC_year"></td>
+<td><input id="SSLC_percentage"></td>
+</tr>
+<tr>
+<td><input id="HSC"></td>
+<td><input id="HSC_board"></td>
+<td><input id="HSC_year"></td>
+<td><input id="HSC_percentage"></td>
+</tr>
+<tr>
+<td><input id="UG"></td>
+<td><input id="UG_board"></td>
+<td><input id="UG_year"></td>
+<td><input id="UG_percentage"></td>
+</tr>
+<tr>
+<td><input id="mphil"></td>
+<td><input id="mphil_board"></td>
+<td><input id="mphil_year"></td>
+<td><input id="mphil_percentage"></td>
+</tr>
+<tr>
+<td><input id="phd"></td>
+<td><input id="phd_board"></td>
+<td><input id="phd_year"></td>
+<td><input id="phd_percentage"></td>
+</tr>
+</table>
+
+<div id="skillContainer">
+<input class="skill" placeholder="Skill">
+</div>
+<button onclick="addSkill()">Add Skill</button>
+
+<input id="experience" placeholder="Experience">
+
+<table id="personaldetails">
+<tr><td>Father</td><td>:</td><td><input id="fathersname"></td></tr>
+<tr><td>DOB</td><td>:</td><td><input id="dateofbirth"></td></tr>
+<tr><td>Gender</td><td>:</td><td><input id="gender"></td></tr>
+<tr><td>Nationality</td><td>:</td><td><input id="nationality"></td></tr>
+<tr><td>Marital</td><td>:</td><td><input id="marital_status"></td></tr>
+<tr><td>Language</td><td>:</td><td><input id="language_known"></td></tr>
+</table>
+
+<button onclick="generateResume()">Preview</button>
+<button onclick="printResume()">Print</button>
+
+</div>
+
+<div id="resume" class="resume"></div>
+
+<script>
+
+function generateResume(){
+
+let name = document.getElementById("name").value
+
+let addressHTML = ""
+document.querySelectorAll(".address").forEach(a=>{
+    if(a.value) addressHTML += `<p>${a.value}</p>`
+})
+
+let phone = document.getElementById("phone").value
+let email = document.getElementById("email").value
+let objective = document.getElementById("objective").value
+
+let sslc = document.getElementById("SSLC").value
+let sslc_board = document.getElementById("SSLC_board").value
+let sslc_year = document.getElementById("SSLC_year").value
+let sslc_percentage = document.getElementById("SSLC_percentage").value
+
+let hsc = document.getElementById("HSC").value
+let hsc_board = document.getElementById("HSC_board").value
+let hsc_year = document.getElementById("HSC_year").value
+let hsc_percentage = document.getElementById("HSC_percentage").value
+
+let ug = document.getElementById("UG").value
+let ug_board = document.getElementById("UG_board").value
+let ug_year = document.getElementById("UG_year").value
+let ug_percentage = document.getElementById("UG_percentage").value
+
+let mphil = document.getElementById("mphil").value
+let mphil_board = document.getElementById("mphil_board").value
+let mphil_year = document.getElementById("mphil_year").value
+let mphil_percentage = document.getElementById("mphil_percentage").value
+
+let phd = document.getElementById("phd").value
+let phd_board = document.getElementById("phd_board").value
+let phd_year = document.getElementById("phd_year").value
+let phd_percentage = document.getElementById("phd_percentage").value
+
+let fathersname = document.getElementById("fathersname").value
+let dateofbirth = document.getElementById("dateofbirth").value
+let gender = document.getElementById("gender").value
+let nationality = document.getElementById("nationality").value
+let marital_status = document.getElementById("marital_status").value
+let language_known = document.getElementById("language_known").value
+
+let educationRows = ""
+
+if(sslc || sslc_board || sslc_year || sslc_percentage){
+educationRows += `<tr><td>${sslc}</td><td>${sslc_board}</td><td>${sslc_year}</td><td>${sslc_percentage}</td></tr>`
+}
+if(hsc || hsc_board || hsc_year || hsc_percentage){
+educationRows += `<tr><td>${hsc}</td><td>${hsc_board}</td><td>${hsc_year}</td><td>${hsc_percentage}</td></tr>`
+}
+if(ug || ug_board || ug_year || ug_percentage){
+educationRows += `<tr><td>${ug}</td><td>${ug_board}</td><td>${ug_year}</td><td>${ug_percentage}</td></tr>`
+}
+if(mphil || mphil_board || mphil_year || mphil_percentage){
+educationRows += `<tr><td>${mphil}</td><td>${mphil_board}</td><td>${mphil_year}</td><td>${mphil_percentage}</td></tr>`
+}
+if(phd || phd_board || phd_year || phd_percentage){
+educationRows += `<tr><td>${phd}</td><td>${phd_board}</td><td>${phd_year}</td><td>${phd_percentage}</td></tr>`
+}
+
+let skillHTML = ""
+let hasSkill = false
+
+document.querySelectorAll(".skill").forEach(s=>{
+    if(s.value){
+        if(!hasSkill){
+            skillHTML = "<ul>"
+            hasSkill = true
+        }
+        skillHTML += `<li>${s.value}</li>`
+    }
+})
+
+if(hasSkill){
+    skillHTML += "</ul>"
+}
+
+let html = `
+<h1 style="text-align:center;">Resume</h1>
+<h2>${name}</h2>
+${addressHTML}
+<p>Mobile: ${phone}</p>
+<p>Email: ${email}</p>
+
+<h3>Objective</h3>
+<p>${objective}</p>
+
+<h3>Education</h3>
+<table border="1" style="width:100%;border-collapse:collapse">
+<tr><th>Qualification</th><th>University/Board</th><th>Year of Passing</th><th>Percentage</th></tr>
+${educationRows}
+</table>
+
+${hasSkill ? `<h3>Skill</h3>${skillHTML}` : ""}
+<h3>Personal Details</h3>
+
+<div style="margin-top:10px; line-height:1.8;">
+
+    <div style="display:flex;">
+        <div style="width:200px;"><b>Father's Name</b></div>
+        <div style="width:20px;">:</div>
+        <div>${fathersname}</div>
+    </div>
+
+    <div style="display:flex;">
+        <div style="width:200px;"><b>Date of Birth</b></div>
+        <div style="width:20px;">:</div>
+        <div>${dateofbirth}</div>
+    </div>
+
+    <div style="display:flex;">
+        <div style="width:200px;"><b>Gender</b></div>
+        <div style="width:20px;">:</div>
+        <div>${gender}</div>
+    </div>
+
+    <div style="display:flex;">
+        <div style="width:200px;"><b>Nationality</b></div>
+        <div style="width:20px;">:</div>
+        <div>${nationality}</div>
+    </div>
+
+    <div style="display:flex;">
+        <div style="width:200px;"><b>Marital Status</b></div>
+        <div style="width:20px;">:</div>
+        <div>${marital_status}</div>
+    </div>
+
+    <div style="display:flex;">
+        <div style="width:200px;"><b>Language Known</b></div>
+        <div style="width:20px;">:</div>
+        <div>${language_known}</div>
+    </div>
+
+</div>
+
+ <h3>Declaration</h3>
+<p>I hereby declare that the above information is true.</p>
+
+<div style="margin-top:20px; width:100%;">
     
-                    </tr>
-                    <tr>
-                        <td style="text-align:center">${hsc}</td>
-                        <td>${hsc_board}</td>
-                        <td>${hsc_year}</td>
-                        <td>${hsc_percentage}</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center">${ug}</td>
-                        <td>${ug_board}</td>
-                        <td>${ug_year}</td>
-                        <td>${ug_percentage}</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center">${mphil}</td>
-                        <td>${mphil_board}</td>
-                        <td>${mphil_year}</td>
-                        <td>${mphil_percentage}</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center">${phd}</td>
-                        <td>${phd_board}</td>
-                        <td>${phd_year}</td>
-                        <td>${phd_percentage}</td>
-                    </tr>
-                </table>
-            
-            <h3>Skill</h3>
-            ${skillHTML}
+    <div style="width:200px; margin-left:auto; text-align:center;">
+        <p>Signature</p>
+    </div>
+<br><br><br>
+    <div style="width:100%; transform: translateX(562px); margin-top:20px;">
+        
+    </div>
 
-            <h3>Experience</h3>
-            <p>${experience}</p>            
+</div>
 
-            <h3>Personal Details</h3>
-            <div>
-                <p><b>Father's Name</b> &nbsp;&nbsp;&nbsp;&nbsp;: ${fathersname}</p>
-                <p><b>Date of Birth</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ${dateofbirth}</p>
-                <p><b>Gender</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ${gender}</p>
-                <p><b>Nationality</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ${nationality}</p>
-                <p><b>Marital Status</b> : ${marital_status}</p>
-                <p><b>Language Known</b> : ${language_known}</p>
-            </div>
-            <h3>Declaration</h3>
-            <p>I hereby declare that the above information is true.</p>
-            <br><br>
-            <p>Date: ___/___/________
-            <p>Place:________________
-            <div style="text-align:right; margin-top:40px">
-            <p>Signature</p>
-            <p><b>${name.toUpperCase()}</b></p>
-            </div>
-            
-            `
+<p>Date: ___/___/________
+<p>Place:________________
 
-            }
 
-            document.getElementById("resume").innerHTML = html
+`
 
-            }
-            function printResume(){
+document.getElementById("resume").innerHTML = html
+}
 
-                let educationRows = ""
+function printResume(){
+generateResume()
+let content = document.getElementById("resume").innerHTML
 
-                if(sslc || sslc_board || sslc_year || sslc_percentage){
-                    educationRows += `
-                    <tr>
-                        <td style="text-align:center">${sslc}</td>
-                        <td>${sslc_board}</td>
-                        <td>${sslc_year}</td>
-                        <td>${sslc_percentage}</td>
-                    </tr>`
-                }
+let win = window.open("")
+win.document.write(content)
+win.print()
+}
 
-                if(hsc || hsc_board || hsc_year || hsc_percentage){
-                    educationRows += `
-                    <tr>
-                        <td style="text-align:center">${hsc}</td>
-                        <td>${hsc_board}</td>
-                        <td>${hsc_year}</td>
-                        <td>${hsc_percentage}</td>
-                    </tr>`
-                }
+function addAddress(){
+let input = document.createElement("input")
+input.className="address"
+input.placeholder="Address Line"
+document.getElementById("addressContainer").appendChild(input)
+}
 
-                if(ug || ug_board || ug_year || ug_percentage){
-                    educationRows += `
-                    <tr>
-                        <td style="text-align:center">${ug}</td>
-                        <td>${ug_board}</td>
-                        <td>${ug_year}</td>
-                        <td>${ug_percentage}</td>
-                    </tr>`
-                }
+function addSkill(){
+let input = document.createElement("input")
+input.className="skill"
+input.placeholder="Skill"
+document.getElementById("skillContainer").appendChild(input)
+}
 
-                if(mphil || mphil_board || mphil_year || mphil_percentage){
-                    educationRows += `
-                    <tr>
-                        <td style="text-align:center">${mphil}</td>
-                        <td>${mphil_board}</td>
-                        <td>${mphil_year}</td>
-                        <td>${mphil_percentage}</td>
-                    </tr>`
-                }
+</script>
 
-                if(phd || phd_board || phd_year || phd_percentage){
-                    educationRows += `
-                    <tr>
-                        <td style="text-align:center">${phd}</td>
-                        <td>${phd_board}</td>
-                        <td>${phd_year}</td>
-                        <td>${phd_percentage}</td>
-                    </tr>`
-                }
-
-                let content = document.getElementById("resume").innerHTML;
-
-                let win = window.open("", "", "width=900,height=700");
-
-                win.document.write(`
-                    <html>
-                    <head>
-                        <title>Print Resume</title>
-                        <style>
-                            body{
-                                font-family: Times New Roman;
-                                padding:20px;
-                            }
-                            h1{
-                                text-align:center;  /* 🔥 main fix */
-                            }
-                            table{
-                                width:100%;
-                                border-collapse:collapse;
-                            }
-                            table,th,td{
-                                border:1px solid black;
-                            }
-                            th,td{
-                                padding:5px;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        ${content}
-                    </body>
-                    </html>
-                `);
-
-                win.document.close();
-
-                win.focus();
-                win.print();
-            }
-            function addAddress(){
-                let div = document.createElement("input")
-                div.className = "address"
-                div.placeholder = "Address Line"
-                document.getElementById("addressContainer").appendChild(div)
-            }
-            function addSkill(){
-                let input =
-                document.createElement("input")
-                input.className = "skill"
-                input.placeholder = "Skill"
-                document.getElementById("skillContainer").appendChild(input)
-            }
-        </script>
-    </body>
+</body>
 </html>
