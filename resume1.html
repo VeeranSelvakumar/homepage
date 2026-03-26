@@ -3,8 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Resume Generator</title>
+<script src="control.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
+<style>
+    body {
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    img {
+        pointer-events: none;
+    }
+</style>  
 
 <style>
 body{
@@ -130,6 +139,20 @@ ul{
 
 <body>
 
+<!--Right Click Disabled-->
+<script>
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+document.onkeydown = function(e) {
+    if (e.keyCode == 123) return false; // F12
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
+    if (e.ctrlKey && e.keyCode == 85) return false;
+    if (e.ctrlKey && e.keyCode == 83) return false;
+};
+</script>
+<!--End Right Click Disabled-->
+
 <div class="container">
 
 <h2 style="text-align:center">Instant Resume</h2>
@@ -149,7 +172,7 @@ ul{
 <tr>
 <th>Qualification</th>
 <th>University/Board</th>
-<th>Year</th>
+<th>Year of Passing</th>
 <th>Percentage</th>
 </tr>
 <tr>
@@ -192,12 +215,12 @@ ul{
 <input id="experience" placeholder="Experience">
 
 <table id="personaldetails">
-<tr><td>Father</td><td>:</td><td><input id="fathersname"></td></tr>
-<tr><td>DOB</td><td>:</td><td><input id="dateofbirth"></td></tr>
+<tr><td>Father's Name</td><td>:</td><td><input id="fathersname"></td></tr>
+<tr><td>Date of Birth</td><td>:</td><td><input id="dateofbirth"></td></tr>
 <tr><td>Gender</td><td>:</td><td><input id="gender"></td></tr>
 <tr><td>Nationality</td><td>:</td><td><input id="nationality"></td></tr>
-<tr><td>Marital</td><td>:</td><td><input id="marital_status"></td></tr>
-<tr><td>Language</td><td>:</td><td><input id="language_known"></td></tr>
+<tr><td>Marital Status</td><td>:</td><td><input id="marital_status"></td></tr>
+<tr><td>Language Known</td><td>:</td><td><input id="language_known"></td></tr>
 </table>
 
 <button onclick="generateResume()">Preview</button>
@@ -394,6 +417,21 @@ input.className="skill"
 input.placeholder="Skill"
 document.getElementById("skillContainer").appendChild(input)
 }
+
+</script>
+<script>
+
+fetch("maintenance.json")
+.then(res=>res.json())
+.then(data=>{
+
+if(data.site === "OFF"){
+
+window.location.href="maintenance.html";
+
+}
+
+});
 
 </script>
 
