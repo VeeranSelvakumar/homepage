@@ -11,6 +11,8 @@
     "privacy":          "ON",
     "refund":           "ON",
     "terms":            "ON",
-    "whatsnew":         "ON"
+    "whatsnew":         "ON",
+    "resumereq":        "ON",
+    "resume1":          "ON"
 }
 }
