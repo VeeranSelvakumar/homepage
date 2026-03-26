@@ -79,7 +79,7 @@ header p {
     padding: 18px;
     font-size: 18px;
     font-weight: bold;
-    margin: 20px;
+    margin: 15px;
     border-radius: 10px;
 }
 
@@ -111,6 +111,7 @@ header p {
 /* Home Section */
 .card {
     background: white;
+    width: 95%;
     margin: 20px auto;
     padding: 25px;
     border-radius: 10px;
@@ -153,8 +154,8 @@ header p {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    padding: 20px;
-    margin: 20px;
+    padding: 15px;
+    margin: 10px;
     position: relative;
     z-index: 1;
 }
@@ -296,6 +297,8 @@ font-weight:bold;
 text-decoration:none;
 }
 .news-bar{
+width:100%;
+overflow:hidden;
 display:flex;
 background:#ffcc00;
 color:#000000;
@@ -331,9 +334,80 @@ animation:scrollNews 45s linear infinite;
 100%{transform:translateX(-100%);}
 }
 h2 {
-    text-align: justify;
+    text-align: left;
 }
+/* ✅ MOBILE RESPONSIVE FIX */
+@media (max-width: 768px){
 
+    header h1{
+        font-size:22px;
+    }
+
+    header p{
+        font-size:13px;
+    }
+
+    .attention{
+        font-size:14px;
+    }
+
+    .navbar{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar a{
+        width:90%;
+        text-align:center;
+        font-size:14px;
+        padding:10px;
+    }
+
+    .banner{
+        font-size:14px;
+        padding:12px;
+        margin:10px;
+    }
+
+    .card{
+        width:95%;
+        padding:15px;
+        margin:10px auto;
+    }
+
+    .title{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .title h2{
+        font-size:18px;
+    }
+
+    .bullets li{
+        font-size:14px;
+    }
+
+    .highlight p{
+        font-size:14px;
+    }
+
+    .news-bar{
+        font-size:12px;
+        padding:6px;
+    }
+
+    .update-box{
+        margin:15px;
+        padding:12px;
+    }
+
+    .policy-links a{
+        display:block;
+        margin:5px 0;
+    }
+
+}
 </style>
 </head>
 <body>
