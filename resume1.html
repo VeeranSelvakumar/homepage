@@ -258,13 +258,14 @@
 
             <h3>Education</h3>
 
-                <table border="1" style="width:100%;border-collapse:collapse;margin-top:10px">
-                    <tr>
-                        <th>Qualification</th>
-                        <th style="text-align:left">University/Board</th>
-                        <th>Year of Passing</th>
-                        <th>Percentage</th>
-                    </tr>
+            <table border="1" style="width:100%;border-collapse:collapse;margin-top:10px">
+                <tr>
+                    <th>Qualification</th>
+                    <th>University/Board</th>
+                    <th>Year</th>
+                    <th>Percentage</th>
+                </tr>
+                ${educationRows}
                     <tr>
                         <td style="text-align:center">${sslc}</td>
                         <td>${sslc_board}</td>
@@ -305,38 +306,14 @@
             <p>${experience}</p>            
 
             <h3>Personal Details</h3>
-            <table>
-                <tr>
-                    <td>Father's Name</td>
-                    <td>:</td>
-                    <td>${fathersname}</td>
-                </tr>
-                <tr>
-                    <td>Date of Birth</td>
-                    <td>:</td>
-                    <td>${dateofbirth}</td>
-                </tr>
-                <tr>
-                    <td>Gender</td>
-                    <td>:</td>
-                    <td>${gender}</td>
-                </tr>
-                <tr>
-                    <td>Nationality</td>
-                    <td>:</td>
-                    <td>${nationality}</td>
-                </tr>
-                <tr>
-                    <td>Marital Status</td>
-                    <td>:</td>
-                    <td>${marital_status}</td>
-                </tr>
-                <tr>
-                    <td>Language Known</td>
-                    <td>:</td>
-                    <td>${language_known}</td>
-                </tr>
-            </table>
+            <div>
+                <p><b>Father's Name</b> &nbsp;&nbsp;&nbsp;&nbsp;: ${fathersname}</p>
+                <p><b>Date of Birth</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ${dateofbirth}</p>
+                <p><b>Gender</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ${gender}</p>
+                <p><b>Nationality</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ${nationality}</p>
+                <p><b>Marital Status</b> : ${marital_status}</p>
+                <p><b>Language Known</b> : ${language_known}</p>
+            </div>
             <h3>Declaration</h3>
             <p>I hereby declare that the above information is true.</p>
             <br><br>
@@ -356,7 +333,57 @@
             }
             function printResume(){
 
-                generateResume();
+                let educationRows = ""
+
+                if(sslc || sslc_board || sslc_year || sslc_percentage){
+                    educationRows += `
+                    <tr>
+                        <td style="text-align:center">${sslc}</td>
+                        <td>${sslc_board}</td>
+                        <td>${sslc_year}</td>
+                        <td>${sslc_percentage}</td>
+                    </tr>`
+                }
+
+                if(hsc || hsc_board || hsc_year || hsc_percentage){
+                    educationRows += `
+                    <tr>
+                        <td style="text-align:center">${hsc}</td>
+                        <td>${hsc_board}</td>
+                        <td>${hsc_year}</td>
+                        <td>${hsc_percentage}</td>
+                    </tr>`
+                }
+
+                if(ug || ug_board || ug_year || ug_percentage){
+                    educationRows += `
+                    <tr>
+                        <td style="text-align:center">${ug}</td>
+                        <td>${ug_board}</td>
+                        <td>${ug_year}</td>
+                        <td>${ug_percentage}</td>
+                    </tr>`
+                }
+
+                if(mphil || mphil_board || mphil_year || mphil_percentage){
+                    educationRows += `
+                    <tr>
+                        <td style="text-align:center">${mphil}</td>
+                        <td>${mphil_board}</td>
+                        <td>${mphil_year}</td>
+                        <td>${mphil_percentage}</td>
+                    </tr>`
+                }
+
+                if(phd || phd_board || phd_year || phd_percentage){
+                    educationRows += `
+                    <tr>
+                        <td style="text-align:center">${phd}</td>
+                        <td>${phd_board}</td>
+                        <td>${phd_year}</td>
+                        <td>${phd_percentage}</td>
+                    </tr>`
+                }
 
                 let content = document.getElementById("resume").innerHTML;
 
