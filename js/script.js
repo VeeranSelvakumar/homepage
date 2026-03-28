@@ -44,6 +44,53 @@ Required Details
 </span>
 </h3>`;
 
+let documentHTML = "";
+
+if(
+  SERVICE_CONFIG.fields.some(f=>f.section==="document") ||
+  (SERVICE_CONFIG.files && SERVICE_CONFIG.files.length > 0)
+){
+
+  documentHTML += `
+  <h3 style="grid-column:1/-1;">
+    Required Files
+  </h3>`;
+
+  // 👉 1. FIRST → document fields (dropdowns)
+  SERVICE_CONFIG.fields.forEach(f=>{
+    if(f.section === "document"){
+
+      let html = `
+      <div class="form-group">
+        <label class="${f.required ? 'required-label' : ''}">
+          ${f.label}${f.required ? " *" : ""}
+        </label>
+
+        <select name="${f.id}" ${f.required?"required":""}>
+          <option value="">-- Select --</option>
+          ${(f.options || []).map(o=>`<option>${o}</option>`).join("")}
+        </select>
+      </div>`;
+
+      documentHTML += html;
+    }
+  });
+
+  // 👉 2. LAST → file upload (photo)
+  SERVICE_CONFIG.files.forEach(f=>{
+
+    let fileInput = `
+    <div class="form-group">
+      <label class="${f.required ? 'required-label' : ''}">
+        ${f.label}${f.required ? " *" : ""}
+      </label>
+      <input type="file" data-id="${f.id}" accept="image/jpeg" ${f.required?"required":""}>
+    </div>`;
+
+    documentHTML += fileInput;
+  });
+
+}
 SERVICE_CONFIG.fields.forEach(f=>{
 
 let html = `
@@ -88,22 +135,43 @@ html+=`</div>`;
 
 if(f.section==="contact"){
 contactHTML+=html;
-}else{
+}
+else if(f.section==="required"){
 requiredHTML+=html;
 }
 
+
 });
 
-form.innerHTML = contactHTML + requiredHTML;
+form.innerHTML = contactHTML + requiredHTML + documentHTML;
 
 
 /* Files */
-SERVICE_CONFIG.files.forEach(f=>{
-  form.insertAdjacentHTML("beforeend",
-    `<label>${f.label}${f.required?" *":""}</label>
-     <input type="file" data-id="${f.id}" ${f.required?"required":""}>`
-  );
-});
+
+
+// ✅ CONSENT FIRST
+form.insertAdjacentHTML(
+"beforeend",
+`<div style="grid-column:1/-1; margin-top:15px;">
+  <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer; line-height:1.5;">
+    
+    <input type="checkbox" id="consent" required style="margin-top:4px;">
+
+    <span style="text-align:justify; color:red">
+      நான் வழங்கும் அனைத்து தகவல்களும் சரியானவை என்று உறுதிப்படுத்துகிறேன்.  
+      Veeran Tech Point ஒரு தனியார் சேவை மையமாக இருந்து, அரசு சேவைகளுக்கான விண்ணப்பத்தை சமர்ப்பிக்க உதவி மட்டுமே செய்கிறது.  
+      நான் சேவை கட்டணத்தை செலுத்த ஒப்புக்கொள்கிறேன்.  
+
+      <br><br>
+
+      I confirm that all the information provided by me is true and correct.  
+      Veeran Tech Point is a private service provider and only assists in submitting applications for government services.  
+      I agree to pay the applicable service charges.
+    </span>
+
+  </label>
+</div>`
+);
 
 form.insertAdjacentHTML(
 "beforeend",
@@ -117,7 +185,7 @@ form.insertAdjacentHTML(
 document.getElementById("upiBtn").href =
 `upi://pay?pa=rselvakumar906@okaxis&pn=Selvakumar&am=${PAYMENT_AMOUNT}&cu=INR`;
 
-document.querySelector("#upiBtn button").innerText = `Pay ₹${PAYMENT_AMOUNT} Now`;
+
 
 
 /* Payment restore */
@@ -147,6 +215,12 @@ function showPaidPage(){
 
 form.addEventListener("submit", async e=>{
 
+  if(!document.getElementById("consent").checked){
+    alert("Please accept the terms and consent");
+    loading.style.display="none";
+    return;
+  }
+
   e.preventDefault();
   loading.style.display="flex";
 
@@ -175,27 +249,39 @@ form.addEventListener("submit", async e=>{
   });
 
 
-  for(const f of SERVICE_CONFIG.files){
+for(const f of SERVICE_CONFIG.files){
 
-    const input = form.querySelector(`input[data-id="${f.id}"]`);
-    const file = input.files[0];
+  const input = form.querySelector(`input[data-id="${f.id}"]`);
+  const file = input.files[0];
 
-    if(file){
+  if(file){
 
-      const base64 = await toBase64(file);
-      fd.append(f.id, base64);
-
-    }else{
-
-      if(f.required){
-        alert("Please upload: " + f.label);
-        loading.style.display="none";
-        return;
-      }
-
-      fd.append(f.id, "");
+    if(file.type !== "image/jpeg"){
+      alert(f.label + " must be JPG format only");
+      loading.style.display="none";
+      return;
     }
+
+    if(file.size > 2 * 1024 * 1024){
+      alert(f.label + " must be less than 2MB");
+      loading.style.display="none";
+      return;
+    }
+
+    const base64 = await toBase64(file);
+    fd.append(f.id, base64);
+
+  }else{
+
+    if(f.required){
+      alert("Please upload: " + f.label);
+      loading.style.display="none";
+      return;
+    }
+
+    fd.append(f.id, "");
   }
+}
   try{
 
     const res = await fetch(
