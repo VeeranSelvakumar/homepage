@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Veeran Tech Point</title>
+<script src="control.js"></script>
+<link rel="stylesheet" href="css/aadhaaraddressstyle.css">
+</head>
+<body>
+
+<div class="container">
+  
+<script>
+const SERVICE_CONFIG = {
+  serviceKey : "New Voter ID",
+  title : "New Voter ID Service Assistance",
+  description : "We assist in applying for new Voter ID registration",
+
+  
+  fields : [
+
+  { id:"name", label:"Full Name", type:"text", required:true, section:"contact"},
+
+  { id:"mobile", label:"Mobile Number", type:"tel", required:true, max:10, section:"contact"},
+
+  { id:"email", label:"Email Address", type:"email", required:false, section:"contact"},
+
+  { id:"tamname", label:"முழுப்பெயர் (தமிழில்)", type:"text", required:true, section:"required" },
+  { id:"engname", label:"Full Name (English)", type:"text", required:true, section:"required" },
+  { id:"dob", label:"Date of Birth", type:"date", required:true, section:"required" },
+  { id:"fathertamname", label:"தந்தையின் பெயர் (தமிழில்)", type:"text", required:true, section:"required" },
+  { id:"fatherengname", label:"Father's Name (English)", type:"text", required:true, section:"required" },
+  { id:"gender", label:"பாலினம்/Gender", type:"select", required:true, section:"required",
+        options:["ஆண்/Male","பெண்/Female","மற்றவை/Other"]
+  },
+  { id:"tamaddress", label:"முகவரி (தமிழில்)", type:"text", required:true, section:"required" },
+  { id:"engaddress", label:"Address (English)", type:"text", required:true, section:"required" },
+  { id:"aplmobile", label:"Mobile Number", type:"tel", required:true, max:10, section:"required"},
+  { id:"dobproof", label:"Proof of Date of Birth", type:"select", required:true, section:"document",
+        options:["Birth Certificate","Aadhaar Card","PAN Card", "Driving License", "10th or 12th Marksheet", "Passport"]
+  },
+  { id:"residenceproof", label:"Proof of Residence", type:"select", required:true, section:"document",
+        options:["EB Bill/Water Bill/Gas Bill (at least 1 year)",
+        "Aadhaar Card","Bank Passbook", "Land Document (Kisan Bahi/Patta)", "Rental Agreement (Tenant இருந்தால்)", "Sale Deed (Own House இருந்தால்)", "Passport"]
+  },
+],
+
+  files : [
+  { id:"photoBase64", label:"Photo (JPG only, Max 2MB)", required:false, section:"document" }
+  ]
+
+};
+</script>
+
+
+<!-- PAYMENT PAGE -->
+  <div id="paymentPage" style="display:none;text-align:center;">
+    <h2>Payment Required</h2>
+    <p class="subtitle">Please scan QR or click Pay Now</p>
+
+    <div class="qr-box">
+        <img id="qrImage">
+    </div>
+    <p style="font-size:13px;color:#666;">Desktop users: Please scan QR using your mobile UPI app</p>
+
+    <a id="upiBtn" href="#">
+      <button style="background:green;">Pay</button>
+    </a>
+
+    <br><br>
+
+    <button onclick="showPaidPage()">I have paid</button>
+    <button class="reset-btn" onclick="confirmReset()">Reset Application</button>
+    </div>
+
+    <!-- PAID CONFIRM PAGE -->
+    <div id="paidPage" style="display:none;text-align:center;">
+    <p>
+      Payment Status :
+      <span id="paidBadge"
+        style="padding:6px 10px;border-radius:6px;background:#dc3545;color:#fff;">
+        NOT PAID
+      </span>
+    </p>
+
+    <h2>Payment Confirmation</h2>
+      <p class="subtitle">Please enter UPI Reference Number</p>
+
+      <input
+        type="text"
+        id="upiRef"
+        name="upiRef"
+        placeholder="Enter 12 digit UPI Ref"
+        maxlength="12"
+        inputmode="numeric"
+        pattern="[0-9]{12}"
+        required
+        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
+      <br><br>
+
+      <button onclick="if(validateUpiRef()) finalConfirm(event)">
+        Confirm Payment
+      </button>
+    </div>
+
+    <!-- SERVICE FORM -->
+    <h1 id="pageTitle"></h1>
+    <p id="pageDesc" class="subtitle"></p>
+    <form id="dynamicForm" class="form-grid-3">
+    </form>  
+  </div>
+  <div id="loading">Submitting… Please wait</div>
+
+  <script>
+  const PAYMENT_AMOUNT = 200;  // ₹1 for testing
+  let APPLICATION_ID = localStorage.getItem("APPLICATION_ID");
+  </script>
+
+  <script>
+    const qrImage = document.getElementById("qrImage");
+    const upiBtn = document.getElementById("upiBtn");
+  </script>
+
+<script src="js/script.js"></script>
+
+<script>
+
+fetch("maintenance.json")
+.then(res=>res.json())
+.then(data=>{
+
+if(data.site === "OFF"){
+
+window.location.href="maintenance.html";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
