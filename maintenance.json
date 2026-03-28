@@ -12,7 +12,9 @@
     "refund":           "ON",
     "terms":            "ON",
     "whatsnew":         "ON",
-    "resumereq":        "ON",
-    "resume1":          "ON"
+    "resume1":          "ON",
+    "voterid-req":      "ON",
+    "voteridnew":       "ON",
+    "voteridcorrection":"OFF"
 }
 }
