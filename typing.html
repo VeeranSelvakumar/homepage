@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Typing Services - Veeran Tech Point</title>
+<script src="control.js"></script>
+
+<style>
+body {
+    user-select: none;
+    -webkit-user-select: none;
+}
+img {
+    pointer-events: none;
+}
+</style>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f6fa;
+}
+
+/* Header */
+header {
+    background: #1a73e8;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin: 4px 0 0;
+    font-size: 16px;
+    color: #dbeafe;
+}
+
+/* Attention */
+.attention {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: center;
+    background: #0d47a1;
+    flex-wrap: wrap;
+}
+
+.navbar a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.navbar a:hover {
+    background: #1a73e8;
+}
+
+/* Title Box */
+.title-box {
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.title-box h2 {
+    color: #0d47a1;
+    font-size: 30px;
+}
+
+.title-box p {
+    font-size: 18px;
+    color: #444;
+}
+
+/* Box */
+.doc-box {
+    background: white;
+    margin: 20px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-size: 17px;
+}
+
+.doc-box h3 {
+    color: #0d47a1;
+    text-align: center;
+}
+
+/* Inputs */
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background: #25d366;
+    color: white;
+    padding: 12px;
+    border: none;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+/* Footer */
+.footer {
+    background: #0d47a1;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}
+.warning-box{
+background:#ffe5e5;
+border-left:5px solid red;
+padding:10px;
+margin-top:8px;
+border-radius:6px;
+}
+</style>
+
+<script>
+function calculatePrice(){
+    var rate = document.getElementById("pageRate").value;
+    var pages = document.getElementById("pages").value;
+
+    if(pages=="" || pages<=0){
+        document.getElementById("price").innerHTML="Enter valid value";
+        return;
+    }
+
+    var total;
+
+    // Character-based services (English, Tamil, Maths)
+    if(rate == 4 || rate == 8 || rate == 20){
+        total = (pages / 100) * rate;
+        document.getElementById("price").innerHTML =
+        "Total Price (Character Based): ₹ " + Math.round(total);
+    }
+    else{
+        // Page-based services
+        total = rate * pages;
+        document.getElementById("price").innerHTML =
+        "Total Price (Page Based): ₹ " + total;
+    }
+}
+
+function sendWhatsApp(){
+    var name = document.getElementById("name").value;
+    var service = document.getElementById("serviceType").value;
+    var pages = document.getElementById("pages").value;
+    var details = document.getElementById("details").value;
+
+    var msg = "Typing Service Request:%0A"
+            + "Name: " + name + "%0A"
+            + "Service: " + service + "%0A"
+            + "Pages: " + pages + "%0A"
+            + "Details: " + details;
+
+    var phone = "917708503586";
+
+    window.open("https://wa.me/" + phone + "?text=" + msg, "_blank");
+}
+
+window.onload = function(){
+    document.getElementById("popup").style.display = "block";
+}
+
+function closePopup(){
+    document.getElementById("popup").style.display = "none";
+}
+
+</script>
+
+</head>
+
+<body>
+
+<!--Right Click Disabled-->
+<script>
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+document.onkeydown = function(e) {
+    if (e.keyCode == 123) return false; // F12
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
+    if (e.ctrlKey && e.keyCode == 85) return false;
+    if (e.ctrlKey && e.keyCode == 83) return false;
+};
+</script>
+<!--End Right Click Disabled-->
+
+<div id="popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999;">
+
+<div style="background:white; width:90%; max-width:400px; margin:100px auto; padding:20px; border-radius:10px; text-align:center;">
+
+<h3 style="color:red;">⚠️ Important Notice</h3>
+
+<p>
+We provide only typing service.<br>
+Customer must provide content or format.<br>
+Content creation is not included.
+</p>
+
+<p>
+<b>குறிப்பு:</b><br>
+Type செய்து மட்டும் தரப்படும்.<br>
+Customer content கொடுத்தால் மட்டுமே typing செய்யப்படும்.
+</p>
+
+<button onclick="closePopup()" style="background:#1a73e8; color:white; padding:10px 20px; border:none; border-radius:5px;">
+OK
+</button>
+
+</div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <h1>Veeran Tech Point</h1>
+  <p>Digital Services Made Easy!</p>
+  <div class="attention">🔔 உங்களைத் தேடி உங்கள் இல்லங்களை நாடி — Veeran Tech Point 🔔</div>
+</header>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+    <a href="whatsnew.html" class="new-link">
+    WHAT'S NEW <span class=""></span>
+    </a>
+
+    <a href="index.html">HOME</a>
+    <a href="tn-schemes.html">TN SCHEMES</a>
+    <a href="tn-certificates.html">TN CERTIFICATES SERVICES</a>
+    <a href="indian-schemes.html">INDIAN SCHEMES</a>
+    <a href="indian-certificates.html">INDIAN CERTIFICATES SERVICES</a>
+    <a href="identity.html">IDENTITY CARDS</a>
+    <a href="exams.html">GOVERNMENT EXAMS</a>
+    <a href="other.html">OTHER SERVICES</a>
+    <a href="helpdesk.html">HELPDESK</a>
+</div>
+
+<!-- TITLE -->
+<div class="title-box">
+<h2>Professional Typing Services</h2>
+<p>
+    English & Tamil typing services with high accuracy.  
+    Handwritten notes, books, images அனைத்தையும் Word/PDF format-ல் வழங்கப்படும்.
+</p>
+</div>
+
+<!-- FEATURES -->
+<div class="doc-box">
+<h3>✨ Available Services</h3>
+
+<ul>
+
+<li>📚 Book to <b>PDF</b> Conversion</li><br>
+<li>📚 Book to <b>WORD</b> Conversion</li><br>
+<li>🖼️ Image to <b>WORD</b> Conversion</li><br>
+<li>✍️ Handwritten Notes Typing</li><br>
+<li>🌐 Tamil, English & Maths Typing</li><br>
+<li>📄 Document Alignment</li><br>
+
+<li>
+📄 Letter Typing  
+
+<div style="background:#ffe5e5; border-left:5px solid red; padding:10px; margin-top:8px; border-radius:6px;">
+<b style="color:red;">⚠️ Important:</b> We provide only typing service. Letter content or format must be provided by the customer. Content creation service is not included.<br><br>
+<b style="color:red;">⚠️ குறிப்பு:</b> Type செய்து மட்டும் தரப்படும். Customer content அல்லது format கொடுத்தால் மட்டுமே typing செய்து தரப்படும். Content உருவாக்கம் செய்யப்படாது.
+</div>
+
+</li><br>
+
+<li>
+🌐 Land Document Typing  
+
+<div style="background:#ffe5e5; border-left:5px solid red; padding:10px; margin-top:8px; border-radius:6px;">
+<b style="color:red;">⚠️ Important:</b> Content must be provided by the customer. We do only typing service.
+</div>
+
+</li><br>
+
+<li>
+🌐 Any Other Typing (Project, etc.,) 
+
+<div style="background:#ffe5e5; border-left:5px solid red; padding:10px; margin-top:8px; border-radius:6px;">
+<b style="color:red;">⚠️ Important:</b> Content must be provided by the customer. Drafting is not included.
+</div>
+
+</li>
+
+</ul>
+
+</div>
+<!-- PRICE CALCULATOR -->
+<div class="doc-box">
+<h3>💰 Price Calculator</h3>
+
+<select id="pageRate">
+<option value="">-- Select Your Category ---</option>
+<option value="8">Tamil Typing (₹8 / 100 characters)</option>
+<option value="4">English Typing (₹4 / 100 characters)</option>
+<option value="20">Maths Typing (₹20 / 100 characters)</option>
+
+<option value="7">Book To PDF (₹7/page)</option>
+<option value="10">Document Alignment (₹10/page)</option>
+</select>
+
+<input type="number" id="pages" placeholder="Enter pages / Characters Count">
+
+<button onclick="calculatePrice()">Calculate Price</button>
+
+<h3 id="price"></h3>
+</div>
+
+<!-- REQUEST FORM -->
+<div class="doc-box">
+<h3>📤 Request Service</h3>
+
+<input type="text" id="name" placeholder="Your Name">
+
+<select id="serviceType">
+<option>Typing Work</option>
+<option>Image to Word</option>
+<option>Book to Word</option>
+<option>OCR + Correction</option>
+</select>
+
+<textarea id="details" placeholder="Enter details..."></textarea>
+
+<button onclick="sendWhatsApp()">Send via WhatsApp</button>
+</div>
+
+
+<!-- FOOTER -->
+<div class="footer">
+© 2026 Veeran Tech Point — All Rights Reserved
+</div>
+
+</body>
+</html>
