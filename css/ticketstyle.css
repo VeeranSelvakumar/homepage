@@ -104,13 +104,26 @@ ul {
 
 /* Button */
 .btn{
+    display:inline-block;
     background:#1a73e8;
     color:white;
-    padding:12px 22px;
+    padding:12px 20px;
     border-radius:8px;
     text-decoration:none;
-    font-size:18px;
+    font-size:16px;
     font-weight:bold;
+    text-align:center;
+    max-width:90%;
+    width:auto;
+    white-space:nowrap;
+}
+@media (max-width:600px){
+    .btn{
+        padding:10px 16px;
+        font-size:14px;
+        max-width:95%;
+        white-space:normal;
+    }
 }
 
 /* Cards Grid */
