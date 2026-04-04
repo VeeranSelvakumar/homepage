@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ticket Booking Services - Veeran Tech Point</title>
+<link rel="stylesheet" href="css/ticketstyle.css">
+<script src="control.js"></script>
+
+<style>
+body {
+    user-select: none;
+    -webkit-user-select: none;
+}
+img {
+    pointer-events: none;
+}
+</style>  
+
+
+</head>
+
+<body>
+
+<!--Right Click Disabled-->
+<script>
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+document.onkeydown = function(e) {
+    if (e.keyCode == 123) return false;
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
+    if (e.ctrlKey && e.keyCode == 85) return false;
+    if (e.ctrlKey && e.keyCode == 83) return false;
+};
+</script>
+
+<!-- HEADER -->
+<header>
+  <h1>Veeran Tech Point</h1>
+  <p>Digital Services Made Easy!</p>
+  <p>Government Schemes & Certificate Information Hub</p>
+  <div class="attention">🔔 உங்களைத் தேடி உங்கள் இல்லங்களை நாடி — Veeran Tech Point 🔔</div>
+</header>
+
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+    <a href="whatsnew.html" class="new-link">
+    WHAT'S NEW <span class=""></span>
+    </a>
+
+    <a href="index.html">HOME</a>
+    <a href="tn-schemes.html">TN SCHEMES</a>
+    <a href="tn-certificates.html">TN CERTIFICATES SERVICES</a>
+    <a href="indian-schemes.html">INDIAN SCHEMES</a>
+    <a href="indian-certificates.html">INDIAN CERTIFICATES SERVICES</a>
+    <a href="identity.html">IDENTITY CARDS</a>
+    <a href="exams.html">GOVERNMENT EXAMS</a>
+    <a href="other.html">OTHER SERVICES</a>
+    <a href="helpdesk.html">HELPDESK</a>
+</div>
+
+<!-- TITLE -->
+<div class="title-box">
+    <h2>All Types of Ticket Booking Services</h2>
+    <p>
+        Movie, Train, Bus, Flight, Temple Darshan மற்றும் Government appointment tickets 
+        அனைத்தும் எளிதாகவும் விரைவாகவும் பதிவு செய்து தரப்படும். 
+        WhatsApp மூலம் உங்கள் விவரங்களை அனுப்பினால் உடனடியாக சேவை வழங்கப்படும்.
+    </p>
+</div>
+
+<div class="doc-box">
+    <h3>🎟️ Available Ticket Services</h3>
+
+    <div class="cards">
+
+        <div class="card" onclick="showForm('Movie')">
+            <h4>🎬 Movie Tickets</h4>
+            <p>Latest theatre tickets booking assistance.</p>
+            
+        </div>
+
+        <div class="card" onclick="showForm('Train')">
+            <h4>🚆 Train Tickets</h4>
+            <p>Sleeper, AC & Tatkal booking support.</p>
+        </div>
+
+        <div class="card" onclick="showForm('Bus')">
+            <h4>🚌 Bus Tickets</h4>
+            <p>Private & government bus booking.</p>
+        </div>
+
+        <div class="card" onclick="showForm('Flight')">
+            <h4>✈️ Flight Tickets</h4>
+            <p>Domestic & international flights booking.</p>
+        </div>
+
+        <div class="card" onclick="showForm('Temple')">
+            <h4>🛕 Temple Darshan</h4>
+            <p>Special darshan & seva booking.</p>
+        </div>
+
+        
+
+    </div>
+
+    <div style="text-align:center; margin:20px;">
+        <a href="https://wa.me/917708503586?text=Hi%20I%20want%20to%20book%20a%20ticket" class="btn">
+            📲 Send Details via WhatsApp
+        </a>
+    </div>
+
+    <div class="disclaimer">
+        <p><b>Disclaimer:</b> 
+            We are an independent service provider offering ticket booking assistance only. 
+            We are not affiliated with any government authority, IRCTC, airlines, or transport services. 
+            All bookings are made through official platforms.
+
+            Customers are requested to verify all details before confirmation. 
+            We are not responsible for cancellations, delays, or changes made by service providers.
+
+            Service charges are non-refundable once the booking is completed.<br><br>
+            For More Details Visit Our Home Page: <a href="index.html">Veeran Tech Point</a>
+        </p>
+    </div>
+</div>
+
+<div class="doc-box" id="formSection" style="display:none;">
+    <h3 id="formTitle">📋 Booking Form</h3>
+
+    <div class="form-box">
+
+        <input type="text" id="name" placeholder="Enter Your Name">
+        <input type="date" id="date">
+        
+        <input type="text" id="from" placeholder="From Location">
+        <input type="text" id="to" placeholder="To Location">
+        <input type="number" id="age" placeholder="Age">
+
+
+        <!-- EXTRA FIELDS -->
+
+        <input type="text" id="theatre" placeholder="Theatre Name" style="display:none;">
+        <input type="number" id="passengers1" placeholder="No. of Persons" style="display:none;">
+        <input type="number" id="passengers" placeholder="No. of Passengers" style="display:none;">
+       
+
+        <select id="tripType" style="display:none;">
+            <option value="">Select Trip Type</option>
+            <option>One Way</option>
+            <option>Round Trip</option>
+        </select>
+
+        <select id="darshanType" style="display:none;">
+            <option value="">Darshan Type</option>
+            <option>Free Darshan</option>
+            <option>Special Entry</option>
+        </select>
+
+        <select id="busType" style="display:none;">
+            <option value="">Bus Type</option>
+            <option>Government</option>
+            <option>Private</option>
+        </select>
+
+        <div id="chargeBox">💰 Service Charge: ₹0</div>
+
+        <button onclick="send()">📲 Send Details via WhatsApp</button>
+
+    </div>
+</div>
+
+<script>
+let selectedType = "";
+
+function showForm(type){
+    selectedType = type;
+    document.getElementById("passengers").placeholder = "No. of Passengers";
+
+    document.getElementById("formSection").style.display = "block";
+
+    // எல்லாத்தையும் hide
+    document.getElementById("theatre").style.display = "none";
+    document.getElementById("passengers").style.display = "none";
+    document.getElementById("passengers1").style.display = "none";
+    document.getElementById("tripType").style.display = "none";
+    document.getElementById("darshanType").style.display = "none";
+    document.getElementById("busType").style.display = "none";
+    document.getElementById("from").style.display = "none";
+    document.getElementById("to").style.display = "none";
+    document.getElementById("age").style.display = "none";
+
+    let title = "";
+    let charge = 0;
+
+    if(type === "Movie"){
+        title = "🎬 Movie Ticket Booking";
+        charge = 30;
+
+        document.getElementById("theatre").style.display = "block";
+        document.getElementById("passengers1").style.display = "block";
+    }
+
+    else if(type === "Train"){
+        title = "🚆 Train Ticket Booking";
+        charge = 120;
+
+        document.getElementById("from").style.display = "block";
+        document.getElementById("to").style.display = "block";
+        document.getElementById("age").style.display = "block";
+        document.getElementById("passengers").style.display = "block";
+    }
+
+    else if(type === "Bus"){
+        title = "🚌 Bus Ticket Booking";
+        charge = 100;
+
+        document.getElementById("from").style.display = "block";
+        document.getElementById("to").style.display = "block";
+        document.getElementById("passengers").style.display = "block";
+        
+        document.getElementById("busType").style.display = "block";
+    }
+
+    else if(type === "Flight"){
+        title = "✈️ Flight Ticket Booking";
+        charge = 250;
+
+        document.getElementById("from").style.display = "block";
+        document.getElementById("to").style.display = "block";
+        document.getElementById("age").style.display = "block";
+        document.getElementById("passengers").style.display = "block";
+        document.getElementById("tripType").style.display = "block";
+    }
+
+    else if(type === "Temple"){
+        title = "🛕 Sabarimala Darshan Booking";
+        charge = 35;
+
+        document.getElementById("passengers").style.display = "block";
+        document.getElementById("passengers").placeholder = "Number of Pilgrims";
+
+    }
+
+    document.getElementById("formTitle").innerHTML = title;
+    document.getElementById("chargeBox").innerHTML = "💰 Service Charge: ₹" + charge;
+
+    window.scrollTo({
+        top: document.getElementById("formSection").offsetTop,
+        behavior: 'smooth'
+    });
+}
+
+
+function send(){
+
+let nameVal = document.getElementById("name").value;
+let dateVal = document.getElementById("date").value;
+let fromVal = document.getElementById("from").value;
+let toVal = document.getElementById("to").value;
+let ageVal = document.getElementById("age").value;
+
+let theatreVal = document.getElementById("theatre").value;
+let passengersVal = document.getElementById("passengers").value;
+let passengers1Val = document.getElementById("passengers1").value;
+let busTypeVal = document.getElementById("busType").value;
+let tripTypeVal = document.getElementById("tripType").value;
+
+if(nameVal === "" || dateVal === ""){
+    alert("Please fill Name & Date");
+    return;
+}
+
+let msg = "Hi, I want ticket booking.\n\n";
+msg += "Type: " + selectedType + "\n";
+msg += "Name: " + nameVal + "\n";
+msg += "Date: " + dateVal + "\n";
+
+if(selectedType === "Movie"){
+    msg += "Persons: " + passengers1Val + "\n";
+    msg += "Theatre: " + theatreVal + "\n";
+}
+
+else if(selectedType === "Train"){
+    msg += "From: " + fromVal + "\n";
+    msg += "To: " + toVal + "\n";
+    msg += "Age: " + ageVal + "\n";
+    msg += "Persons: " + passengersVal + "\n";
+}
+
+else if(selectedType === "Bus"){
+    msg += "From: " + fromVal + "\n";
+    msg += "To: " + toVal + "\n";
+    msg += "Persons: " + passengersVal + "\n";
+    msg += "Bus Type: " + busTypeVal + "\n";
+}
+
+else if(selectedType === "Flight"){
+    msg += "From: " + fromVal + "\n";
+    msg += "To: " + toVal + "\n";
+    msg += "Age: " + ageVal + "\n";
+    msg += "Persons: " + passengersVal + "\n";
+    msg += "Trip: " + tripTypeVal + "\n";
+}
+
+else if(selectedType === "Temple"){
+    msg += "Pilgrims: " + passengersVal + "\n";
+}
+
+let finalURL = "https://wa.me/917708503586?text=" + encodeURIComponent(msg);
+
+window.open(finalURL, "_blank");
+}
+</script>
+
+</body>
+</html>
