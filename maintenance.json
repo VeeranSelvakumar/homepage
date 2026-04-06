@@ -15,6 +15,6 @@
     "resume1":          "ON",
     "voterid-req":      "ON",
     "voteridnew":       "ON",
-    "voteridcorrection":"OFF"
+    "voteridcorrection":"ON"
 }
 }
