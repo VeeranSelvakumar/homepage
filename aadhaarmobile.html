@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Veeran Tech Point</title>
+<script src="control.js"></script>
+<link rel="stylesheet" href="css/aadhaaraddressstyle.css">
+</head>
+<body>
+
+<div class="container">
+<script>
+const SERVICE_CONFIG = {
+  serviceKey : "Aadhaar Mobile Number Correction",
+  title : "Mobile Number Update Service Assistance",
+  description : "We assist in submitting mobile number update requests for Aadhaar portal",
+  fields : [
+
+  { id:"name", label:"Full Name", type:"text", required:true, section:"contact"},
+
+  { id:"mobile", label:"Mobile Number", type:"tel", required:true, max:10, section:"contact"},
+
+  { id:"email", label:"Email Address", type:"email", required:false, section:"contact"},
+
+  { id:"aadhaarnumber", label:"உங்கள் ஆதாரின் கடைசி 4 எண்ணை உள்ளிடவும்", type:"text", required:true, max:4, section:"required"},
+
+  { id:"oldmobile", label:"Old Mobile Number", type:"tel", required:true, max:10, section:"required"},
+
+  { id:"newmobile", label:"New Mobile Number", type:"tel", required:true, max:10, section:"required"},
+  ],
+
+  files : []
+
+};
+</script>
+
+<!-- PAYMENT PAGE -->
+  <div id="paymentPage" style="display:none;text-align:center;">
+    <h2>Payment Required</h2>
+    <p class="subtitle">Please scan QR or click Pay Now</p>
+
+    <div class="qr-box">
+        <img id="qrImage">
+    </div>
+    <p style="font-size:13px;color:#666;">Desktop users: Please scan QR using your mobile UPI app</p>
+
+    <a id="upiBtn" href="#">
+      <button style="background:green;">Pay</button>
+    </a>
+
+    <br><br>
+
+    <button onclick="showPaidPage()">I have paid</button>
+    <button class="reset-btn" onclick="confirmReset()">Reset Application</button>
+    </div>
+
+    <!-- PAID CONFIRM PAGE -->
+    <div id="paidPage" style="display:none;text-align:center;">
+    <p>
+      Payment Status :
+      <span id="paidBadge"
+        style="padding:6px 10px;border-radius:6px;background:#dc3545;color:#fff;">
+        NOT PAID
+      </span>
+    </p>
+
+    <h2>Payment Confirmation</h2>
+      <p class="subtitle">Please enter UPI Reference Number</p>
+
+      <input
+        type="text"
+        id="upiRef"
+        name="upiRef"
+        placeholder="Enter 12 digit UPI Ref"
+        maxlength="12"
+        inputmode="numeric"
+        pattern="[0-9]{12}"
+        required
+        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
+      <br><br>
+
+      <button onclick="if(validateUpiRef()) finalConfirm(event)">
+        Confirm Payment
+      </button>
+    </div>
+
+    <!-- SERVICE FORM -->
+    <h1 id="pageTitle"></h1>
+    <p id="pageDesc" class="subtitle"></p>
+    <form id="dynamicForm" class="form-grid-3">
+    </form>
+  </div>
+  <div id="loading">Submitting… Please wait</div>
+
+  <script>
+  const PAYMENT_AMOUNT = 175;  // ₹1 for testing
+  let APPLICATION_ID = localStorage.getItem("APPLICATION_ID");
+  </script>
+
+  <script>
+    const qrImage = document.getElementById("qrImage");
+    const upiBtn = document.getElementById("upiBtn");
+  </script>
+
+<script src="js/script.js"></script>
+
+<script>
+
+fetch("maintenance.json")
+.then(res=>res.json())
+.then(data=>{
+
+if(data.site === "OFF"){
+
+window.location.href="maintenance.html";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
