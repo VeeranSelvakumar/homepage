@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PAN Card - Veeran Tech Point</title>
+
+<style>
+    body {
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    img {
+        pointer-events: none;
+    }
+</style>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f3f6fa;
+    }
+
+    /* Header */
+    header {
+        background: #1a73e8;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 32px;
+    }
+
+    header p {
+        margin: 4px 0 0;
+        font-size: 16px;
+        color: #dbeafe;
+    }
+
+    /* Attention Blink */
+    .attention {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+        animation: blinker 1s linear infinite;
+        color: #fff;
+    }
+
+    @keyframes blinker {
+        50% { opacity: 0; }
+    }
+
+    /* Navbar */
+    .navbar {
+        display: flex;
+        justify-content: center;
+        background: #0d47a1;
+        flex-wrap: wrap;
+    }
+
+    .navbar a {
+        color: white;
+        padding: 14px 20px;
+        text-decoration: none;
+        display: block;
+        font-size: 15px;
+    }
+
+    .navbar a:hover {
+        background: #1a73e8;
+    }
+
+    /* Title Box */
+    .title-box {
+        text-align: center;
+        padding: 40px 20px;
+        background: white;
+        margin: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .title-box h2 {
+        color: #0d47a1;
+        font-size: 30px;
+    }
+
+    .title-box p {
+        font-size: 18px;
+        color: #444;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: auto;
+    }
+
+    /* Document List Box */
+    .doc-box {
+        background: white;
+        margin: 20px;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        font-size: 17px;
+        line-height: 1.8;
+        color: #333;
+    }
+
+    .doc-box h3 {
+        color: #0d47a1;
+        font-size: 24px;
+        margin-top: 0;
+        text-align: center;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+
+    /* File Upload Procedure Box */
+    .procedure-box {
+        background: white;
+        margin: 20px;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        font-size: 17px;
+        line-height: 1.8;
+        color: #333;
+    }
+
+    .procedure-box h3 {
+        color: #0d47a1;
+        font-size: 24px;
+        margin-top: 0;
+        text-align: center;
+    }
+
+    /* Footer */
+    .footer {
+        background: #0d47a1;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        margin-top: 20px;
+    }
+</style>
+</head>
+
+<body>
+
+<!--Right Click Disabled-->
+<script>
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+document.onkeydown = function(e) {
+    if (e.keyCode == 123) return false; // F12
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
+    if (e.ctrlKey && e.keyCode == 85) return false;
+    if (e.ctrlKey && e.keyCode == 83) return false;
+};
+</script>
+<!--End Right Click Disabled-->
+
+<!-- HEADER -->
+<header>
+  <h1>Veeran Tech Point</h1>
+  <p>Digital Services Made Easy!</p>
+  <p>Government Schemes & Certificate Information Hub</p>
+  <div class="attention">🔔 உங்களைத் தேடி உங்கள் இல்லங்களை நாடி — Veeran Tech Point 🔔</div>
+</header>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+    <a href="whatsnew.html" class="new-link">
+    WHAT'S NEW <span class=""></span>
+    </a>
+
+    <a href="index.html">HOME</a>
+    <a href="tn-schemes.html">TN SCHEMES</a>
+    <a href="tn-certificates.html">TN CERTIFICATES SERVICES</a>
+    <a href="indian-schemes.html">INDIAN SCHEMES</a>
+    <a href="indian-certificates.html">INDIAN CERTIFICATES SERVICES</a>
+    <a href="identity.html">IDENTITY CARDS</a>
+    <a href="exams.html">GOVERNMENT EXAMS</a>
+    <a href="other.html">OTHER SERVICES</a>
+    <a href="helpdesk.html">HELPDESK</a>
+</div>
+
+<!-- PAGE TITLE -->
+<div class="title-box">
+    <h2>New PAN Card - Required Documents</h2>
+    <p>
+        புதிய பான் கார்டு பெறுவதற்கு தேவையான முக்கிய ஆவணங்கள் கீழே பட்டியலிடப்பட்டுள்ளன. 
+        இவை தயாராக இருந்தால் விண்ணப்பம் மிகவும் விரைவாக செயலாக்கப்படும்.
+    </p>
+</div>
+
+
+
+<!-- DOCUMENT LIST -->
+<div class="doc-box">
+    <h3>📄 கவனிக்கப்பட வேண்டியவைகள்</h3>
+    <ul>
+        <li>ஆதார் அட்டையில் உங்களின் பெயர் பிழை இல்லாமல் இருக்கிறதா என்பதை உறுதி செய்து கொள்ளவும்.</li>
+        <li>ஆதார் அட்டையில் முழு பிறந்த தேதி இருக்கிறதா என்பதையும் சரி பார்த்துக் கொள்ளவும்.</li>
+    </ul>
+    <h3>📄தேவையான ஆவணங்கள்</h3>
+    <ul>
+    <li>Applicant Passport Size Photo - இரண்டு காதுகளும் தெளிவாக தெரியும்படி இருக்க வேண்டும்.</li>
+    <li>Applicant Aadhaar Card (கட்டாயம்)</li>
+    <b>Proof of Date of Birth (கீழே உள்ளவற்றில் ஏதாவது ஒன்று)</b><br>
+    Birth Certificate<br>
+    Passport<br>
+    Driving License<br>
+    Voter ID<br>
+    10th Marksheet<br>
+    Marriage Certificate<br>
+    Domicile Certificate<br>
+    Pension Payment Order<br>
+    Government/PSU Photo ID Card<br>
+    CGHS/ECHS Card<br>
+    Affidavit (Migrate Signed)<br>
+
+
+         
+        
+    </ul>
+
+    <div style="text-align:center; margin:20px;">
+        <a href="pannew.html" style="background:#1a73e8; color:white; padding:12px 22px; border-radius:8px; text-decoration:none; font-size:18px; font-weight:bold; display:inline-block;">
+            📌 Start Application
+        </a>
+    </div>
+    <div class="disclaimer">
+        <p><b>Disclaimer:</b> Veeran Tech Point is an independent platform providing information and assistance for government schemes. We are not affiliated with any government agency. The information provided on this page is for general guidance only. Please verify all details and requirements from official sources before applying.</p>
+        For More Details Visit Our Home Page: <a href="index.html">Veeran Tech Point</a>
+    </div>
+</div>
+
+<div class="title-box">
+    <h2>PAN Card Correction- Required Documents</h2>
+    <p>
+        பான் கார்டில் திருத்தம் செய்வதற்கு தேவையான முக்கிய ஆவணங்கள் கீழே பட்டியலிடப்பட்டுள்ளன. 
+        இவை தயாராக இருந்தால் விண்ணப்பம் மிகவும் விரைவாக செயலாக்கப்படும்.
+    </p>
+</div>
+
+<!-- DOCUMENT LIST -->
+<div class="doc-box">
+    <h3>📄 கவனிக்கப்பட வேண்டியவைகள்</h3>
+    <ul>
+        <li>ஆதார் அட்டையில் உங்களின் பெயர் பிழை இல்லாமல் இருக்கிறதா என்பதை உறுதி செய்து கொள்ளவும்.</li>
+        <li>ஆதார் அட்டையில் முழு பிறந்த தேதி இருக்கிறதா என்பதையும் சரி பார்த்துக் கொள்ளவும்.</li>
+    </ul>
+    <h3>📄தேவையான ஆவணங்கள்</h3>
+        <P><b>1.   Proof of Identity (கீழே உள்ளவற்றில் ஏதாவது ஒன்று)</b></p>
+        <ul>
+            Aadhaar Card<br>
+            Passport<br>
+            Voter ID<br>
+            Driving License<br>
+            Ration Card with Photo<br>
+            Pensionar Card with Photo<br>
+            Government/PSU Photo ID Card<br>
+            CGHS/ECHS/ Photo Card<br>
+        <br>
+        </ul>
+
+        <p><b>2.   Proof of Father's Name (கீழே உள்ளவற்றில் ஏதாவது ஒன்று)</b></p>
+        <ul>
+            Voter ID<br>
+            Driving License<br>
+            Ration Card<br>
+            Passport<br>
+            Matriculation Certificate<br>
+            Other Document mention father's name<br>
+        <br>
+        </ul>
+
+        <p><b>3.   Proof of Address (கீழே உள்ளவற்றில் ஏதாவது ஒன்று)</b></p>
+        <ul>
+            Aadhaar Card<br>
+            Passport<br>
+            Voter ID<br>
+            Driving License<br>
+            Bank Account Statement (Last 3 Months)<br>
+            Credit Card Statement (Last 3 Months)<br>
+            Electricity Bill (Last 3 Months)<br>
+            Landline/Broadband Bill (Last 3 Months)<br>
+            Gas Connection Book/Bill (Last 3 Months)<br>
+            Water Bill (Last 3 Months)<br>
+            Post Office Passbook with Address<br>
+            Property Tax Assessment Order<br>
+            Property Registration Document<br>
+            Domicile Certitificate (Government Issued)<br>
+            Government Allotment Letter(Within 3 Years)<br>
+            Spouse Passport<br>
+            Address Certificate (MP/MLA/Counsilor)<br>
+            Address Certificate (Gazetted Officer)<br>
+        <br>
+        </ul>
+
+        <p><b>4.   Proof of Date of Birth (கீழே உள்ளவற்றில் ஏதாவது ஒன்று)</b></p>
+        <ul>
+            Birth Certificate<br>
+            Passport<br>
+            Driving License<br>
+            Voter ID<br>
+            10th Marksheet<br>
+            Marriage Certificate<br>
+            Domicile Certitificate<br>
+            Pension Payment Order<br>
+            Government/PSU Photo ID Card<br>
+            CGHS/ECHS Card<br>
+            Affidavit (Migrate Signed)<br>
+
+        <br>
+        </ul>
+
+        <p><b>5.   Proof of PAN Card (கீழே உள்ளவற்றில் ஏதாவது ஒன்று)</b></p>
+        <ul>
+            Copy of PAN Card<br>
+            Copy of PAN Allotment Letter<br>
+            Copy of FIR<br>
+        </ul>
+    </ul>
+
+    <div style="text-align:center; margin:20px;">
+        <a href="pancorrection.html" style="background:#1a73e8; color:white; padding:12px 22px; border-radius:8px; text-decoration:none; font-size:18px; font-weight:bold; display:inline-block;">
+            📌 Start Application
+        </a>
+    </div>
+    <div class="disclaimer">
+        <p><b>Disclaimer:</b> Veeran Tech Point is an independent platform providing information and assistance for government schemes. We are not affiliated with any government agency. The information provided on this page is for general guidance only. Please verify all details and requirements from official sources before applying.</p>
+        For More Details Visit Our Home Page: <a href="index.html">Veeran Tech Point</a>
+    </div>
+</div>
+
+
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2026 Veeran Tech Point — All Rights Reserved
+</div>
+
+</body>
+</html>
