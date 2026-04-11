@@ -28,7 +28,7 @@ const SERVICE_CONFIG = {
   { id:"aadharname", label:"Full Name (As per Aadhaar)", type:"text", required:true, section:"required" },
   { id:"fathername", label:"Father's Name", type:"text", required:true, section:"required" },
   { id:"mothername", label:"Mother's Name", type:"text", required:true, section:"required" },
-  { id:"mobilenumber", label:"Mobile Number", type:"tel", required:true, max:10, section:"required" },
+  { id:"panmobile", label:"Mobile Number", type:"tel", required:true, max:10, section:"required" },
 
   { id:"proofofidentity", label:"Proof of Identity", type:"select", required:true, section:"document",
         options:[
@@ -378,6 +378,7 @@ form.addEventListener("submit", async e=>{
   loading.style.display="flex";
 
   const fd = new FormData();
+  fd.append("secret","YOUR_SECRET_KEY");
 
   fd.append("service", SERVICE_CONFIG.serviceKey);
   fd.append("config", JSON.stringify(SERVICE_CONFIG));
@@ -486,6 +487,7 @@ async function finalConfirm(e){
 
 
   const fd = new FormData();
+  fd.append("secret","YOUR_SECRET_KEY");
 
   fd.append("action","confirmPayment");
   fd.append("appId",APPLICATION_ID);
@@ -543,8 +545,28 @@ function validateUpiRef() {
   }
   return true;
 }
-const UPI_ID = "rselvakumar906@okaxis";
-const NAME = "Selvakumar";
+let UPI_ID = "";
+let NAME = "";
+
+async function loadUpi(){
+  window.addEventListener("load", function(){
+    loadUpi();
+  });
+
+  try{
+    const res = await fetch("YOUR_SCRIPT_URL?action=getUpi&secret=YOUR_SECRET_KEY");
+    const data = await res.json();
+
+    UPI_ID = data.upi;
+    NAME = data.name;
+
+    generateQR(); // load after fetch
+
+  }catch(err){
+    alert("UPI load failed");
+  }
+
+}
 
 const upiLink =
 `upi://pay?pa=${UPI_ID}&pn=${NAME}&am=${PAYMENT_AMOUNT}&cu=INR`;
@@ -576,17 +598,15 @@ function resetApplication(){
   location.reload();
 }
 function generateQR() {
-  const gender = document.querySelector('[name="gender"]')?.value || "";
 
-  const upiString = `upi://pay?pa=rselvakumar906@okaxis&pn=Selvakumar&am=${PAYMENT_AMOUNT}&cu=INR&note=${encodeURIComponent(gender)}`;
+  if(!UPI_ID) return; // important
 
-  // Generate QR via API
+  const upiString = `upi://pay?pa=${UPI_ID}&pn=${NAME}&am=${PAYMENT_AMOUNT}&cu=INR`;
+
   const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiString)}`;
 
   qrImage.src = qrURL;
-  qrImage.style.display = "block";
 
-  // Update pay button href
   upiBtn.href = upiString;
   upiBtn.querySelector("button").innerText = `Pay ₹${PAYMENT_AMOUNT} Now`;
 }
