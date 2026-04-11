@@ -598,15 +598,17 @@ function resetApplication(){
   location.reload();
 }
 function generateQR() {
+  const gender = document.querySelector('[name="gender"]')?.value || "";
 
-  if(!UPI_ID) return; // important
+  const upiString = `upi://pay?pa=rselvakumar906@okaxis&pn=Selvakumar&am=${PAYMENT_AMOUNT}&cu=INR&note=${encodeURIComponent(gender)}`;
 
-  const upiString = `upi://pay?pa=${UPI_ID}&pn=${NAME}&am=${PAYMENT_AMOUNT}&cu=INR`;
-
+  // Generate QR via API
   const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiString)}`;
 
   qrImage.src = qrURL;
+  qrImage.style.display = "block";
 
+  // Update pay button href
   upiBtn.href = upiString;
   upiBtn.querySelector("button").innerText = `Pay ₹${PAYMENT_AMOUNT} Now`;
 }
