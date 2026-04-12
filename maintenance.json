@@ -1,24 +1,24 @@
 {
-"site":                 "OFF",
+"site":                 "ON",
 
 "services":{
-    "aadhaaraddres-req":"OFF",
-    "aadhaaraddres":    "OFF",
-    "charges":          "OFF",
-    "disclaimer":       "OFF",
-    "identity":         "OFF",
-    "index":            "OFF",
-    "privacy":          "OFF",
-    "refund":           "OFF",
-    "terms":            "OFF",
-    "whatsnew":         "OFF",
-    "resume1":          "OFF",
-    "voterid-req":      "OFF",
-    "voteridnew":       "OFF",
-    "voteridcorrectiOFF":"OFF",
-    "pan-req":          "OFF",
-    "panew":            "OFF",
-    "pancorrectiOFF":    "OFF"
+    "aadhaaraddres-req":"ON",
+    "aadhaaraddres":    "ON",
+    "charges":          "ON",
+    "disclaimer":       "ON",
+    "identity":         "ON",
+    "index":            "ON",
+    "privacy":          "ON",
+    "refund":           "ON",
+    "terms":            "ON",
+    "whatsnew":         "ON",
+    "resume1":          "ON",
+    "voterid-req":      "ON",
+    "voteridnew":       "ON",
+    "voteridcorrectiON":"ON",
+    "pan-req":          "ON",
+    "panew":            "ON",
+    "pancorrectiON":    "ON"
     
 }
 }
