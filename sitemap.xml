@@ -79,6 +79,11 @@
    <url>
       <loc>https://veerantechpoint.in/ssc-phase-14-2026.html</loc>
       <priority>0.7</priority>
-   </url>   
+   </url>
+
+   <url>
+      <loc>https://veerantechpoint.in/e-shram.html</loc>
+      <priority>0.7</priority>
+   </url>
 
 </urlset>
