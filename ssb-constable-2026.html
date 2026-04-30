@@ -99,6 +99,32 @@ document.getElementById("tamil").style.display = (lang=="ta")?"block":"none";
 }
 window.onload = function(){ showLang("ta"); }
 </script>
+<script>
+function showLang(lang){
+    document.getElementById("english").style.display = (lang=="en")?"block":"none";
+    document.getElementById("tamil").style.display = (lang=="ta")?"block":"none";
+}
+function checkDeadline(){
+    // Set deadline (May 4, 2026 - 6:00 PM IST)
+    var deadline = new Date("2026-05-04T18:00:00+05:30");
+    var now = new Date();
+
+    if(now > deadline){
+        // Hide Apply buttons
+        var buttons = document.querySelectorAll(".button");
+        buttons.forEach(btn => btn.style.display = "none");
+
+        // Show Closed Message
+        document.getElementById("closedMsg").style.display = "block";
+    }
+}
+
+window.onload = function(){
+    showLang("ta");
+    checkDeadline();
+}
+</script>
+
 
 </head>
 
@@ -129,6 +155,14 @@ window.onload = function(){ showLang("ta"); }
 </div>
 
 <div class="container">
+<div id="closedMsg" style="display:none; background:#ffebee; padding:15px; margin:15px 0; border-left:5px solid red;">
+<h2 style="color:red;">❌ Application Closed</h2>
+<p>The application for SSB Recruitment 2026 is now closed.</p>
+<p>SSB Recruitment 2026 விண்ணப்பம் தற்போது முடிந்துவிட்டது.</p>
+<p>See Latest Job Updates: <a href="exams.html">exams</a>.</p>
+</div>
+
+<div class="container">
 
 <button class="btn lang-btn" onclick="showLang('ta')">Tamil</button>
 <button class="btn lang-btn" onclick="showLang('en')">English</button>
@@ -153,7 +187,7 @@ A total of 827 vacancies are available under this recruitment.
 <h2>📅 Important Dates</h2>
 <ul>
 <li>Application Start: 21 March 2026</li>
-<li>Last Date: 20 May 2026</li>
+<li>Last Date: 04 May 2026</li>
 </ul>
 </div>
 
@@ -245,7 +279,7 @@ SSB (Sashastra Seema Bal) என்பது இந்தியாவின் �
 <h2>📅 முக்கிய தேதிகள்</h2>
 <ul>
 <li>விண்ணப்ப தொடக்கம்: 21 மார்ச் 2026</li>
-<li>கடைசி தேதி: 20 மே 2026</li>
+<li>கடைசி தேதி: 04 மே 2026</li>
 </ul>
 </div>
 
