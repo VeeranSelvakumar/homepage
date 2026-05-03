@@ -96,4 +96,14 @@
       <priority>0.6</priority>
    </url>
 
+   <url>
+      <loc>https://veerantechpoint.in/tnea-2026.html</loc>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>https://veerantechpoint.in/msme1.html</loc>
+      <priority>0.7</priority>
+   </url>
+
 </urlset>
