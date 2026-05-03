@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FYBJM5L58"></script>
 <script>
@@ -10,46 +12,95 @@
 
   gtag('config', 'G-3FYBJM5L58');
 </script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What's New</title>
 <script src="control.js"></script>
 </head>
 <body>
 <style>
 body {
-    font-family: Arial, sans-serif;
-    background: #f9f9f9;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #eef4ff, #f9f9f9);
     padding: 20px;
+    margin: 0;
 }
+
+/* Container */
 .update-box {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     padding: 20px;
-    max-width: 1600px;
+    max-width: 900px;
     margin: auto;
 }
+
+/* Title */
 .update-box h3 {
     margin-top: 0;
-    color: #333;
+    font-size: 24px;
+    color: #0d47a1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
+
+/* List */
 .update-box ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-.update-box li {
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-.view-all {
-    display: inline-block;
+    list-style: none;
+    padding: 0;
     margin-top: 15px;
-    text-decoration: none;
-    color: #1a73e8;
 }
-.view-all:hover {
-    text-decoration: underline;
+
+/* Each Update Card */
+.update-box li {
+    background: #f4f7ff;
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+    border-left: 5px solid #1a73e8;
+}
+
+/* Hover Effect */
+.update-box li:hover {
+    transform: translateX(5px);
+    background: #e8f0ff;
+}
+
+/* Link Button */
+.update-box a {
+    text-decoration: none;
+    background: #1a73e8;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.update-box a:hover {
+    background: #0d47a1;
+}
+
+/* NEW Badge */
+.badge {
+    background: red;
+    color: white;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+/* Empty message */
+.empty {
+    text-align: center;
+    color: gray;
+    font-size: 14px;
 }
 </style>
 <div class="update-box">
@@ -59,6 +110,37 @@ body {
 
 </ul>
 </div>
+
+<script>
+fetch("updates.json")
+.then(res => res.json())
+.then(data => {
+    let ul = document.querySelector(".update-box ul");
+
+    if(data.updates.length === 0){
+        ul.innerHTML = "<li class='empty'>No updates available</li>";
+        return;
+    }
+
+    data.updates.forEach(item => {
+        let li = document.createElement("li");
+
+        let text = `<span><span class="badge">NEW</span>${item.text}</span>`;
+
+        if(item.link){
+            li.innerHTML = `${text} <a href="${item.link}" target="_blank">View</a>`;
+        } else {
+            li.innerHTML = text;
+        }
+
+        ul.appendChild(li);
+    });
+})
+.catch(() => {
+    document.querySelector(".update-box ul").innerHTML =
+    "<li class='empty'>⚠️ Updates not available</li>";
+});
+</script>
 
 <script>
 
