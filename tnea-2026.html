@@ -1,7 +1,6 @@
 <!DOCTYPE html><html lang="ta">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FYBJM5L58"></script>
 <script>
@@ -157,11 +156,36 @@ ol li {
   margin-bottom: 8px;
   line-height: 1.5;
 }
+.float-btn{
+    position: fixed;
+    bottom: 20px;
+    right: 15px;
+    background:#25D366;
+    color:white;
+    padding:12px 16px;
+    border-radius:50px;
+    text-decoration:none;
+    font-weight:bold;
+    animation: pulse 1.5s infinite;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+/* Animation */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba(37, 211, 102, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
 </style>
 </head>
 <body>
 
-<div id="header/header.html"></div>    
+<div id="header"></div>    
 
 <div class="container"><h1>🎓 TNEA 2026 – முழு வழிகாட்டி (Complete Guide)</h1><h2>1. TNEA என்றால் என்ன?</h2>
 <div class="box">
@@ -272,6 +296,10 @@ ol li {
 <p>✔ Rank → Counselling</p>
 <p>✔ Choice Filling → முக்கியம்</p>
 </div>
+
+<a href="helpdesk.html" class="float-btn">💬 Help</a>
+<br>
+<hr>
 <h2>❓ TNEA FAQ (சாதாரண கேள்விகள்)</h2>
 
 <h3>TNEA 2026க்கு entrance exam இருக்கா?</h3>
@@ -304,7 +332,7 @@ ol li {
 fetch("header/header.html")
 .then(res => res.text())
 .then(data => {
-    document.getElementById("header/header.html").innerHTML = data;
+    document.getElementById("header").innerHTML = data;
 });
 </script>
 
