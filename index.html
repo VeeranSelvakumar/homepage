@@ -472,16 +472,29 @@ h2 {
 </head>
 <body>
 
+<!-- NEW YEAR SPLASH SCREEN -->
+<div id="newYearSplash">
+  <div class="splash-box">
+    <h1>🎆 Happy New Year 2026 🎆</h1>
+    <h2>Veeran Tech Point</h2>
+    <p>New Digital Service Center</p>
+    <p class="sub">உங்களைத் தேடி உங்கள் இல்லங்களை நாடி</p>
+  </div>
+</div>
+
+
 <!-- Fireworks Canvas -->
 <canvas id="fireworksCanvas"></canvas>
 
 <!-- HEADER -->
 <div id="header"></div>
+
 <div class="news-bar">
 <div class="news-scroll">
 Welcome to Veeran Tech Point! Your trusted partner for government scheme information and application assistance. Stay tuned for the latest updates and services! | Veeran Tech Point- உங்களைத் தேடி உங்கள் இல்லங்களை நாடி — உங்கள் நம்பகமான அரசு சேவை உதவியாளர்!
 </div>
 </div>
+
 
 <!-- HOME SECTION -->
 <div class="card" id="home">
@@ -492,7 +505,7 @@ Welcome to Veeran Tech Point! Your trusted partner for government scheme informa
       <h2 text-align="justify">Veeran Tech Point — நம்பகமான தனியார் ஆன்லைன் டிஜிட்டல் சேவை தளம்</h2>
     </div>
 
-    <p style="text-align: justify;">
+    <p align="justify">
     Veeran Tech Point என்பது பொதுமக்களுக்கு அரசு தொடர்பான ஆன்லைன் சேவைகள் மற்றும் 
     விண்ணப்பங்களை விண்ணப்பிக்க உதவும் ஒரு தனியார் 
     டிஜிட்டல் தளமாகும். 🏡📱  
@@ -502,14 +515,14 @@ Welcome to Veeran Tech Point! Your trusted partner for government scheme informa
     </p>
 
     <div class="highlight">
-      <p style="text-align: justify;">
+      <p align="justify">
       ⏱️ அரசு அலுவலகங்களுக்கு நேரில் சென்று பல மணி நேரம் காத்திருக்க வேண்டிய 
       அவசியத்தை குறைக்கவும், விண்ணப்ப செயல்முறைகளை சரியாக புரிந்துகொள்ளவும் 
       உதவுவதே எங்கள் நோக்கம்.
       </p>
     </div>
 
-    <p style="text-align: justify;">
+    <p align="justify">
     ✍️ உங்கள் ஆவணங்களில் spelling mistakes, address change, mobile number update, 
     date correction போன்ற தகவல் திருத்தங்கள் தொடர்பான செயல்முறைகள் குறித்து 
     தேவையான வழிகாட்டுதலை வழங்குகிறோம்.  
@@ -518,12 +531,12 @@ Welcome to Veeran Tech Point! Your trusted partner for government scheme informa
     </p>
 
     <ul class="bullets">
-      <li style="text-align: justify;">📌தமிழக மற்றும் இந்திய அரசின் திட்டங்கள், நலத்திட்டங்கள், சான்றிதழ்கள் மற்றும் Identity Card சேவைகள் தொடர்பான தகவல்கள்.</li>
-      <li style="text-align: justify;">🧾எந்த சேவைக்கு என்ன தகுதி மற்றும் என்ன documents தேவை என்பதற்கான தெளிவான வழிகாட்டுதல்.</li>
-      <li style="text-align: justify;">🛠️விண்ணப்பங்களை தயாரிக்க உதவி மற்றும் அதிகாரப்பூர்வ இணையதளங்களில் submit செய்வதற்கான assistance.</li>
+      <li align="justify">📌தமிழக மற்றும் இந்திய அரசின் திட்டங்கள், நலத்திட்டங்கள், சான்றிதழ்கள் மற்றும் Identity Card சேவைகள் தொடர்பான தகவல்கள்.</li>
+      <li align="justify">🧾எந்த சேவைக்கு என்ன தகுதி மற்றும் என்ன documents தேவை என்பதற்கான தெளிவான வழிகாட்டுதல்.</li>
+      <li align="justify">🛠️விண்ணப்பங்களை தயாரிக்க உதவி மற்றும் அதிகாரப்பூர்வ இணையதளங்களில் submit செய்வதற்கான assistance.</li>
     </ul>
 
-    <p style="text-align: justify;">
+    <p align="justify">
     🎯 Veeran Tech Point-ன் முக்கிய நோக்கம்: 
     <b>மக்கள் அரசு சேவைகள் தொடர்பான தகவல்களை எளிதாக புரிந்துகொண்டு, 
     தேவையான விண்ணப்பங்களை சரியான முறையில் செய்ய உதவுவது.</b>
@@ -560,6 +573,7 @@ Welcome to Veeran Tech Point! Your trusted partner for government scheme informa
   <a href="refund.html">Refund Policy</a>
   <a href="charges.html">Service Charges</a>
 </div>
+
 </div>
 
 <!-- FOOTER -->
@@ -678,6 +692,7 @@ loop();
 </script>
 
 <script>
+
 fetch("maintenance.json")
 .then(res=>res.json())
 .then(data=>{
@@ -687,7 +702,6 @@ if(data.site === "OFF"){
 window.location.href="maintenance.html";
 
 }
-
 });
 </script>
 <script>
