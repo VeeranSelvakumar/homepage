@@ -324,30 +324,7 @@ document.onkeydown = function(e) {
 <!--End Right Click Disabled-->
 
 <!-- HEADER -->
-<header>
-  <div class="logo">Veeran Tech Point</div>
-  <p>Digital Services Made Easy!</p>
-  <p>Government Scheme Information and Application Assistance Portal</p>
-  <div class="attention">🔔 உங்களைத் தேடி உங்கள் இல்லங்களை நாடி — Veeran Tech Point 🔔</div>
-</header>
-
-<!-- NAVBAR -->
-<div class="navbar">
-
-    <a href="whatsnew.html" class="new-link">
-    WHAT'S NEW <span class=""></span>
-    </a>
-
-    <a href="index.html">HOME</a>
-    <a href="tn-schemes.html">TN SCHEMES</a>
-    <a href="tn-certificates.html">TN CERTIFICATES SERVICES</a>
-    <a href="indian-schemes.html">INDIAN SCHEMES</a>
-    <a href="indian-certificates.html">INDIAN CERTIFICATES SERVICES</a>
-    <a href="identity.html">IDENTITY CARDS</a>
-    <a href="exams.html">GOVERNMENT EXAMS</a>
-    <a href="other.html">OTHER SERVICES</a>
-    <a href="helpdesk.html">HELPDESK</a>
-</div>
+<div id="header"></div>
 
 <!-- PAGE TITLE -->
 <div class="title-box">
@@ -362,8 +339,9 @@ document.onkeydown = function(e) {
 <div class="doc-box">
     <h3>📄 தேவையான ஆவணங்கள் (கீழே உள்ள ஆவணங்களில் ஏதேனும் ஒன்று போதும்)</h3>
     <ul>
+        
         <li style="text-align: justify;"><b>பெண்ணே! உங்களுக்கு திருமணம் ஆகிவிட்டதா? உங்கள் கணவரின் முகவரிக்கு உங்கள் முகவரியை மாற்ற சிரமப்படுகிறீர்களா? கவலைப்பட வேண்டாம். கீழே உள்ள படிவத்தை நிரப்புங்கள். உங்கள் முகவரியை உங்கள் கணவரின் முகவரிக்கு எளிதாக மாற்றித் தருகிறோம்.</b></li>
-        <li style="text-align: justify;"><b>கீழே உள்ள ஆவணங்களில் எதுவும் இல்லை என்றால் உங்கள் தந்தை அல்லது தாயின் ஆதாரில் முகவரி சரியாக இருந்தால் விண்ணப்பிக்க முடியும்</b></li>
+        <li style="text-align: justify;"><b>மேலே உள்ள ஆவணங்களில் எதுவும் இல்லை என்றால் உங்கள் தந்தை அல்லது தாயின் ஆதாரில் முகவரி சரியாக இருந்தால் விண்ணப்பிக்க முடியும்</b></li>
         <li>Voter ID / e - Voter Card</li>
         <li>Ration Card / e-Ration</li>
         <li>Bank Passbook</li>
@@ -435,6 +413,15 @@ document.onkeydown = function(e) {
 <p><b>Q: Aadhaar mobile number update panna enna venum?</b></p>
 <p>A: Current mobile number active ah irukanum, new number um active ah irukanum.</p>
 
+<p><b>Q: Aadhaar address update online la panna mudiyuma?</b></p>
+<p>A: Yes, online portal moolama apply panna mudiyum, but OTP verification thevai.</p>
+
+<p><b>Q: Aadhaar mobile number change online la panna mudiyuma?</b></p>
+<p>A: Yes, mobile number change panna mudiyum already aadhar la link panina phone number vendum.</p>
+
+<p><b>Q: Document illa na address update panna mudiyuma?</b></p>
+<p>A: Family member Aadhaar (father/mother/husband) use pannitu update panna mudiyum.</p>
+
 </div>
 
 <!-- FOOTER -->
@@ -453,10 +440,14 @@ if(data.site === "OFF"){
 window.location.href="maintenance.html";
 
 }
-
 });
-
 </script>
-
+<script>
+fetch("/header/header.html")
+.then(res => res.text())
+.then(data => {
+document.getElementById("header").innerHTML = data;
+});
+</script>
 </body>
 </html>
