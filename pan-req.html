@@ -12,7 +12,38 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PAN Card - Veeran Tech Point</title>
+<!-- Basic SEO -->
+<meta name="title" content="PAN Card Services 2026 | New PAN Card & PAN Correction | Veeran Tech Point">
+<meta name="description" content="Apply for New PAN Card and PAN Card Correction online through Veeran Tech Point. Check required documents, Aadhaar details, DOB proof, address proof, and PAN correction process in Tamil.">
+<meta name="keywords" content="PAN Card, New PAN Card, PAN Correction, PAN Card Documents, PAN Card Apply Online, PAN Card Tamil, PAN Services, Aadhaar PAN, Veeran Tech Point">
+<meta name="author" content="Veeran Tech Point">
+<meta name="robots" content="index, follow">
+<meta name="language" content="Tamil">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="PAN Card Services | Veeran Tech Point">
+<meta property="og:description" content="New PAN Card & PAN Correction services with required documents and online assistance in Tamil.">
+<meta property="og:image" content="images/pan-card-banner.jpg">
+<meta property="og:url" content="https://veerantechpoint.in/pan-req.html">
+<meta property="og:site_name" content="Veeran Tech Point">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PAN Card Services | Veeran Tech Point">
+<meta name="twitter:description" content="Apply for New PAN Card and PAN Card Correction online with document guidance in Tamil.">
+<meta name="twitter:image" content="images/pan-card-banner.jpg">
+
+<!-- Theme Color -->
+<meta name="theme-color" content="#1a73e8">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="images/favicon.png">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://veerantechpoint.in/pan-req.html">
+<title>New PAN Card & PAN Correction Services 2026 | Required Documents in Tamil | Veeran Tech Point
+</title>
 
 <style>
     body {
@@ -161,45 +192,8 @@
 
 <body>
 
-<!--Right Click Disabled-->
-<script>
-document.addEventListener("contextmenu", e => e.preventDefault());
-
-document.onkeydown = function(e) {
-    if (e.keyCode == 123) return false; // F12
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
-    if (e.ctrlKey && e.keyCode == 85) return false;
-    if (e.ctrlKey && e.keyCode == 83) return false;
-};
-</script>
-<!--End Right Click Disabled-->
-
 <!-- HEADER -->
-<header>
-  <h1>Veeran Tech Point</h1>
-  <p>Digital Services Made Easy!</p>
-  <p>Government Schemes & Certificate Information Hub</p>
-  <div class="attention">🔔 உங்களைத் தேடி உங்கள் இல்லங்களை நாடி — Veeran Tech Point 🔔</div>
-</header>
-
-<!-- NAVBAR -->
-<div class="navbar">
-
-    <a href="whatsnew.html" class="new-link">
-    WHAT'S NEW <span class=""></span>
-    </a>
-
-    <a href="index.html">HOME</a>
-    <a href="tn-schemes.html">TN SCHEMES</a>
-    <a href="tn-certificates.html">TN CERTIFICATES SERVICES</a>
-    <a href="indian-schemes.html">INDIAN SCHEMES</a>
-    <a href="indian-certificates.html">INDIAN CERTIFICATES SERVICES</a>
-    <a href="identity.html">IDENTITY CARDS</a>
-    <a href="exams.html">GOVERNMENT EXAMS</a>
-    <a href="other.html">OTHER SERVICES</a>
-    <a href="helpdesk.html">HELPDESK</a>
-</div>
+<div id="header"></div>
 
 <!-- PAGE TITLE -->
 <div class="title-box">
@@ -357,6 +351,12 @@ document.onkeydown = function(e) {
 <div class="footer">
     © 2026 Veeran Tech Point — All Rights Reserved
 </div>
-
+<script>
+fetch("/header/header.html")
+.then(res => res.text())
+.then(data => {
+document.getElementById("header").innerHTML = data;
+});
+</script>
 </body>
 </html>
