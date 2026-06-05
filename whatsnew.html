@@ -115,26 +115,48 @@ body {
 fetch("updates.json")
 .then(res => res.json())
 .then(data => {
+
     let ul = document.querySelector(".update-box ul");
 
-    if(data.updates.length === 0){
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const activeUpdates = data.updates.filter(item => {
+        if(!item.expiryDate) return true;
+
+        const expiry = new Date(item.expiryDate);
+        expiry.setHours(23,59,59,999);
+
+        return expiry >= today;
+    });
+
+    if(activeUpdates.length === 0){
         ul.innerHTML = "<li class='empty'>No updates available</li>";
         return;
     }
 
-    data.updates.forEach(item => {
+    activeUpdates.forEach(item => {
+
         let li = document.createElement("li");
 
-        let text = `<span><span class="badge">NEW</span>${item.text}</span>`;
+        let text = `
+            <span>
+                <span class="badge">NEW</span>
+                ${item.text}
+            </span>
+        `;
 
         if(item.link){
-            li.innerHTML = `${text} <a href="${item.link}" target="_blank">View</a>`;
+            li.innerHTML = `${text}
+                <a href="${item.link}" target="_blank">View</a>`;
         } else {
             li.innerHTML = text;
         }
 
         ul.appendChild(li);
+
     });
+
 })
 .catch(() => {
     document.querySelector(".update-box ul").innerHTML =
