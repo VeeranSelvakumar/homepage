@@ -2,7 +2,13 @@
   "updates": [
     {
       "text": "🔥 TNEA 2026 Full Guide Released",
-      "link": "tnea-2026.html"
+      "link": "tnea-2026.html",
+      "expiryDate": "2026-06-06"
+    },
+    {
+      "text": "📢 New TNPSC Notification",
+      "link": "tnpsc.html",
+      "expiryDate": "2026-05-10"
     }
   ]
 }
