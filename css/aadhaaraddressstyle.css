@@ -254,3 +254,11 @@ h3{
   visibility:visible;
   opacity:1;
 }
+    select {
+    width: 100%;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    height: auto;
+    min-height: 40px;
+}
